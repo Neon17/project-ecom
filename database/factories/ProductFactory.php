@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -26,8 +28,21 @@ class ProductFactory extends Factory
             'quantity' => fake()->numberBetween(0, 100),
             'slug' => Str::slug($name),
             'image' => fake()->imageUrl(640, 480, 'product', true),
-
-            // consider the many to many relationship between product and categories
         ];
+    }
+
+    /**
+     * Attach categories to the product
+     */
+    public function withCategories($count = null): static
+    {
+        return $this->afterCreating(function (Product $product) use ($count) {
+            $categoryCount = $count ?? rand(1, 3);
+            $categories = Category::inRandomOrder()
+                ->take($categoryCount)
+                ->get();
+
+            $product->categories()->attach($categories);
+        });
     }
 }

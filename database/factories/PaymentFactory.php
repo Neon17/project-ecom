@@ -21,7 +21,7 @@ class PaymentFactory extends Factory
     public function definition(): array
     {
         return [
-           'order_id' => Order::factory(),
+            'order_id' => Order::factory(),
             'payment_method' => fake()->randomElement(array_column(PaymentMethodEnum::cases(), 'value')),
             'transaction_code' => fake()->unique()->numerify('TXN##################'),
             'status' => fake()->randomElement(array_column(PaymentStatusEnum::cases(), 'value')),

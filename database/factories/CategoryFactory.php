@@ -19,8 +19,6 @@ class CategoryFactory extends Factory
         return [
             'name' => fake()->name(),
             'slug' => fake()->slug(),
-
-            // consider the many to many relationship between product and categories
         ];
     }
 }
