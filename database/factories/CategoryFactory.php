@@ -17,7 +17,10 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->name(),
+            'slug' => fake()->slug(),
+
+            // consider the many to many relationship between product and categories
         ];
     }
 }
