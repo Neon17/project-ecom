@@ -9,4 +9,18 @@ class Address extends Model
 {
     /** @use HasFactory<\Database\Factories\AddressFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'country',
+        'state',
+        'city',
+        'street_address_1',
+        'street_address_2',
+        'user_id'
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
