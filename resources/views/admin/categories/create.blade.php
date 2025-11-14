@@ -12,7 +12,6 @@
 
     <form action="#" method="post" class="max-w-3xl">
         @csrf
-        @method('PUT')
 
         <div class="m-3 p-3 flex flex-col">
             <label for="name">Name:</label>
@@ -26,7 +25,7 @@
 
         <div class="mx-3 px-3 submit-wrapper">
             <button type="submit"
-                class="p-3 bg-blue-500 text-white hover:bg-blue-700 transition-all duration-300 hover:cursor-pointer">Update</button>
+                class="p-3 bg-blue-500 text-white hover:bg-blue-700 transition-all duration-300 hover:cursor-pointer">Add</button>
         </div>
     </form>
 

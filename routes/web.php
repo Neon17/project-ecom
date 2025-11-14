@@ -73,3 +73,9 @@ Route::get('/admin/payments/edit', function () {
 })->name('admin.payments.edit');
 
 
+
+Route::get('/admin/addresses', function () {
+    return view('admin.address.index');
+})->name('admin.address.index');
+
+
