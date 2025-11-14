@@ -13,11 +13,28 @@
     <div class="flex h-full w-full">
         <x-includes.admin.sidebar />
 
-        <div class="slot w-full h-full p-3">
+        <div class="slot w-full h-full p-3 ms-12">
             {{$slot}}
         </div>
 
     </div>
+
+    <script>
+
+        const deleteModal = document.querySelector('.delete-model');
+        const closeDeleteModal = document.querySelector('.close-delete-model');
+
+        closeDeleteModal.addEventListener('click', () => {
+            deleteModal.classList.add('hidden');
+        })
+
+        document.querySelectorAll('.open-delete-model').forEach(item => {
+            item.addEventListener('click', () => {
+                deleteModal.classList.remove('hidden');
+            })
+        })
+
+    </script>
 
 </body>
 </html>

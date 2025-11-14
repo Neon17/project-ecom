@@ -1,1 +1,1 @@
-<x-includes.layouts.admin/>
+<x-layouts.admin/>
