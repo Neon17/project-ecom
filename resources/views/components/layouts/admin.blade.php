@@ -19,22 +19,5 @@
 
     </div>
 
-    <script>
-
-        const deleteModal = document.querySelector('.delete-model');
-        const closeDeleteModal = document.querySelector('.close-delete-model');
-
-        closeDeleteModal.addEventListener('click', () => {
-            deleteModal.classList.add('hidden');
-        })
-
-        document.querySelectorAll('.open-delete-model').forEach(item => {
-            item.addEventListener('click', () => {
-                deleteModal.classList.remove('hidden');
-            })
-        })
-
-    </script>
-
 </body>
 </html>

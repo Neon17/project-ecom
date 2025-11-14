@@ -24,7 +24,7 @@
                 <td class="text-center p-2 px-5 border-r">1</td>
                 <td class="text-center p-2 px-5 border-r">Electronic</td>
                 <td class="text-center p-2 px-5 border-r">/electronic-products</td>
-                <td class="text-center p-2 px-5 border-r flex justify-center">
+                <td class="text-center p-2 px-5 flex justify-center">
                     <a href="{{ route('admin.categories.edit', 1) }}"
                         class="p-2 bg-yellow-500 text-white mx-2 rounded hover:bg-yellow-700 transition-all duration-300">Edit</a>
                     <button
@@ -37,7 +37,7 @@
                 <td class="text-center p-2 px-5 border-r">2</td>
                 <td class="text-center p-2 px-5 border-r">Gadgets</td>
                 <td class="text-center p-2 px-5 border-r">/gadgets-products</td>
-                <td class="text-center p-2 px-5 border-r flex justify-center">
+                <td class="text-center p-2 px-5 flex justify-center">
                     <a href="{{ route('admin.categories.edit', 1) }}"
                         class="p-2 bg-yellow-500 text-white mx-2 rounded hover:bg-yellow-700 transition-all duration-300">Edit</a>
                     <button
