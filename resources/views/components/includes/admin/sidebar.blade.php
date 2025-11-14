@@ -31,6 +31,10 @@
             class="py-4 flex justify-center {{ request()->routeIs('admin.payments*') ? 'bg-cyan-200' : '' }} hover:bg-cyan-100 hover:cursor-pointer">
             Payment
         </a>
+        <a href="{{ route('admin.addresses.index') }}"
+            class="py-4 flex justify-center {{ request()->routeIs('admin.addresses*') ? 'bg-cyan-200' : '' }} hover:bg-cyan-100 hover:cursor-pointer">
+            Address
+        </a>
     </div>
 
 </div>

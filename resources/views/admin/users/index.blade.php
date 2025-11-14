@@ -28,13 +28,13 @@
                 <td class="text-center p-2 px-5 border-r">shyam@gmail.com</td>
                 <td class="text-center p-2 px-5 border-r">Simalchaur, Pokhara</td>
                 <td class="text-center p-2 px-5 border-r">5</td>
-                <td class="text-center p-2 px-5 flex justify-center">
+                <td class="text-center p-2 px-5 flex">
                     <a href="{{ route('admin.users.edit', 1) }}"
-                        class="p-2 bg-yellow-500 text-white mx-2 rounded hover:bg-yellow-700 transition-all duration-300">Edit</a>
-                    {{-- <a href="{{ route('admin.users.show', 1) }}"
-                        class="p-2 bg-yellow-500 text-white mx-2 rounded hover:bg-yellow-700 transition-all duration-300">View</a> --}}
+                        class="p-2 bg-yellow-500 text-white mx-1 rounded hover:bg-yellow-700 transition-all duration-300">Edit</a>
+                    <a href="{{ route('admin.users.show') }}"
+                        class="p-2 bg-yellow-500 text-white mx-1 rounded hover:bg-yellow-700 transition-all duration-300">View</a>
                     <button
-                        class="open-delete-model p-2 bg-red-500 text-white mx-2 rounded hover:bg-red-700 duration-300 transaction-all">Delete</button>
+                        class="open-delete-model p-2 bg-red-500 text-white mx-1 rounded hover:bg-red-700 duration-300 transaction-all">Delete</button>
                     {{-- <x-ui.delete-modal action="{{ route('admin.users.destroy', 1) }}" /> --}}
                     <x-ui.delete-modal />
                 </td>
@@ -42,14 +42,16 @@
             <tr>
                 <td class="text-center p-2 px-5 border-r">2</td>
                 <td class="text-center p-2 px-5 border-r">Ramesh Pandey</td>
-                 <td class="text-center p-2 px-5 border-r">ramesh@gmail.com</td>
-                  <td class="text-center p-2 px-5 border-r">New Baneshwor</td>
+                <td class="text-center p-2 px-5 border-r">ramesh@gmail.com</td>
+                <td class="text-center p-2 px-5 border-r">New Baneshwor</td>
                 <td class="text-center p-2 px-5 border-r">3</td>
-                <td class="text-center p-2 px-5 flex justify-center">
+                <td class="text-center p-2 px-5 flex">
                     <a href="{{ route('admin.users.edit', 1) }}"
-                        class="p-2 bg-yellow-500 text-white mx-2 rounded hover:bg-yellow-700 transition-all duration-300">Edit</a>
+                        class="p-2 bg-yellow-500 text-white mx-1 rounded hover:bg-yellow-700 transition-all duration-300">Edit</a>
+                    <a href="{{ route('admin.users.show') }}"
+                        class="p-2 bg-yellow-500 text-white mx-1 rounded hover:bg-yellow-700 transition-all duration-300">View</a>
                     <button
-                        class="p-2 bg-red-500 text-white mx-2 rounded transition-all duration-300 hover:bg-red-700">Delete</button>
+                        class="p-2 bg-red-500 text-white mx-1 rounded transition-all duration-300 hover:bg-red-700">Delete</button>
                     <x-ui.delete-modal />
                 </td>
             </tr>

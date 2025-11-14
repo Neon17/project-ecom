@@ -1,12 +1,7 @@
 <x-layouts.admin>
 
     <div class="title text-2xl p-3">
-        Orders
-    </div>
-
-    <div class="button-wrapper py-3">
-        <a href="{{ route('admin.orders.create') }}"
-            class="p-3 bg-blue-500 text-white inline m-3 hover:bg-blue-800 transition-all duration-300">Add Order</a>
+        Addresses
     </div>
 
     {{-- Table Design --}}
@@ -26,20 +21,20 @@
                 <td class="text-center p-2 px-5 border-r">1</td>
                 <td class="text-center p-2 px-5 border-r">Nepal</td>
                 <td class="text-center p-2 px-5 border-r">Hemja</td>
-                <td class="text-center p-2 px-5 border-r">pending</td>
+                <td class="text-center p-2 px-5 border-r">4</td>
                 <td class="text-center p-2 px-5 border-r">Shyam Gautam</td>
                 <td class="text-center p-2 px-5 flex justify-center">
-                   
+                    Street 2
                 </td>
             </tr>
             <tr>
                 <td class="text-center p-2 px-5 border-r">2</td>
                 <td class="text-center p-2 px-5 border-r">Nepal</td>
                  <td class="text-center p-2 px-5 border-r">Tudikhel</td>
-                  <td class="text-center p-2 px-5 border-r">pending</td>
+                  <td class="text-center p-2 px-5 border-r">3</td>
                 <td class="text-center p-2 px-5 border-r">Ramesh Pandey</td>
                 <td class="text-center p-2 px-5 flex justify-center">
-                  
+                  Street 3
                 </td>
             </tr>
 
