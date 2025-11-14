@@ -1,5 +1,6 @@
 <?php
 
+use App\Enum\PaymentMethodEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,10 +15,10 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('order_id')->nullable()->constrained('orders');
-            $table->string('payment_method');
-            $table->string('transaction_code');
-            $table->string('status')->default('pending');
+            $table->foreignId('order_id')->onDelete('cascade');
+            $table->enum('payment_method', array_column(PaymentMethodEnum::cases(), 'value'));
+            $table->string('transaction_code')->unique()->nullable();
+            $table->enum('status', array_column(PaymentMethodEnum::cases(), 'value'))->default('pending');
 
             $table->timestamps();
         });

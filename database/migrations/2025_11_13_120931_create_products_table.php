@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
 
             $table->string('name');
-            $table->string('slug');
+            $table->string('slug')->unique();
             $table->string('image')->nullable();
-            $table->integer('price')->nullable(); // price should be in smallest unit, fraction part can be error-prone
-            $table->integer('quantity')->nullable();
+            $table->unsignedInteger('price')->default(0); // smallest unit
+            $table->unsignedInteger('quantity')->default(0);
             $table->text('description')->nullable();
 
             $table->timestamps();

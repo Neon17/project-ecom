@@ -2,10 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Enum\PaymentMethodEnum;
+use App\Enum\PaymentStatusEnum;
 use App\Models\Order;
-use App\OrderStatusEnum;
-use App\PaymentMethodEnum;
-use App\PaymentStatusEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Enum\OrderStatusEnum;
 use App\Models\Address;
 use App\Models\User;
-use App\OrderStatusEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,7 +23,6 @@ class OrderFactory extends Factory
             'status' => fake()->randomElement(array_column(OrderStatusEnum::cases(), 'value')),
             'user_id' => User::factory(),
             'address_id' => Address::factory(),
-            'status' => fake()->randomElement(array_column(OrderStatusEnum::cases(), 'value')),
         ];
     }
 }

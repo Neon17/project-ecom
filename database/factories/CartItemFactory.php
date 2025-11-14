@@ -22,22 +22,10 @@ class CartItemFactory extends Factory
         $product = Product::factory()->create();
 
         return [
-            'quantity' => fake()->numberBetween(1, min(5, $product->quantity)),
+            'quantity' => fake()->numberBetween(0, $product->quantity),
             'product_id' => $product->id,
             'cart_id' => Cart::factory(),
             'user_id' => User::factory(),
-            'price' => $product->price
         ];
-    }
-
-    public function configure()
-    {
-        return $this->afterMaking(function($cartItem) {
-            if (! $cartItem->product_id) {
-                $product = Product::factory()->create()->id;
-                $cartItem->product_id = $product->id;
-                $cartItem->quantity = fake()->numberBetween(1, min(5, $product->quantity));
-            }
-        });
     }
 }

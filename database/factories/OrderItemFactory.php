@@ -19,7 +19,7 @@ class OrderItemFactory extends Factory
     public function definition(): array
     {
         $product = Product::factory()->create();
-        $quantity = fake()->numberBetween(1, 5);
+        $quantity = fake()->numberBetween(0, $product->quantity);
         $unitPrice = $product->price;
 
         return [
@@ -28,16 +28,5 @@ class OrderItemFactory extends Factory
             'quantity' => $quantity,
             'amount_per_item' => $unitPrice,
         ];
-    }
-
-    public function configure(): static
-    {
-        return $this->afterMaking(function ($orderItem) {
-            if (!$orderItem->product_id) {
-                $product = Product::factory()->create();
-                $orderItem->product_id = $product->id;
-                $orderItem->amount_per_item = $product->price;
-            }
-        });
     }
 }
