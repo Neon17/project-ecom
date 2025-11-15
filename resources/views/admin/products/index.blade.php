@@ -6,7 +6,7 @@
 
     <div class="button-wrapper py-3">
         <a href="{{ route('admin.products.create') }}"
-            class="p-3 bg-blue-500 text-white inline m-3 hover:bg-blue-800 transition-all duration-300">Add Products</a>
+            class="p-3 bg-blue-500 text-white inline m-3 hover:bg-blue-800 transition-all duration-300">Add Product</a>
     </div>
 
     @if ($products->count() > 0)

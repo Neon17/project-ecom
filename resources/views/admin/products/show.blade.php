@@ -38,7 +38,7 @@
 
         <div class="mx-3 px-3 submit-wrapper">
             <a href="{{route('admin.products.edit', $product->id)}}"
-                class="p-3 bg-blue-500 text-white hover:bg-blue-700 transition-all duration-300 hover:cursor-pointer">Edit</a>
+                class="p-3 bg-yellow-500 text-white hover:bg-yellow-700 transition-all duration-300 hover:cursor-pointer">Edit</a>
         </div>
     </form>
 

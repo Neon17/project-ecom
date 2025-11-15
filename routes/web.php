@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -9,11 +10,8 @@ Route::get('/', function () {
 
 
 Route::resource('admin/products', ProductController::class)->names('admin.products');
+Route::resource('/admin/categories', CategoryController::class)->names('admin.categories');
 
-
-Route::get('/admin/categories', function () {
-    return view('admin.categories.index');
-})->name('admin.categories.index');
 
 Route::get('/admin/orders', function () {
     return view('admin.orders.index');
@@ -32,11 +30,6 @@ Route::get('/admin/dashboard', function () {
 })->name('admin.dashboard.index');
 
 
-
-
-Route::get('/admin/categories/create', function () {
-    return view('admin.categories.create');
-})->name('admin.categories.create');
 
 Route::get('/admin/orders/create', function () {
     return view('admin.orders.create');

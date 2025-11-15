@@ -10,12 +10,10 @@
         Add Category
     </div>
 
-    <form action="#" method="post" class="max-w-3xl">
+    <form action="{{route('admin.categories.store')}}" method="POST" class="max-w-3xl">
         @csrf
 
-        <x-ui.input-form name="name" />
-
-        <x-ui.input-form name="slug" />
+        <x-ui.input-form name="name" required/>
 
         <div class="mx-3 px-3 submit-wrapper">
             <button type="submit"

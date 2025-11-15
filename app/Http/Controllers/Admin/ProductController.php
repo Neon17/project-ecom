@@ -36,7 +36,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required',
+            'name' => 'required|unique:products,name',
             'description' => 'required',
             'price' => 'required',
             'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -46,13 +46,9 @@ class ProductController extends Controller
         ]);
 
         $slug = Str::slug($validated['name']);
-        $slug_with_date = $slug . '-' . date('Y');
 
         if (!Product::where('slug', $slug)->exists()) {
             $validated['slug'] = $slug;
-        } else if (!Product::where('slug', $slug_with_date)->exists()) {
-            info($slug_with_date);
-            $validated['slug'] = $slug_with_date;
         } else {
             info('This product already exists. Please edit the product to change it.');
             return redirect()->back()->with('error', 'This product already exists. Please edit the product to change it.');
@@ -104,13 +100,11 @@ class ProductController extends Controller
         ]);
 
         $slug = $validated['slug']??Str::slug($validated['name']);
-        $slug_with_date = $slug . '-' . date('Y');
 
-        if (!Product::where('slug', $slug)->exists()) {
+        if (!Product::where(
+            ['slug' => $slug, 'id' => '!=', $product->id]
+        )->exists()) {
             $validated['slug'] = $slug;
-        } else if (!Product::where('slug', $slug_with_date)->exists()) {
-            info($slug_with_date);
-            $validated['slug'] = $slug_with_date;
         } else {
             return redirect()->back()->with('error', 'This slug already exists. Please make the slug unique. Or you change the product name and try again.');
         }
