@@ -15,23 +15,39 @@
         @csrf
 
         <div class="m-3 p-3 flex flex-col">
-            <label for="name">User:</label>
-            <input type="text" name="name" id="name" class="border p-2">
+            <label for="user_id">User:</label>
+            <select name="user_id" class="border p-2" id="user_id">
+                <option value="">Select User</option>
+                <option value="1">User 1 (9812345678)</option>
+                <option value="2">User 2 (9812345338)</option>
+            </select>
         </div>
 
         <div class="m-3 p-3 flex flex-col">
-            <label for="slug">Payment:</label>
-            <input type="text" name="slug" id="slug" class="border p-2">
+            <label for="user_id">Payment Status:</label>
+            <select name="user_id" class="border p-2" id="user_id">
+                <option value="1">Paid</option>
+                <option value="2" selected>Pending</option>
+            </select>
+        </div>
+
+         <div class="m-3 p-3 flex flex-col">
+              <label for="user_id">Payment Method:</label>
+            <select name="user_id" class="border p-2" id="user_id">
+                <option value="">Select Payment Method</option>
+                <option value="1">Cash</option>
+                <option value="2">Esewa</option>
+                <option value="3">Khalti</option>
+            </select>
         </div>
 
         <div class="m-3 p-3 flex flex-col">
-            <label for="slug">Order ID:</label>
-            <input type="text" name="slug" id="slug" class="border p-2">
-        </div>
-
-        <div class="m-3 p-3 flex flex-col">
-            <label for="slug">Status:</label>
-            <input type="text" name="slug" id="slug" class="border p-2">
+            <label for="order_id">Order:</label>
+            <select name="order_id" class="border p-2" id="order_id">
+                <option value="">Select Order</option>
+                <option value="1">Order 1</option>
+                <option value="2">Order 2</option>
+            </select>
         </div>
 
 

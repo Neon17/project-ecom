@@ -49,11 +49,13 @@
 
         {{-- Order Items --}}
 
+
+
         <div class="text-xl mx-2 mt-10 mb-3">
             Addresses
         </div>
 
-        <div class="order-items-subform bg-gray-50 py-3">
+        <div class="add-address-item-input bg-gray-50 py-3">
             <div class="order-item-form">
                 <div class="m-3 p-3 flex flex-col">
                     <label for="slug">Country:</label>
@@ -83,8 +85,9 @@
 
             <div class="add-order-items ps-5 pb-5 mt-5">
                 <button
-                    class="p-3 bg-blue-500 text-white hover:bg-blue-700 transition-all duration-300 hover:cursor-pointer">Add
-                    Address</button>
+                    class="p-3 bg-blue-500 text-white hover:bg-blue-700 transition-all duration-300 hover:cursor-pointer">
+                    Add Address
+                </button>
             </div>
         </div>
 
