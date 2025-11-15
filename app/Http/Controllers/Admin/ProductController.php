@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -30,7 +31,8 @@ class ProductController extends Controller
 
     public function create()
     {
-        return view('admin.products.create');
+        $categories = Category::query()->get();
+        return view('admin.products.create', compact('categories'));
     }
 
     public function store(Request $request)
@@ -41,8 +43,8 @@ class ProductController extends Controller
             'price' => 'required',
             'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'quantity' => 'required|numeric|min:0',
-            // 'categories' => 'sometimes|array|min:1',
-            // 'categories.*' => 'exists:categories,id'
+            'categories' => 'sometimes|array|min:1',
+            'categories.*' => 'exists:categories,id'
         ]);
 
         $slug = Str::slug($validated['name']);
@@ -74,19 +76,21 @@ class ProductController extends Controller
 
     public function show(string $id)
     {
-        $product = Product::findOrFail($id);
-        return view('admin.products.show', compact('product'));
+        $product = Product::with('categories')->findOrFail($id);
+        $categories = Category::query()->get();
+        return view('admin.products.show', compact('product', 'categories'));
     }
 
     public function edit(string $id)
     {
-        $product = Product::findOrFail($id);
-        return view('admin.products.edit', compact('product'));
+        $product = Product::with('categories')->findOrFail($id);
+        $categories = Category::query()->get();
+        return view('admin.products.edit', compact('product', 'categories'));
     }
 
     public function update(Request $request, string $id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::with('categories')->findOrFail($id);
 
         $validated = $request->validate([
             'name' => 'required',
@@ -95,11 +99,11 @@ class ProductController extends Controller
             'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'quantity' => 'required|numeric|min:0',
             'slug' => 'required',
-            // 'categories' => 'sometimes|array|min:1',
-            // 'categories.*' => 'exists:categories,id'
+            'categories' => 'sometimes|array|min:1',
+            'categories.*' => 'exists:categories,id'
         ]);
 
-        $slug = $validated['slug']??Str::slug($validated['name']);
+        $slug = $validated['slug'] ?? Str::slug($validated['name']);
 
         if (!Product::where(
             ['slug' => $slug, 'id' => '!=', $product->id]
@@ -112,8 +116,7 @@ class ProductController extends Controller
         $product->update($validated);
 
         if (array_key_exists('categories', $validated) && $validated['categories']) {
-            $product = Product::latest()->first();
-            $product->categories()->attach($validated['categories']);
+            $product->categories()->sync($validated['categories']);
         }
 
         // if ($request->hasFile('image')) {
@@ -129,7 +132,7 @@ class ProductController extends Controller
 
     public function destroy(string $id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::with('categories')->findOrFail($id);
         $product->delete();
         return redirect()->route('admin.products.index');
     }

@@ -26,15 +26,20 @@
         <x-ui.input-form name="quantity" type="number" min="0" value="{{ $product->quantity }}" />
         <x-ui.input-form name="slug" value="{{ $product->slug }}" />
 
-
-        <div class="m-3 p-3 flex flex-col">
-            <label for="categories-form-select">Categories:</label>
-            <select class="border p-2" name="categories" id="categories-form-select" multiple>
-                <option value="1" class="inline p-1 m-1 bg-amber-100">Gadget</option>
-                <option value="2" class="inline p-1 m-1 bg-amber-100">Electronics</option>
-            </select>
-            <p class="text-sm">(Press Ctrl + Click to select multiple categories)</p>
-        </div>
+        @if ($categories->count() > 0)
+            <div class="m-3 p-3 flex flex-col">
+                <label for="categories-form-select">Categories:</label>
+                <select class="border p-2" name="categories[]" id="categories-form-select" multiple>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}" class="inline p-1 m-1"
+                            {{ $product->categories->contains($category->id) ? 'selected bg-amber-600 text-white' : '' }}    
+                        >{{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
+                <p class="text-sm">(Press Ctrl + Click to select multiple categories)</p>
+            </div>
+        @endif
 
         <div class="mx-3 px-3 submit-wrapper">
             <button type="submit"
