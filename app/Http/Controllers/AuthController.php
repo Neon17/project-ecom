@@ -37,18 +37,18 @@ class AuthController extends Controller
         return view('auth.reset-password', ['token' => $token, 'email' => $email]);
     }
 
-
     // Functions posting request to the database
 
     public function login(Request $request)
     {
         $validated = $request->validate([
             'email' => 'required|email|min:3',
-            'password' => 'required|min:8'
+            'password' => 'required|min:8',
         ]);
 
         if (Auth::attempt($validated)) {
             $request->session()->regenerate();
+
             return redirect('/')->with('success', 'Logged in successfully!');
         }
 
@@ -60,14 +60,13 @@ class AuthController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8|confirmed'
+            'password' => 'required|min:8|confirmed',
         ]);
-
 
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'password' => $validated['password']
+            'password' => $validated['password'],
         ]);
         Auth::login($user);
 
@@ -82,7 +81,7 @@ class AuthController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        if (!$user) {
+        if (! $user) {
             return redirect()->back()->with('error', 'User with that email doesn\'t exists');
         }
 
@@ -92,7 +91,7 @@ class AuthController extends Controller
             ['email' => $request->email],
             [
                 'token' => Hash::make($token),
-                'created_at' => Carbon::now()
+                'created_at' => Carbon::now(),
             ]
         );
 
@@ -110,28 +109,29 @@ class AuthController extends Controller
         $validated = $request->validate([
             'token' => 'required|string',
             'email' => 'required|email',
-            'password' => 'required|min:8|confirmed'
+            'password' => 'required|min:8|confirmed',
         ]);
 
         $reset_record = DB::table('password_reset_tokens')
             ->where('email', $request->email)
             ->first();
 
-        if (!$reset_record) {
+        if (! $reset_record) {
             return redirect()->back()->with('error', 'Invalid Reset token');
         }
 
         if (Carbon::parse($reset_record->created_at)->addHour()->isPast()) {
             DB::table('password_reset_tokens')->where('email', $validated['email'])->delete();
+
             return redirect()->back()->with('error', 'Invalid Reset token');
         }
 
-        if (!Hash::check($validated['token'], $reset_record->token)) {
+        if (! Hash::check($validated['token'], $reset_record->token)) {
             return redirect()->back()->with('error', 'Invalid Reset token');
         }
 
         $user = User::where('email', $validated['email'])->first();
-        if (!$user) {
+        if (! $user) {
             return redirect()->back()->with('error', 'User not found');
         }
 

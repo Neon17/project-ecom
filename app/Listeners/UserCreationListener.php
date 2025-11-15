@@ -4,8 +4,6 @@ namespace App\Listeners;
 
 use App\Events\UserCreatedEvent;
 use App\Notifications\UserCreatedNotification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class UserCreationListener
 {

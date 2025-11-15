@@ -13,11 +13,10 @@ class ProductController extends Controller
     public function getResults($request, $query)
     {
         return $query
-            ->where('name', 'like', '%' . $request->input('search') . '%')
-            ->orWhere('description', 'like', '%' . $request->input('search') . '%')
-            ->orWhere('price', 'like', '%' . $request->input('search') . '%');
+            ->where('name', 'like', '%'.$request->input('search').'%')
+            ->orWhere('description', 'like', '%'.$request->input('search').'%')
+            ->orWhere('price', 'like', '%'.$request->input('search').'%');
     }
-
 
     public function index(Request $request)
     {
@@ -26,12 +25,14 @@ class ProductController extends Controller
             $query = $this->getResults($request, $query);
         }
         $products = $query->paginate(10);
+
         return view('admin.products.index', compact('products'));
     }
 
     public function create()
     {
         $categories = Category::query()->get();
+
         return view('admin.products.create', compact('categories'));
     }
 
@@ -44,15 +45,16 @@ class ProductController extends Controller
             'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'quantity' => 'required|numeric|min:0',
             'categories' => 'sometimes|array|min:1',
-            'categories.*' => 'exists:categories,id'
+            'categories.*' => 'exists:categories,id',
         ]);
 
         $slug = Str::slug($validated['name']);
 
-        if (!Product::where('slug', $slug)->exists()) {
+        if (! Product::where('slug', $slug)->exists()) {
             $validated['slug'] = $slug;
         } else {
             info('This product already exists. Please edit the product to change it.');
+
             return redirect()->back()->with('error', 'This product already exists. Please edit the product to change it.');
         }
 
@@ -78,6 +80,7 @@ class ProductController extends Controller
     {
         $product = Product::with('categories')->findOrFail($id);
         $categories = Category::query()->get();
+
         return view('admin.products.show', compact('product', 'categories'));
     }
 
@@ -85,6 +88,7 @@ class ProductController extends Controller
     {
         $product = Product::with('categories')->findOrFail($id);
         $categories = Category::query()->get();
+
         return view('admin.products.edit', compact('product', 'categories'));
     }
 
@@ -100,12 +104,12 @@ class ProductController extends Controller
             'quantity' => 'required|numeric|min:0',
             'slug' => 'required',
             'categories' => 'sometimes|array|min:1',
-            'categories.*' => 'exists:categories,id'
+            'categories.*' => 'exists:categories,id',
         ]);
 
         $slug = $validated['slug'] ?? Str::slug($validated['name']);
 
-        if (!Product::where(
+        if (! Product::where(
             ['slug' => $slug, 'id' => '!=', $product->id]
         )->exists()) {
             $validated['slug'] = $slug;
@@ -134,6 +138,7 @@ class ProductController extends Controller
     {
         $product = Product::with('categories')->findOrFail($id);
         $product->delete();
+
         return redirect()->route('admin.products.index');
     }
 }

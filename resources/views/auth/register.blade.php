@@ -2,10 +2,10 @@
 
 
 @section('content')
-    <div class="p-3 rounded bg-gray-200 max-w-3xl mx-auto my-5">
+    <div class="p-6 rounded bg-gray-50 shadow-lg max-w-xl mx-auto my-5">
 
-        <div class="form-heading py-3 px-1 my-3 mb-5">
-            <h2 class="text-2xl bold">
+        <div class="form-heading pt-3 pb-8 px-1 my-3 mb-5">
+            <h2 class="text-2xl bold text-center">
                 Welcome to our app!
             </h2>
         </div>
@@ -51,7 +51,7 @@
                     required />
             </div>
 
-            <div class="button-wrapper py-3 px-1">
+            <div class="button-wrapper pb-3 pt-5 px-1">
                 <button type="submit"
                     class="bg-blue-600 text-white p-2 hover:cursor-pointer hover:bg-blue-500 rounded">Register</button>
             </div>

@@ -3,11 +3,12 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProductController as ControllersProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -27,10 +28,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
+Route::get('/products', [ControllersProductController::class, 'index'])->name('products.index');
+Route::get('/products/{product}', [ControllersProductController::class, 'show'])->name('products.show');
 
 Route::resource('admin/products', ProductController::class)->names('admin.products');
 Route::resource('/admin/categories', CategoryController::class)->names('admin.categories');
-
 
 Route::get('/admin/orders', function () {
     return view('admin.orders.index');
@@ -47,8 +49,6 @@ Route::get('/admin/payments', function () {
 Route::get('/admin/dashboard', function () {
     return view('admin.dashboard.index');
 })->name('admin.dashboard.index');
-
-
 
 Route::get('/admin/orders/create', function () {
     return view('admin.orders.create');

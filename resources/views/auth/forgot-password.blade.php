@@ -2,10 +2,10 @@
 
 
 @section('content')
-    <div class="p-3 rounded bg-gray-200 max-w-3xl mx-auto my-5">
+    <div class="p-3 rounded bg-gray-50 shadow-lg max-w-xl mx-auto my-5">
 
         <div class="form-heading py-3 px-1 my-3">
-            <h2 class="text-2xl bold">
+            <h2 class="text-2xl pb-3 bold">
                 Send Forgot Password Email
             </h2>
         </div>

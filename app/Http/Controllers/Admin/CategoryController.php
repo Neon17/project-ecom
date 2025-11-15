@@ -12,8 +12,8 @@ class CategoryController extends Controller
     public function getResults($request, $query)
     {
         return $query
-            ->where('name', 'like', '%' . $request->input('search') . '%')
-            ->orWhere('slug', 'like', '%' . $request->input('search') . '%');
+            ->where('name', 'like', '%'.$request->input('search').'%')
+            ->orWhere('slug', 'like', '%'.$request->input('search').'%');
     }
 
     public function index(Request $request)
@@ -23,6 +23,7 @@ class CategoryController extends Controller
             $categories = $this->getResults($request, $categories);
         }
         $categories = $categories->get();
+
         return view('admin.categories.index', compact('categories'));
     }
 
@@ -34,7 +35,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->merge([
-            'name' => strtolower($request->name)
+            'name' => strtolower($request->name),
         ]);
         $validated = $request->validate([
             'name' => 'required|unique:categories,name',
@@ -42,13 +43,14 @@ class CategoryController extends Controller
 
         $validated['slug'] = Str::slug($validated['name']);
 
-        if (!Category::where('slug', $validated['slug'])->exists()) {
+        if (! Category::where('slug', $validated['slug'])->exists()) {
             $validated['slug'] = $validated['slug'];
         } else {
             return redirect()->back()->with('error', 'This category already exists. Please edit the category to change it.');
         }
 
         Category::create($validated);
+
         return redirect()->route('admin.categories.index')->with('success', 'Category created successfully.');
     }
 
@@ -65,21 +67,23 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $request->merge([
-            'name' => strtolower($request->name)
+            'name' => strtolower($request->name),
         ]);
         $validated = $request->validate([
-            'name' => 'required|unique:categories,name,' . $category->id,
+            'name' => 'required|unique:categories,name,'.$category->id,
         ]);
 
         $validated['slug'] = Str::slug($validated['name']);
 
         $category->update($validated);
+
         return redirect()->route('admin.categories.index')->with('success', 'Category updated successfully.');
     }
 
     public function destroy(Category $category)
     {
         $category->delete();
+
         return redirect()->route('admin.categories.index')->with('success', 'Category deleted successfully.');
     }
 }

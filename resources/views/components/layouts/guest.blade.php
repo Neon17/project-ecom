@@ -14,7 +14,7 @@
         <x-ui.success-error-topup />
 
         <div class="slot w-full h-full p-3">
-            @yield('content');  
+            @yield('content')
         </div>
 
     </div>

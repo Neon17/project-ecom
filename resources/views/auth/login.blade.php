@@ -2,16 +2,16 @@
 
 
 @section('content')
-    <div class="p-3 rounded bg-gray-200 max-w-3xl mx-auto my-5">
+    <div class="p-10 rounded bg-gray-50 shadow-lg max-w-xl mx-auto my-5">
 
-        <div class="form-heading py-3 px-1 my-3">
-            <h2 class="text-2xl bold">
+        <div class="form-heading pb-6 px-1">
+            <h2 class="text-2xl bold text-center">
                 Welcome to our app!
             </h2>
         </div>
 
 
-        <form action="{{ url('/login') }}" method="POST">
+        <form action="{{ url('/login') }}" class="pt-6" method="POST">
             @csrf
 
             <div class="form-group p-1 flex flex-col">

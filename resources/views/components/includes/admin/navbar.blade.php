@@ -1,10 +1,15 @@
 <div class="h-18 bg-cyan-100 flex justify-around items-center w-full p-3 shadow-lg sticky top-0">
 
-    <div class="company-wrapper flex items-center h-full px-5">
+    <div class="company-wrapper flex items-center justify-around h-full px-5">
 
-        <h2 class="text-xl">
+        <a href="{{route('welcome')}}" class="text-xl mx-3">
             Ecommerce
-        </h2>
+        </a>
+
+        <div class="main-button-content my-auto">
+            <a href="{{ route('products.index') }}"
+                class="text-blue-600 p-2 hover:cursor-pointer hover:text-blue-500 rounded">Products</a>
+        </div>
 
         <div class="button-wrapper p-2">
 
