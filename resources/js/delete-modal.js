@@ -1,11 +1,13 @@
 var delete_modal = document.getElementsByClassName('delete-modal');
 var close_delete_modal = document.getElementsByClassName('close-delete-modal');
-var open_delete_model = document.getElementsByClassName('open-delete-model');
+var open_delete_modal = document.getElementsByClassName('open-delete-modal');
 
 console.log(delete_modal);
+console.log(close_delete_modal);
+console.log(open_delete_modal);
 
-for (let i = 0; i < open_delete_model.length; i++) {
-    open_delete_model[i].addEventListener('click', function () {
+for (let i = 0; i < open_delete_modal.length; i++) {
+    open_delete_modal[i].addEventListener('click', function () {
         delete_modal[i].classList.remove('hidden');
     });
 }

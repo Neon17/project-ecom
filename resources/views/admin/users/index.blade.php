@@ -34,7 +34,7 @@
                     <a href="{{ route('admin.users.show') }}"
                         class="p-2 bg-yellow-500 text-white mx-1 rounded hover:bg-yellow-700 transition-all duration-300">View</a>
                     <button
-                        class="open-delete-model p-2 bg-red-500 text-white mx-1 rounded hover:bg-red-700 duration-300 transaction-all">Delete</button>
+                        class="open-delete-modal p-2 bg-red-500 text-white mx-1 rounded hover:bg-red-700 duration-300 transaction-all">Delete</button>
                     {{-- <x-ui.delete-modal action="{{ route('admin.users.destroy', 1) }}" /> --}}
                     <x-ui.delete-modal />
                 </td>
@@ -51,7 +51,7 @@
                     <a href="{{ route('admin.users.show') }}"
                         class="p-2 bg-yellow-500 text-white mx-1 rounded hover:bg-yellow-700 transition-all duration-300">View</a>
                     <button
-                        class="p-2 bg-red-500 text-white mx-1 rounded transition-all duration-300 hover:bg-red-700">Delete</button>
+                        class="open-delete-modal p-2 bg-red-500 text-white mx-1 rounded transition-all duration-300 hover:bg-red-700">Delete</button>
                     <x-ui.delete-modal />
                 </td>
             </tr>

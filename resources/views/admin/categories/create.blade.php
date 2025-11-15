@@ -13,15 +13,9 @@
     <form action="#" method="post" class="max-w-3xl">
         @csrf
 
-        <div class="m-3 p-3 flex flex-col">
-            <label for="name">Name:</label>
-            <input type="text" name="name" id="name" class="border p-2">
-        </div>
+        <x-ui.input-form name="name" />
 
-        <div class="m-3 p-3 flex flex-col">
-            <label for="slug">Slug:</label>
-            <input type="text" name="slug" id="slug" class="border p-2">
-        </div>
+        <x-ui.input-form name="slug" />
 
         <div class="mx-3 px-3 submit-wrapper">
             <button type="submit"

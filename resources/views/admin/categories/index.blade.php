@@ -28,7 +28,7 @@
                     <a href="{{ route('admin.categories.edit', 1) }}"
                         class="p-2 bg-yellow-500 text-white mx-2 rounded hover:bg-yellow-700 transition-all duration-300">Edit</a>
                     <button
-                        class="open-delete-model p-2 bg-red-500 text-white mx-2 rounded hover:bg-red-700 duration-300 transaction-all">Delete</button>
+                        class="open-delete-modal p-2 bg-red-500 text-white mx-2 rounded hover:bg-red-700 duration-300 transaction-all">Delete</button>
                     {{-- <x-ui.delete-modal action="{{ route('admin.categories.destroy', 1) }}" /> --}}
                     <x-ui.delete-modal />
                 </td>
@@ -41,7 +41,7 @@
                     <a href="{{ route('admin.categories.edit', 1) }}"
                         class="p-2 bg-yellow-500 text-white mx-2 rounded hover:bg-yellow-700 transition-all duration-300">Edit</a>
                     <button
-                        class="p-2 bg-red-500 text-white mx-2 rounded transition-all duration-300 hover:bg-red-700">Delete</button>
+                        class="open-delete-modal p-2 bg-red-500 text-white mx-2 rounded transition-all duration-300 hover:bg-red-700">Delete</button>
                     <x-ui.delete-modal />
                 </td>
             </tr>
