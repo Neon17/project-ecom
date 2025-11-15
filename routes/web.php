@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\AuthController;
@@ -36,6 +37,10 @@ Route::resource('admin/products', ProductController::class)->names('admin.produc
 Route::resource('/admin/categories', CategoryController::class)->names('admin.categories');
 Route::resource('/admin/users', UserController::class)->names('admin.users')->only(['index', 'create', 'store']); // only admin can do this
 Route::resource('/users', UserController::class)->names('users')->only(['show', 'edit', 'update', 'destroy']); // only user can do this
+
+Route::resource('users.addresses', AddressController::class)->names('users.addresses');
+Route::get('/admin/addresses', [AddressController::class, 'getAllIndex'])->name('admin.addresses.index');
+
 
 Route::get('/admin/orders', function () {
     return view('admin.orders.index');

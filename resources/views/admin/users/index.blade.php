@@ -46,7 +46,7 @@
 
         </table>
     @else
-        <p class="text-center text-2xl py-10 text-center">No Users Found</p>
+        <p class="text-2xl py-10 text-center">No Users Found</p>
     @endif
 
 

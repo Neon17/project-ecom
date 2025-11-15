@@ -12,9 +12,10 @@ class UserController extends Controller
     public function getResults($request, $query)
     {
         return $query
-            ->where('name', 'like', '%' . $request->input('search') . '%')
-            ->orWhere('email', 'like', '%' . $request->input('search') . '%');
+            ->where('name', 'like', '%'.$request->input('search').'%')
+            ->orWhere('email', 'like', '%'.$request->input('search').'%');
     }
+
     public function index(Request $request)
     {
         $users = User::query();
@@ -37,7 +38,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8|confirmed',
-            'role' => 'sometimes|in:' . implode(',', array_column(RoleEnum::cases(), 'value')),
+            'role' => 'sometimes|in:'.implode(',', array_column(RoleEnum::cases(), 'value')),
         ]);
 
         $user = User::create([
@@ -53,13 +54,15 @@ class UserController extends Controller
     public function show(string $id)
     {
         $user = User::findOrFail($id);
+
         return view('admin.users.show', compact('user'));
     }
 
     public function edit(string $id)
     {
         $user = User::findOrFail($id);
-        return view("admin.users.edit", compact('user'));
+
+        return view('admin.users.edit', compact('user'));
     }
 
     public function update(Request $request, string $id)
@@ -68,9 +71,11 @@ class UserController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
+            'email' => 'required|email|unique:users,email,'.$user->id,
             'password' => 'sometimes|nullable|string|min:8|confirmed',
-            'role' => 'required|in:' . implode(',', enum_values(RoleEnum::class)),
+            'role' => 'required|in:'.implode(',', enum_values(RoleEnum::class)),
+
+            'address',
         ]);
 
         if (empty($validated['password'])) {
@@ -89,6 +94,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
+
         return redirect()->route('admin.users.index')->with('success', 'User deleted successfully');
     }
 }
