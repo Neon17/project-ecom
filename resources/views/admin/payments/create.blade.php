@@ -31,9 +31,9 @@
             </select>
         </div>
 
-         <div class="m-3 p-3 flex flex-col">
-              <label for="user_id">Payment Method:</label>
-            <select name="user_id" class="border p-2" id="user_id">
+        <div class="m-3 p-3 flex flex-col">
+            <label for="payment_method">Payment Method:</label>
+            <select name="payment_method" class="border p-2" id="payment_method">
                 <option value="">Select Payment Method</option>
                 <option value="1">Cash</option>
                 <option value="2">Esewa</option>

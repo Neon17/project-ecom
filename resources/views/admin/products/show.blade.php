@@ -8,25 +8,28 @@
     </div>
 
     <div class="heading-wrapper text-2xl p-3 ms-2">
-        Add Product
+        View Product
     </div>
 
-    <form action="{{ route('admin.products.store') }}" method="post" class="max-w-3xl">
+    <form action="{{ route('admin.products.update', $product->id) }}" method="post" class="max-w-3xl">
         @csrf
+        @method('PUT')
 
-        <x-ui.input-form name="name" required />
+        <x-ui.input-form name="name" value="{{ $product->name }}" readonly/>
         <div class="m-3 p-3 flex flex-col">
             <label for="description">Description:</label>
-            <textarea type="text" name="description" id="description" class="border p-2" required>
-                
+            <textarea type="text" name="description" id="description" class="border p-2" required readonly>
+                {{ $product->description }}
             </textarea>
         </div>
-        <x-ui.input-form name="price" label="Price Per Item (in paisa not rupees)" required />
-        <x-ui.input-form name="quantity" type="number" min="0" required />
+        <x-ui.input-form name="price" label="Price Per Item (in paisa not rupees)" value="{{ $product->price }}" readonly />
+        <x-ui.input-form name="quantity" type="number" min="0" value="{{ $product->quantity }}" readonly/>
+        <x-ui.input-form name="slug" value="{{ $product->slug }}" readonly/>
+
 
         <div class="m-3 p-3 flex flex-col">
             <label for="categories-form-select">Categories:</label>
-            <select class="border p-2" name="categories" id="categories-form-select" multiple>
+            <select class="border p-2" name="categories" id="categories-form-select" multiple readonly>
                 <option value="1" class="inline p-1 m-1 bg-amber-100">Gadget</option>
                 <option value="2" class="inline p-1 m-1 bg-amber-100">Electronics</option>
             </select>
@@ -34,8 +37,8 @@
         </div>
 
         <div class="mx-3 px-3 submit-wrapper">
-            <button type="submit"
-                class="p-3 bg-blue-500 text-white hover:bg-blue-700 transition-all duration-300 hover:cursor-pointer">Submit</button>
+            <a href="{{route('admin.products.edit', $product->id)}}"
+                class="p-3 bg-blue-500 text-white hover:bg-blue-700 transition-all duration-300 hover:cursor-pointer">Edit</a>
         </div>
     </form>
 

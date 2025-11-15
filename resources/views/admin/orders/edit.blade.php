@@ -26,8 +26,13 @@
             </div>
 
             <div class="m-3 p-3 flex flex-col">
-                <label for="slug">Status:</label>
-                <input type="text" name="slug" id="slug" class="border p-2">
+                <select name="status" class="border p-2" id="status">
+                    <option value="">Select Status</option>
+                    <option value="1">pending</option>
+                    <option value="2">processed</option>
+                    <option value="3">completed</option>
+                    <option value="4">cancelled</option>
+                </select>
             </div>
         </div>
 
@@ -40,17 +45,23 @@
             </div>
 
             <div class="order-item-form">
+
                 <div class="m-3 p-3 flex flex-col">
-                    <label for="slug">Product:</label>
-                    <input type="text" name="slug" id="slug" class="border p-2">
+                    <select name="product_id" class="border p-2" id="product_id">
+                        <option value="">Select Product</option>
+                        <option value="1">Laptop(Photo)</option>
+                        <option value="2">Mobile(Photo)</option>
+                    </select>
                 </div>
                 <div class="m-3 p-3 flex flex-col">
                     <label for="slug">Quantity:</label>
-                    <input type="text" name="slug" id="slug" class="border p-2">
+                    <input type="number" name="slug" id="slug" class="border p-2" min="1"
+                        max="100">
                 </div>
                 <div class="m-3 p-3 flex flex-col">
-                    <label for="slug">Amount</label>
-                    <input type="text" name="slug" id="slug" class="border p-2">
+                    <label for="slug">Amount Per Item(In Paisa not Rupees)</label>
+                    <input type="number" name="slug" id="slug" class="border p-2" min="100"
+                        value="{{ 100 }}">
                 </div>
             </div>
 

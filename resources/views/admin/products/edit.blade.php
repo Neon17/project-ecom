@@ -2,45 +2,34 @@
 
 
     <div class="px-3 mb-3 submit-wrapper">
-        <a type="submit" href="{{route('admin.products.index')}}"
-            class="p-3 text-blue-500 hover:text-blue-700 transition-all duration-300 hover:cursor-pointer">Back to Table</a>
+        <a type="submit" href="{{ route('admin.products.index') }}"
+            class="p-3 text-blue-500 hover:text-blue-700 transition-all duration-300 hover:cursor-pointer">Back to
+            Table</a>
     </div>
 
     <div class="heading-wrapper text-2xl p-3 ms-2">
         Edit Product
     </div>
 
-    <form action="#" method="post" class="max-w-3xl">
+    <form action="{{ route('admin.products.update', $product->id) }}" method="post" class="max-w-3xl">
         @csrf
+        @method('PUT')
 
+        <x-ui.input-form name="name" value="{{ $product->name }}" />
         <div class="m-3 p-3 flex flex-col">
-            <label for="name">Name:</label>
-            <input type="text" name="name" id="name" class="border p-2">
+            <label for="description">Description:</label>
+            <textarea type="text" name="description" id="description" class="border p-2" required>
+                {{ $product->description }}
+            </textarea>
         </div>
+        <x-ui.input-form name="price" label="Price Per Item (in paisa not rupees)" value="{{ $product->price }}" />
+        <x-ui.input-form name="quantity" type="number" min="0" value="{{ $product->quantity }}" />
+        <x-ui.input-form name="slug" value="{{ $product->slug }}" />
 
-        <div class="m-3 p-3 flex flex-col">
-            <label for="slug">Description:</label>
-            <input type="text" name="slug" id="slug" class="border p-2">
-        </div>
-
-        <div class="m-3 p-3 flex flex-col">
-            <label for="slug">Price:</label>
-            <input type="text" name="slug" id="slug" class="border p-2">
-        </div>
-
-        <div class="m-3 p-3 flex flex-col">
-            <label for="slug">Quantity:</label>
-            <input type="text" name="slug" id="slug" class="border p-2">
-        </div>
-
-        <div class="m-3 p-3 flex flex-col">
-            <label for="slug">Slug:</label>
-            <input type="text" name="slug" id="slug" class="border p-2">
-        </div>
 
         <div class="m-3 p-3 flex flex-col">
             <label for="categories-form-select">Categories:</label>
-            <select class="border p-2" id="categories-form-select" multiple>
+            <select class="border p-2" name="categories" id="categories-form-select" multiple>
                 <option value="1" class="inline p-1 m-1 bg-amber-100">Gadget</option>
                 <option value="2" class="inline p-1 m-1 bg-amber-100">Electronics</option>
             </select>

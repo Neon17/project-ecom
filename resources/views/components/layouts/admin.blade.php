@@ -21,5 +21,9 @@
 
     </div>
 
+
+    {{$script ?? ''}}
+    @stack('script')
+
 </body>
 </html>

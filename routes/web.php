@@ -1,14 +1,15 @@
 <?php
 
+use App\Http\Controllers\Admin\ProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/admin/products', function () {
-    return view('admin.products.index');
-})->name('admin.products.index');
+
+Route::resource('admin/products', ProductController::class)->names('admin.products');
+
 
 Route::get('/admin/categories', function () {
     return view('admin.categories.index');
@@ -30,9 +31,8 @@ Route::get('/admin/dashboard', function () {
     return view('admin.dashboard.index');
 })->name('admin.dashboard.index');
 
-Route::get('/admin/products/create', function () {
-    return view('admin.products.create');
-})->name('admin.products.create');
+
+
 
 Route::get('/admin/categories/create', function () {
     return view('admin.categories.create');
@@ -50,13 +50,9 @@ Route::get('/admin/payments/create', function () {
     return view('admin.payments.create');
 })->name('admin.payments.create');
 
-Route::get('/admin/products/edit', function () {
-    return view('admin.products.edit');
-})->name('admin.products.edit');
-
-Route::get('/admin/categories/edit', function () {
-    return view('admin.categories.edit');
-})->name('admin.categories.edit');
+// Route::get('/admin/products/edit', function () {
+//     return view('admin.products.edit');
+// })->name('admin.products.edit');
 
 Route::get('/admin/orders/edit', function () {
     return view('admin.orders.edit');
