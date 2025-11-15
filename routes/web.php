@@ -30,7 +30,6 @@ Route::get('/admin/dashboard', function () {
     return view('admin.dashboard.index');
 })->name('admin.dashboard.index');
 
-
 Route::get('/admin/products/create', function () {
     return view('admin.products.create');
 })->name('admin.products.create');
@@ -50,7 +49,6 @@ Route::get('/admin/users/create', function () {
 Route::get('/admin/payments/create', function () {
     return view('admin.payments.create');
 })->name('admin.payments.create');
-
 
 Route::get('/admin/products/edit', function () {
     return view('admin.products.edit');
@@ -72,8 +70,6 @@ Route::get('/admin/payments/edit', function () {
     return view('admin.payments.edit');
 })->name('admin.payments.edit');
 
-
-
 Route::get('/admin/addresses', function () {
     return view('admin.addresses.index');
 })->name('admin.addresses.index');
@@ -81,5 +77,3 @@ Route::get('/admin/addresses', function () {
 Route::get('/admin/users/show', function () {
     return view('admin.users.show');
 })->name('admin.users.show');
-
-

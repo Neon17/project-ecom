@@ -16,7 +16,7 @@ class Order extends Model
     protected $fillable = [
         'user_id',
         'address_id',
-        'status'
+        'status',
     ];
 
     public function address(): BelongsTo

@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('city');
             $table->string('street_address_1');
             $table->string('street_address_2')->nullable();
-            $table->foreignId('user_id')->onDelete('cascade'); 
-    
+            $table->foreignId('user_id')->onDelete('cascade');
+
             $table->timestamps();
         });
     }
