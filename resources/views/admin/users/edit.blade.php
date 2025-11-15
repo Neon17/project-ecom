@@ -11,8 +11,9 @@
         Edit User
     </div>
 
-    <form action="#" method="post" class="max-w-3xl">
+    <form action="{{route('users.update', $user->id)}}" method="POST" class="max-w-3xl">
         @csrf
+        @method('PUT')
 
         <div class="m-3 px-3 submit-wrapper flex justify-end">
             <button type="submit"
@@ -21,28 +22,34 @@
 
         <div class="main-table bg-gray-50 my-3">
             <div class="m-3 p-3 flex flex-col">
-                <label for="name">Name</label>
-                <input type="text" name="name" id="name" class="border p-2">
+                <label for="name">Name:*</label>
+                <input type="text" name="name" id="name" value="{{$user->name}}" class="border p-2">
             </div>
 
             <div class="m-3 p-3 flex flex-col">
-                <label for="slug">Email:</label>
-                <input type="text" name="slug" id="slug" class="border p-2">
+                <label for="email">Email:*</label>
+                <input type="text" name="email" id="email" value="{{$user->email}}" class="border p-2">
             </div>
 
             <div class="m-3 p-3 flex flex-col">
-                <label for="slug">Password:</label>
-                <input type="text" name="slug" id="slug" class="border p-2">
+                <label for="password">New Password:</label>
+                <input type="text" name="password" id="password" class="border p-2">
             </div>
 
             <div class="m-3 p-3 flex flex-col">
-                <label for="slug">Confirm Password:</label>
-                <input type="text" name="slug" id="slug" class="border p-2">
+                <label for="password_confirmation">Confirm New Password:</label>
+                <input type="text" name="password_confirmation" id="password_confirmation" class="border p-2">
             </div>
 
             <div class="m-3 p-3 flex flex-col">
-                <label for="slug">Role:</label>
-                <input type="text" name="slug" id="slug" class="border p-2">
+                <select name="role" id="role" class="p-2 border">
+                    <option value="">Select Role*</option>
+                    @foreach (enum_labels(\App\Enums\RoleEnum::class) as $value => $label)
+                        <option value="{{ $value }}"
+                            {{ ($value == $user->role->value) ? 'selected' : '' }}
+                        >{{ $label }}</option>
+                    @endforeach
+                </select>
             </div>
         </div>
 

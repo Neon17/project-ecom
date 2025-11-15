@@ -11,32 +11,48 @@
         Add User
     </div>
 
-    <form action="#" method="post" class="max-w-3xl">
+    <form action="{{route('admin.users.store')}}" method="POST" class="max-w-3xl">
         @csrf
 
         <div class="m-3 p-3 flex flex-col">
             <label for="name">Name:</label>
             <input type="text" name="name" id="name" class="border p-2">
+            @error('name')
+                <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
+            @enderror
         </div>
 
         <div class="m-3 p-3 flex flex-col">
-            <label for="slug">Email:</label>
-            <input type="text" name="slug" id="slug" class="border p-2">
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" class="border p-2">
+            @error('email')
+                <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
+            @enderror
         </div>
 
         <div class="m-3 p-3 flex flex-col">
-            <label for="slug">Password:</label>
-            <input type="text" name="slug" id="slug" class="border p-2">
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" class="border p-2">
+            @error('password')
+                <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
+            @enderror
         </div>
 
         <div class="m-3 p-3 flex flex-col">
-            <label for="slug">Confirm Password:</label>
-            <input type="text" name="slug" id="slug" class="border p-2">
+            <label for="password_confirmation">Confirm Password:</label>
+            <input type="password" name="password_confirmation" id="password_confirmation" class="border p-2">
         </div>
 
         <div class="m-3 p-3 flex flex-col">
-            <label for="slug">Role:</label>
-            <input type="text" name="slug" id="slug" class="border p-2">
+            <select name="role" id="role" class="p-2 border">
+                <option value="">Select Role</option>
+                @foreach(enum_labels(\App\Enums\RoleEnum::class) as $value=>$label)
+                    <option value="{{ $value }}">{{ $label }}</option>
+                @endforeach
+            </select>
+            @error('role')
+                <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
+            @enderror
         </div>
 
 

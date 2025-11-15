@@ -2,7 +2,7 @@
 
     <div class="company-wrapper flex items-center justify-around h-full px-5">
 
-        <a href="{{route('welcome')}}" class="text-xl mx-3">
+        <a href="{{ route('welcome') }}" class="text-xl mx-3">
             Ecommerce
         </a>
 
@@ -11,7 +11,7 @@
                 class="text-blue-600 p-2 hover:cursor-pointer hover:text-blue-500 rounded">Products</a>
         </div>
 
-        <div class="button-wrapper p-2">
+        <div class="button-wrapper p-2 flex items-center gap-3">
 
             @guest
 
@@ -22,6 +22,8 @@
                         class="bg-blue-600 text-white p-2 hover:cursor-pointer hover:bg-blue-500 rounded">Register</a>
                 </div>
             @else
+                <a href="{{ url('/admin/dashboard') }}"
+                    class="bg-blue-600 text-white p-2 hover:cursor-pointer hover:bg-blue-500 rounded">Dashboard</a>
                 <form action="{{ url('/logout') }}" method="POST">
                     @csrf
                     <button type="submit"
@@ -30,10 +32,6 @@
 
             @endguest
 
-            @if (auth()->user() && auth()->user()->role == 'admin')
-                <a href="{{ url('/admin/dashboard') }}"
-                    class="bg-blue-600 text-white p-2 hover:cursor-pointer hover:bg-blue-500 rounded">Dashboard</a>
-            @endif
         </div>
 
     </div>

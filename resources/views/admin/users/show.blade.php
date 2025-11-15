@@ -11,23 +11,23 @@
         User Details
     </div>
 
-    <form action="#" method="post" class="max-w-3xl">
+    <form action="#" method="get" class="max-w-3xl">
         @csrf
 
         <div class="m-3 p-3 flex flex-col">
             <label for="name">Name:</label>
-            <input type="text" name="name" id="name" value="Shyam Gautam" class="border p-2" readonly>
+            <input type="text" name="name" id="name" value="{{ $user->name }}" class="border p-2" readonly>
         </div>
 
         <div class="m-3 p-3 flex flex-col">
             <label for="slug">Email:</label>
-            <input type="text" name="slug" id="slug" value="shyam@gmail.com" class="border p-2" readonly>
+            <input type="text" name="slug" id="slug" value={{ $user->email }} class="border p-2" readonly>
         </div>
 
 
         <div class="m-3 p-3 flex flex-col">
             <label for="slug">Role:</label>
-            <input type="text" name="slug" id="slug" value="user" class="border p-2" readonly>
+            <input type="text" name="slug" id="slug" value={{ $user->role }} class="border p-2" readonly>
         </div>
     </form>
 
