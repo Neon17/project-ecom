@@ -39,6 +39,7 @@ Route::resource('/admin/users', UserController::class)->names('admin.users')->on
 Route::resource('/users', UserController::class)->names('users')->only(['show', 'edit', 'update', 'destroy']); // only user can do this
 
 Route::resource('users.addresses', AddressController::class)->names('users.addresses');
+Route::get('/admin/addresses/all', [AddressController::class, 'allIndex'])->name('admin.addresses.all');
 Route::get('/admin/addresses', [AddressController::class, 'getAllIndex'])->name('admin.addresses.index');
 
 

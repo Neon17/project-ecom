@@ -13,6 +13,14 @@ class AddressController extends Controller
     // concept is that if order is placed, then address should be checked
     // user can use previously saved his/her address
 
+
+    public function allIndex()
+    {
+        $addresses = Address::with('user')->get();
+        info($addresses);
+        return view('admin.addresses.index', compact('addresses'));
+    }
+
     public function index(User $user)
     {
         $addresses = $user->addresses()->get();
