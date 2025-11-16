@@ -53,14 +53,14 @@ class UserController extends Controller
 
     public function show(string $id)
     {
-        $user = User::findOrFail($id);
+        $user = User::with('addresses')->findOrFail($id);
 
         return view('admin.users.show', compact('user'));
     }
 
     public function edit(string $id)
     {
-        $user = User::findOrFail($id);
+        $user = User::with('addresses')->findOrFail($id);
 
         return view('admin.users.edit', compact('user'));
     }

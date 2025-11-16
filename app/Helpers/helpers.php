@@ -14,7 +14,6 @@ if (! function_exists('enum_values')) {
 if (! function_exists('enum_labels')) {
     function enum_labels(string $enumClass): array
     {
-        info($enumClass);
         if (! enum_exists($enumClass)) {
             info('enum not found');
 
