@@ -1,47 +1,66 @@
 <x-layouts.admin>
+    <div class="max-w-2xl mx-auto py-8">
 
-
-    <div class="px-3 mb-3 submit-wrapper">
-        <a type="submit" href="{{ route('admin.products.index') }}"
-            class="p-3 text-blue-500 hover:text-blue-700 transition-all duration-300 hover:cursor-pointer">Back to
-            Table</a>
-    </div>
-
-    <div class="heading-wrapper text-2xl p-3 ms-2">
-        Add Product
-    </div>
-
-    <form action="{{ route('admin.products.store') }}" method="post" class="max-w-3xl">
-        @csrf
-
-        <x-ui.input-form name="name" required />
-        <div class="m-3 p-3 flex flex-col">
-            <label for="description">Description:</label>
-            <textarea type="text" name="description" id="description" class="border p-2" required>
-                
-            </textarea>
+        <div class="mb-6">
+            <a href="{{ route('admin.products.index') }}" class="text-blue-600 hover:text-blue-800 text-sm flex items-center gap-1 mb-3">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                Back
+            </a>
+            <h1 class="text-2xl font-bold text-gray-900">Add New Product</h1>
         </div>
-        <x-ui.input-form name="price" label="Price Per Item (in paisa not rupees)" required />
-        <x-ui.input-form name="quantity" type="number" min="0" required />
 
-        @if ($categories->count() > 0)
-            <div class="m-3 p-3 flex flex-col">
-                <label for="categories-form-select">Categories:</label>
-                <select class="border p-2" name="categories[]" id="categories-form-select" multiple>
+        <form action="{{ route('admin.products.store') }}" method="post" class="bg-white rounded-lg shadow p-6">
+            @csrf
+            
+            <div class="mb-4">
+                <x-ui.input-form name="name" required />
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <textarea name="description" rows="4" 
+                          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                          placeholder="Describe your product..." required></textarea>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                    <x-ui.input-form name="price" type="number" label="Price (paisa)" required />
+                    <p class="text-xs text-gray-500 mt-1">100 paisa = Rs. 1</p>
+                </div>
+                <div>
+                    <x-ui.input-form name="quantity" type="number" min="0" required />
+                </div>
+            </div>
+
+            @if ($categories->count() > 0)
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Categories</label>
+                <select name="categories[]" multiple 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                     @foreach ($categories as $category)
-                        <option value="{{ $category->id }}" class="inline p-1 m-1 bg-amber-100">{{ $category->name }}</option>
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
                     @endforeach
                 </select>
-                <p class="text-sm">(Press Ctrl + Click to select multiple categories)</p>
+                <p class="text-xs text-gray-500 mt-1">Hold Ctrl to select multiple</p>
             </div>
-        @endif
+            @else
+            <div class="mb-6 p-3 bg-yellow-50 border border-yellow-200 rounded text-sm text-yellow-800">
+                No categories available. Create some first!
+            </div>
+            @endif
 
-        <div class="mx-3 px-3 submit-wrapper">
-            <button type="submit"
-                class="p-3 bg-blue-500 text-white hover:bg-blue-700 transition-all duration-300 hover:cursor-pointer">Submit</button>
-        </div>
-    </form>
-
-
-
+            <div class="flex justify-end gap-3">
+                <a href="{{ route('admin.products.index') }}" 
+                   class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                    Cancel
+                </a>
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                    Add Product
+                </button>
+            </div>
+        </form>
+    </div>
 </x-layouts.admin>

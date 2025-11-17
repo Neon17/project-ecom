@@ -1,54 +1,92 @@
 <x-layouts.admin>
-
-
-    <div class="px-3 mb-3 submit-wrapper">
-        <a type="submit" href="{{ route('admin.products.index') }}"
-            class="p-3 text-blue-500 hover:text-blue-700 transition-all duration-300 hover:cursor-pointer">Back to
-            Table</a>
-    </div>
-
-    <div class="heading-wrapper text-2xl p-3 ms-2">
-        View Product
-    </div>
-
-    <form action="{{ route('admin.products.update', $product->id) }}" method="post" class="max-w-3xl">
-        @csrf
-        @method('PUT')
-
-        <x-ui.input-form name="name" value="{{ $product->name }}" readonly />
-        <div class="m-3 p-3 flex flex-col">
-            <label for="description">Description:</label>
-            <textarea type="text" name="description" id="description" class="border p-2" required readonly>
-                {{ $product->description }}
-            </textarea>
+    <div class="max-w-2xl mx-auto py-8">
+        <!-- Header -->
+        <div class="mb-6">
+            <a href="{{ route('admin.products.index') }}"
+                class="text-blue-600 hover:text-blue-800 text-sm flex items-center gap-1 mb-3">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back
+            </a>
+            <h1 class="text-2xl font-bold text-gray-900">Product Details</h1>
         </div>
-        <x-ui.input-form name="price" label="Price Per Item (in paisa not rupees)" value="{{ $product->price }}"
-            readonly />
-        <x-ui.input-form name="quantity" type="number" min="0" value="{{ $product->quantity }}" readonly />
-        <x-ui.input-form name="slug" value="{{ $product->slug }}" readonly />
 
-        @if ($product->categories->count() > 0)
-            <div class="m-3 p-3 flex flex-col">
-                <label for="categories-form-select">Categories:</label>
-                <select class="border p-2" name="categories[]" id="categories-form-select" multiple readonly>
-                    @foreach ($product->categories as $category)
-                        <option value="{{ $category->id }}" class="inline p-1 m-1 bg-amber-100">{{ $category->name }}
-                        </option>
-                    @endforeach
-                </select>
-                <p class="text-sm">(Press Ctrl + Click to select multiple categories)</p>
-                @error('categories')
-                    <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
-                @enderror
+        <!-- Product Info Card -->
+        <div class="bg-white rounded-lg shadow p-6">
+
+            <!-- Name -->
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                <div class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-800">
+                    {{ $product->name }}
+                </div>
             </div>
-        @endif
 
-        <div class="mx-3 px-3 submit-wrapper">
-            <a href="{{ route('admin.products.edit', $product->id) }}"
-                class="p-3 bg-yellow-500 text-white hover:bg-yellow-700 transition-all duration-300 hover:cursor-pointer">Edit</a>
+            <!-- Description -->
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <div class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-800 min-h-24">
+                    {{ $product->description }}
+                </div>
+            </div>
+
+            <!-- Price & Quantity -->
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Price</label>
+                    <div class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-800">
+                        {{ $product->price }} paisa
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">Rs. {{ number_format($product->price / 100, 2) }}</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
+                    <div class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-800">
+                        {{ $product->quantity }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slug -->
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Slug</label>
+                <div class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-800 font-mono text-sm">
+                    {{ $product->slug }}
+                </div>
+            </div>
+
+            <!-- Categories -->
+            @if ($product->categories->count() > 0)
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Categories</label>
+                    <div class="flex flex-wrap gap-2">
+                        @foreach ($product->categories as $category)
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+                                {{ $category->name }}
+                            </span>
+                        @endforeach
+                    </div>
+                </div>
+            @else
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Categories</label>
+                    <p class="text-sm text-gray-500">No categories assigned</p>
+                </div>
+            @endif
+
+            <!-- Actions -->
+            <div class="flex justify-end gap-3 pt-4 border-t border-gray-200">
+                <a href="{{ route('admin.products.index') }}"
+                    class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                    Close
+                </a>
+                <a href="{{ route('admin.products.edit', $product->id) }}"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                    Edit Product
+                </a>
+            </div>
         </div>
-    </form>
-
-
-
+    </div>
 </x-layouts.admin>

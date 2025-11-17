@@ -1,29 +1,52 @@
 @if (session('success') || session('error'))
-    <div id="top-flash-message" class="success-error-topup text-center fixed top-0 right-0 w-1/3 p-3 bg-green-100">
-        <div class="{{ session('success') ? 'text-green-600' : 'text-red-600' }} text-lg">
-            <p class="border-b inline mx-auto px-3">
-                {{ session('success') ? 'Success' : 'Error' }}
-            </p>
+    <div id="flash-message"
+        class="fixed top-4 z-75 right-4 w-96 bg-white rounded-lg shadow-lg p-4 border-l-4 {{ session('success') ? 'border-green-500' : 'border-red-500' }}">
+
+        <div class="flex items-start gap-3">
+            <!-- Icon -->
+            <div class="flex-shrink-0">
+                @if (session('success'))
+                    <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                @else
+                    <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                @endif
+            </div>
+
+            <div class="flex-1">
+                <h3 class="font-semibold text-gray-900 {{ session('success') ? 'text-green-900' : 'text-red-900' }}">
+                    {{ session('success') ? 'Success' : 'Error' }}
+                </h3>
+                <p class="text-sm text-gray-600 mt-1">
+                    {{ session('success') ?? session('error') }}
+                </p>
+            </div>
+
+            <button onclick="closeFlashMessage()" class="flex-shrink-0 text-gray-400 hover:text-gray-600">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
         </div>
-        <p class="description my-3">
-            {{ session('success') ? session('success') : session('error') }}
-        </p>
     </div>
 
-    @php
-        $script = "
-            <script>
-                setTimeout(() => {
-                    const flashMessage = document.getElementById('top-flash-message');
-                    if (flashMessage) {
-                        flashMessage.style.transition = 'all 0.5s ease';
-                        flashMessage.style.opacity = '0';
-                        flashMessage.style.transform = 'translateY(-100%)';
-                        setTimeout(() => flashMessage.remove(), 500);
-                    }
-                }, 5000);
-            </script>
-        ";
+    <script>
+        function closeFlashMessage() {
+            const flash = document.getElementById('flash-message');
+            if (flash) {
+                flash.style.opacity = '0';
+                flash.style.transform = 'translateX(100%)';
+                setTimeout(() => flash.remove(), 300);
+            }
+        }
 
-    @endphp
+        setTimeout(() => {
+            closeFlashMessage();
+        }, 5000);
+    </script>
 @endif
