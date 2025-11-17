@@ -9,7 +9,7 @@
             </button>
         </div>
 
-        @if ($carts->count() > 0)
+        @if (isset($carts) && $carts->count() > 0)
             <table class="table-fixed border-separate p-3 w-3/4 my-10">
                 <thead class="bg-gray-200">
                     <tr>

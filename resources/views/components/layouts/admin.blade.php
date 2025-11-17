@@ -12,6 +12,7 @@
 
     <div class="flex h-full w-full">
         <x-ui.success-error-topup />
+        <x-ui.cart-modal />
 
         <x-includes.admin.sidebar />
 
