@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController as ControllersProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -46,6 +47,11 @@ Route::get('/admin/addresses', [AddressController::class, 'getAllIndex'])->name(
 
 Route::get('/carts/all', [CartController::class, 'allIndex'])->name('carts.index');
 Route::resource('users.carts', CartController::class)
+    ->only(['index', 'store', 'update', 'destroy', 'edit', 'show'])
+    ->middleware('auth');
+
+Route::get('/orders/all', [OrderController::class, 'allIndex'])->name('orders.index');
+Route::resource('users.orders', OrderController::class)
     ->only(['index', 'store', 'update', 'destroy', 'edit', 'show'])
     ->middleware('auth');
 

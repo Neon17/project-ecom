@@ -1,24 +1,38 @@
 @extends('components.layouts.guest')
 
-
 @section('content')
-    <div class="title-home py-10">
-        <h2 class="text-2xl p-3 text-center">
-            Products
-        </h2>
-    </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-    <div class="p-3 flex gap-3 flex-wrap items-center justify-center">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">Our Products</h1>
+            <p class="mt-2 text-gray-600">Discover our amazing collection</p>
+        </div>
 
-        @foreach ($products as $product)
-            <a href="{{ route('products.show', $product->id) }}" class="bg-gray-100 w-60 h-80 rounded shadow-lg flex flex-col items-center hover:cursor-pointer hover:bg-gray-200">
-                <img src="{{ asset('storage/' . $product->image) }}" class="w-full h-3/4 fill p-3" alt="">
-                <div class="p-3">
-                    <h2 class="text-lg text-center">{{ $product->name }}</h2>
-                    <h2 class="text-lg text-center">{{ $product->price/100 }} NPR</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            @foreach ($products as $product)
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                    <a href="{{ route('products.show', $product->id) }}" class="block">
+                        <div class="aspect-w-3 aspect-h-4">
+                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
+                                class="w-full h-48 object-cover">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
+                                {{ $product->name }}
+                            </h3>
+                            <p class="text-xl font-bold text-green-600">
+                                Rs. {{ number_format($product->price / 100, 2) }}
+                            </p>
+                        </div>
+                    </a>
                 </div>
-            </a>
-        @endforeach
+            @endforeach
+        </div>
 
+        @if ($products->count() === 0)
+            <div class="text-center py-12">
+                <p class="text-gray-500 text-lg">No products available at the moment.</p>
+            </div>
+        @endif
     </div>
 @endsection
