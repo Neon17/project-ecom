@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Enum\OrderStatusEnum;
+use App\Enums\OrderStatusEnum;
 use App\Models\Address;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
