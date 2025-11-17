@@ -28,9 +28,9 @@
             <tbody class="bg-white divide-y divide-gray-300">
                 @foreach ($products as $product)
                     <tr class="table-row hover:bg-gray-50 transition-colors">
-                        <td class="text-center p-2 px-5">1</td>
+                        <td class="text-center p-2 px-5">{{ $loop->iteration }}</td>
                         <td class="text-center p-2 px-5">{{ $product->name }}</td>
-                        <td class="text-center p-2 px-5">{{ $product->price }}</td>
+                        <td class="text-center p-2 px-5">{{ $product->price/100 }}</td>
                         <td class="text-center p-2 px-5">{{ $product->quantity }}</td>
                         <td class="text-center p-2 px-5">{{ substr($product->description, 0, 20) }}</td>
                         <td class="text-center p-2 px-5 flex justify-center">

@@ -60,11 +60,17 @@ Route::get('/orders/all', [OrderController::class, 'allIndex'])->name('orders.in
 Route::resource('users.orders', OrderController::class)
     ->only(['index', 'store', 'update', 'destroy', 'edit', 'show'])
     ->middleware('auth');
+Route::get('/admin/orders/create', [OrderController::class, 'create'])->name('admin.orders.create');
+Route::post('/admin/orders', [OrderController::class, 'adminStore'])->name('admin.orders.store');
+Route::get('/admin/orders', [OrderController::class, 'index'])->name('admin.orders.index');
 
 
-Route::get('/admin/orders', function () {
-    return view('admin.orders.index');
-})->name('admin.orders.index');
+// Route::get('/orders/{order}/checkout', [OrderController::class, 'checkout'])->name('orders.checkout')->middleware('auth');
+
+// Route::get('/payments/all', [OrderController::class, 'allIndex'])->name('payments.index');
+// Route::resource('users.payments', OrderController::class)
+//     ->only(['index', 'store', 'update', 'destroy', 'edit', 'show'])
+//     ->middleware('auth');
 
 Route::get('/admin/payments', function () {
     return view('admin.payments.index');
@@ -73,10 +79,6 @@ Route::get('/admin/payments', function () {
 Route::get('/admin/dashboard', function () {
     return view('admin.dashboard.index');
 })->name('admin.dashboard.index');
-
-Route::get('/admin/orders/create', function () {
-    return view('admin.orders.create');
-})->name('admin.orders.create');
 
 Route::get('/admin/payments/create', function () {
     return view('admin.payments.create');
