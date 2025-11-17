@@ -12,6 +12,7 @@
 
     <div class="flex h-full w-full">
         <x-ui.success-error-topup />
+        <x-ui.user-cart-modal />
 
         <div class="slot w-full h-full p-3">
             @yield('content')

@@ -4,6 +4,7 @@ use App\Http\Controllers\AddressController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController as ControllersProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +42,12 @@ Route::resource('/users', UserController::class)->names('users')->only(['show', 
 Route::resource('users.addresses', AddressController::class)->names('users.addresses');
 Route::get('/admin/addresses/all', [AddressController::class, 'allIndex'])->name('admin.addresses.all');
 Route::get('/admin/addresses', [AddressController::class, 'getAllIndex'])->name('admin.addresses.index');
+
+
+Route::get('/carts/all', [CartController::class, 'allIndex'])->name('carts.index');
+Route::resource('users.carts', CartController::class)
+    ->only(['index', 'store', 'update', 'destroy', 'edit', 'show'])
+    ->middleware('auth');
 
 
 Route::get('/admin/orders', function () {

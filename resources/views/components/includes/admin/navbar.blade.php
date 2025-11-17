@@ -24,6 +24,8 @@
             @else
                 <a href="{{ url('/admin/dashboard') }}"
                     class="bg-blue-600 text-white p-2 hover:cursor-pointer hover:bg-blue-500 rounded">Dashboard</a>
+                <button id="open-user-cart-modal"
+                    class="bg-blue-600 text-white p-2 hover:cursor-pointer hover:bg-blue-500 rounded">Cart</button>
                 <form action="{{ url('/logout') }}" method="POST">
                     @csrf
                     <button type="submit"
