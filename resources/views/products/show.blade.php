@@ -37,6 +37,7 @@
 
 
             <div class="button-wrapper flex py-10">
+                <form action="{{route('users.carts.store', ['user'=>Auth::user()->id??null, 'cart'=>$cart->id])}}" method="post"></form>
                 <button
                     class="p-2 bg-yellow-600 text-white mx-2 rounded hover:bg-yellow-700 transition-all duration-300">
                     Add to Cart

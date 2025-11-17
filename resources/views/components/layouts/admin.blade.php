@@ -16,7 +16,7 @@
 
         <x-includes.admin.sidebar />
 
-        <div class="slot w-full h-full p-3 ms-12">
+        <div class="slot w-full h-full ml-64 flex-1 p-6">
             {{$slot}}
         </div>
 

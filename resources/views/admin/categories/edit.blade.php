@@ -11,7 +11,7 @@
     </div>
 
     @if ($category)
-    <form action="#" method="post" class="max-w-3xl">
+    <form action="{{route('admin.categories.update', $category->id)}}" method="post" class="max-w-3xl">
         @csrf
         @method('PUT')
 
