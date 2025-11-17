@@ -34,10 +34,10 @@
                         <td class="text-center p-2 px-5">{{ $user->address }}</td>
                         <td class="text-center p-2 px-5">{{ $user->orders->count() }}</td>
                         <td class="text-center p-2 px-5 flex">
-                            <a href="{{ route('users.edit', $user->id) }}"
-                                class="p-2 bg-yellow-500 text-white mx-1 rounded hover:bg-yellow-700 transition-all duration-300">Edit</a>
                             <a href="{{ route('users.show', $user->id) }}"
                                 class="p-2 bg-green-500 text-white mx-1 rounded hover:bg-green-700 transition-all duration-300">View</a>
+                            <a href="{{ route('users.edit', $user->id) }}"
+                                class="p-2 bg-yellow-500 text-white mx-1 rounded hover:bg-yellow-700 transition-all duration-300">Edit</a>
                             <button
                                 class="open-delete-modal p-2 bg-red-500 text-white mx-1 rounded hover:bg-red-700 duration-300 transaction-all">Delete</button>
                             <x-ui.delete-modal action="{{ route('users.destroy', $user->id) }}" />

@@ -17,6 +17,7 @@ class CartController extends Controller
 
     public function index(User $user)
     {
+        $user = User::with('cart')->findOrFail($user->id);
         $carts = $user->cart()->with(['cartItems', 'user'])->get();
         return view('users.carts.index', compact('carts'));
     }
@@ -37,7 +38,9 @@ class CartController extends Controller
             ]);
         }
         $cart = $user->cart();
+        $cart = $cart->with(['cartItems', 'user'])->first();
         $cartItem = $cart->cartItems()->where('product_id', $validated['product_id'])->first();
+        info($cartItem);
 
         if ($cartItem) {
             $cartItem->update([
@@ -51,7 +54,7 @@ class CartController extends Controller
             ]);
         }
 
-        return redirect()->route('users.carts.index', $user);
+        return redirect()->back()->with('success', 'Product added to cart successfully');
     }
 
     public function show(User $user, Cart $cart)
@@ -85,7 +88,7 @@ class CartController extends Controller
                 'user_id' => $user->id
             ]);
         }
-        return redirect()->route('users.carts.index', $user);
+        return redirect()->back()->with('success', 'Product quantity updated successfully');
     }
 
     public function destroy(User $user, Cart $cart)
