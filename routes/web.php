@@ -8,6 +8,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController as ControllersProductController;
 use App\Http\Controllers\UserController;
+use App\Models\Cart;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -49,6 +50,11 @@ Route::get('/carts/all', [CartController::class, 'allIndex'])->name('carts.index
 Route::resource('users.carts', CartController::class)
     ->only(['index', 'store', 'update', 'destroy', 'edit', 'show'])
     ->middleware('auth');
+    
+Route::middleware('auth')->group(function () {
+    Route::delete('/cart-items/{cartItem}', [CartController::class, 'destroyItem'])
+        ->name('cart-items.destroy');
+});
 
 Route::get('/orders/all', [OrderController::class, 'allIndex'])->name('orders.index');
 Route::resource('users.orders', OrderController::class)

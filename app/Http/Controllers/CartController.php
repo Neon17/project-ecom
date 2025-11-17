@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -99,6 +100,12 @@ class CartController extends Controller
 
         $cart->delete();
 
-        return redirect()->route('users.carts.index', $user);
+        return redirect()->back()->with('success', 'Cart deleted successfully');
+    }
+
+    public function destroyItem(CartItem $cartItem)
+    {
+        $cartItem->delete();
+        return redirect()->back()->with('success', 'Cart item deleted successfully');
     }
 }
