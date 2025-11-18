@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController as ControllersProductController;
@@ -71,9 +72,7 @@ Route::get('/admin/orders', [OrderController::class, 'index'])->name('admin.orde
 // Route::get('/payments/all', [OrderController::class, 'allIndex'])->name('payments.index');
 Route::resource('payments', PaymentController::class)->names('admin.payments');
 
-Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard.index');
-})->name('admin.dashboard.index');
+Route::get('/admin/dashboard', [DashboardController::class, 'adminDashboard'])->name('admin.dashboard.index');
 
 Route::get('/admin/payments/edit', function () {
     return view('admin.payments.edit');

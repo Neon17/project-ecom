@@ -1,134 +1,163 @@
 <x-layouts.admin>
     <div class="py-8">
-        <!-- Header -->
-        <div class="mb-6">
-            <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
+        
+        <!-- Simple Header -->
+        <div class="mb-8">
+            <h1 class="text-2xl font-bold text-gray-800">Dashboard Overview</h1>
         </div>
 
-        <!-- Stats Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        @if(session('error'))
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        <!-- Stats Section -->
+        <div class="mb-8">
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">Quick Stats</h2>
             
-            <!-- General Stats -->
-            <div class="bg-white rounded-lg shadow p-6">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">General Stats</h3>
-                <div class="space-y-3">
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Total Orders</span>
-                        <span class="font-semibold text-gray-900">5</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Orders Cancelled</span>
-                        <span class="font-semibold text-red-600">5</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Total Products</span>
-                        <span class="font-semibold text-gray-900">15</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Total Users</span>
-                        <span class="font-semibold text-gray-900">2</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Total Categories</span>
-                        <span class="font-semibold text-gray-900">5</span>
-                    </div>
+            <div class="flex flex-wrap gap-4">
+                <!-- Total Orders -->
+                <div class="bg-white p-4 border border-gray-200 rounded shadow-sm flex-1 min-w-40">
+                    <div class="text-gray-600 text-sm">Total Orders</div>
+                    <div class="text-2xl font-bold text-gray-800">{{ $generalStats['total_orders'] }}</div>
+                </div>
+
+                <!-- Total Products -->
+                <div class="bg-white p-4 border border-gray-200 rounded shadow-sm flex-1 min-w-40">
+                    <div class="text-gray-600 text-sm">Total Products</div>
+                    <div class="text-2xl font-bold text-gray-800">{{ $generalStats['total_products'] }}</div>
+                </div>
+
+                <!-- Total Users -->
+                <div class="bg-white p-4 border border-gray-200 rounded shadow-sm flex-1 min-w-40">
+                    <div class="text-gray-600 text-sm">Total Users</div>
+                    <div class="text-2xl font-bold text-gray-800">{{ $generalStats['total_users'] }}</div>
+                </div>
+
+                <!-- Total Categories -->
+                <div class="bg-white p-4 border border-gray-200 rounded shadow-sm flex-1 min-w-40">
+                    <div class="text-gray-600 text-sm">Total Categories</div>
+                    <div class="text-2xl font-bold text-gray-800">{{ $generalStats['total_categories'] }}</div>
                 </div>
             </div>
+        </div>
 
-            <!-- Order Stats -->
-            <div class="bg-white rounded-lg shadow p-6">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">Order Stats</h3>
-                <div class="space-y-3">
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Completed</span>
-                        <span class="font-semibold text-green-600">5</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Pending</span>
-                        <span class="font-semibold text-yellow-600">5</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Processing</span>
-                        <span class="font-semibold text-blue-600">5</span>
-                    </div>
+        <!-- Order Status Section -->
+        <div class="mb-8">
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">Order Status</h2>
+            
+            <div class="flex flex-wrap gap-4">
+                <div class="bg-white p-4 border border-gray-200 rounded shadow-sm">
+                    <div class="text-green-600 text-sm">Completed</div>
+                    <div class="text-xl font-bold">{{ $orderStats['completed'] }}</div>
+                </div>
+
+                <div class="bg-white p-4 border border-gray-200 rounded shadow-sm">
+                    <div class="text-yellow-600 text-sm">Pending</div>
+                    <div class="text-xl font-bold">{{ $orderStats['pending'] }}</div>
+                </div>
+
+                <div class="bg-white p-4 border border-gray-200 rounded shadow-sm">
+                    <div class="text-blue-600 text-sm">Processing</div>
+                    <div class="text-xl font-bold">{{ $orderStats['processing'] }}</div>
+                </div>
+
+                <div class="bg-white p-4 border border-gray-200 rounded shadow-sm">
+                    <div class="text-red-600 text-sm">Cancelled</div>
+                    <div class="text-xl font-bold">{{ $orderStats['cancelled'] }}</div>
                 </div>
             </div>
+        </div>
 
-            <!-- Payment Stats -->
-            <div class="bg-white rounded-lg shadow p-6">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">Payment Stats</h3>
-                <div class="space-y-3">
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Completed</span>
-                        <span class="font-semibold text-green-600">5</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Pending</span>
-                        <span class="font-semibold text-yellow-600">5</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Failed</span>
-                        <span class="font-semibold text-red-600">5</span>
-                    </div>
+        <!-- Payment Status Section -->
+        <div class="mb-8">
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">Payment Status</h2>
+            
+            <div class="flex flex-wrap gap-4">
+                <div class="bg-white p-4 border border-gray-200 rounded shadow-sm">
+                    <div class="text-green-600 text-sm">Completed</div>
+                    <div class="text-xl font-bold">{{ $paymentStats['completed'] }}</div>
+                </div>
+
+                <div class="bg-white p-4 border border-gray-200 rounded shadow-sm">
+                    <div class="text-yellow-600 text-sm">Pending</div>
+                    <div class="text-xl font-bold">{{ $paymentStats['pending'] }}</div>
+                </div>
+
+                <div class="bg-white p-4 border border-gray-200 rounded shadow-sm">
+                    <div class="text-red-600 text-sm">Failed</div>
+                    <div class="text-xl font-bold">{{ $paymentStats['failed'] }}</div>
                 </div>
             </div>
-
         </div>
 
         <!-- Recent Orders -->
-        <div class="bg-white rounded-lg shadow mb-6">
-            <div class="p-6 border-b border-gray-200">
-                <h2 class="text-xl font-semibold text-gray-800">Recent Orders</h2>
+        <div class="bg-white border border-gray-200 rounded shadow-sm mb-6">
+            <div class="p-4 border-b border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800">Recent Orders</h2>
             </div>
-            <div class="overflow-x-auto">
-                <table class="w-full">
-                    <thead class="bg-gray-50 border-b border-gray-200">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">SN</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">User Name</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Address</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Payment</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Status</th>
-                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200">
-                        <tr>
-                            <td colspan="6" class="px-6 py-12 text-center text-gray-500">
-                                No recent orders
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            
+            @if($recentOrders->count() > 0)
+                <div class="p-4">
+                    @foreach($recentOrders as $order)
+                    <div class="border-b border-gray-100 py-3 last:border-b-0">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <div class="font-medium text-gray-800">
+                                    Order #{{ $order->id }}
+                                </div>
+                                <div class="text-sm text-gray-600">
+                                    {{ $order->user->name ?? 'N/A' }}
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm text-gray-600">{{ $order->status }}</div>
+                                <div class="text-xs text-gray-500">{{ $order->created_at->format('M d, Y') }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="p-8 text-center text-gray-500">
+                    No recent orders found
+                </div>
+            @endif
         </div>
 
         <!-- Recent Payments -->
-        <div class="bg-white rounded-lg shadow">
-            <div class="p-6 border-b border-gray-200">
-                <h2 class="text-xl font-semibold text-gray-800">Recent Payments</h2>
+        <div class="bg-white border border-gray-200 rounded shadow-sm">
+            <div class="p-4 border-b border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800">Recent Payments</h2>
             </div>
-            <div class="overflow-x-auto">
-                <table class="w-full">
-                    <thead class="bg-gray-50 border-b border-gray-200">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">SN</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">User Name</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Method</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Transaction</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Status</th>
-                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200">
-                        <tr>
-                            <td colspan="6" class="px-6 py-12 text-center text-gray-500">
-                                No recent payments
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            
+            @if($recentPayments->count() > 0)
+                <div class="p-4">
+                    @foreach($recentPayments as $payment)
+                    <div class="border-b border-gray-100 py-3 last:border-b-0">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <div class="font-medium text-gray-800">
+                                    Payment #{{ $payment->id }}
+                                </div>
+                                <div class="text-sm text-gray-600">
+                                    {{ $payment->user->name ?? 'N/A' }} - {{ $payment->method ?? 'N/A' }}
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm text-gray-600">{{ $payment->status }}</div>
+                                <div class="text-xs text-gray-500">{{ $payment->created_at->format('M d, Y') }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="p-8 text-center text-gray-500">
+                    No recent payments found
+                </div>
+            @endif
         </div>
 
     </div>
