@@ -51,7 +51,7 @@ class CategoryController extends Controller
 
         Category::create($validated);
 
-        return redirect()->route('admin.categories.index')->with('success', 'Category created successfully.');
+        return redirect()->back()->with('success', 'Category created successfully.');
     }
 
     public function show(Category $category)
@@ -71,13 +71,17 @@ class CategoryController extends Controller
         ]);
         $validated = $request->validate([
             'name' => 'required|unique:categories,name,'.$category->id,
+            'slug' => 'required|unique:categories,slug,'.$category->id,
         ]);
 
-        $validated['slug'] = Str::slug($validated['name']);
+        if (!$request->slug) 
+        {
+            $validated['slug'] = Str::slug($validated['name']);
+        }
 
         $category->update($validated);
 
-        return redirect()->route('admin.categories.index')->with('success', 'Category updated successfully.');
+        return redirect()->back()->with('success', 'Category updated successfully.');
     }
 
     public function destroy(Category $category)

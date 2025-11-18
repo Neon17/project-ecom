@@ -58,8 +58,8 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/orders/all', [OrderController::class, 'allIndex'])->name('orders.index');
 Route::resource('users.orders', OrderController::class)
-    ->only(['index', 'store', 'update', 'destroy', 'edit', 'show'])
-    ->middleware('auth');
+    ->only(['index', 'store', 'update', 'destroy', 'edit', 'show']);
+    // ->middleware('auth');
 Route::get('/admin/orders/create', [OrderController::class, 'create'])->name('admin.orders.create');
 Route::post('/admin/orders', [OrderController::class, 'adminStore'])->name('admin.orders.store');
 Route::get('/admin/orders', [OrderController::class, 'index'])->name('admin.orders.index');

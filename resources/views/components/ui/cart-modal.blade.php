@@ -14,7 +14,7 @@
             <!-- Cart Content -->
             <div class="p-6 max-h-[60vh] overflow-y-auto">
                 @php
-                    $cart = auth()->user()->cart;
+                    $cart = auth()->user()?->cart;
                     $cartItems = $cart ? $cart->cartItems : collect();
                     $grandTotal = 0;
                 @endphp

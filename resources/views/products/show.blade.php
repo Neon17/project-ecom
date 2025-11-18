@@ -62,17 +62,27 @@
                     </div>
 
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <form action="{{ route('users.carts.store', ['user' => Auth::user()->id ?? null]) }}"
-                            method="POST" class="flex-1">
-                            @csrf
-                            <input type="hidden" name="product_id" value="{{ $product->id }}">
-                            <input type="hidden" name="quantity" id="quantity-hidden" value="1">
-                            <button type="submit"
-                                class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-3 px-6 rounded-lg transition duration-300 flex items-center justify-center">
-                                <i class="fas fa-shopping-cart mr-2"></i>
-                                Add to Cart
-                            </button>
-                        </form>
+                        @if (auth()->check())
+                            <form action="{{ route('users.carts.store', ['user' => Auth::user()->id ?? null]) }}"
+                                method="POST" class="flex-1">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                <input type="hidden" name="quantity" id="quantity-hidden" value="1">
+                                <button type="submit"
+                                    class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-3 px-6 rounded-lg transition duration-300 flex items-center justify-center">
+                                    <i class="fas fa-shopping-cart mr-2"></i>
+                                    Add to Cart
+                                </button>
+                            </form>
+                        @else
+                            <div class="flex-1">
+                                <a href="{{ route('login') }}"
+                                    class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-3 px-6 rounded-lg transition duration-300 flex items-center justify-center">
+                                    <i class="fas fa-shopping-cart mr-2"></i>
+                                    Add to Cart
+                                </a>
+                            </div>
+                        @endif
 
                         <button
                             class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition duration-300 flex items-center justify-center">

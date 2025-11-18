@@ -7,14 +7,21 @@
             Table</a>
     </div>
 
-    <div class="heading-wrapper text-2xl p-3 ms-2">
-        Edit User
-    </div>
 
     <form id="user-form" action="{{ route('users.update', $user->id) }}" method="POST"
         class="bg-white rounded-lg shadow-sm p-6 mb-8">
         @csrf
         @method('PUT')
+        <div class="flex justify-between w-full">
+            <div class="heading-wrapper text-2xl p-3 ms-2">
+                Edit User
+            </div>
+
+            <button type="submit"
+                class="px-3 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
+                Update User
+            </button>
+        </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
@@ -61,7 +68,7 @@
                     class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
                     <option value="">Select a role</option>
                     @foreach (enum_labels(\App\Enums\RoleEnum::class) as $value => $label)
-                        <option value="{{ $value }}" {{ old('role', $user->role) == $value ? 'selected' : '' }}>
+                        <option value="{{ $value }}" {{ old('role', $user->role->value) == $value ? 'selected' : '' }}>
                             {{ $label }}
                         </option>
                     @endforeach

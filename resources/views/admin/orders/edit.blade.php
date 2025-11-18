@@ -1,90 +1,138 @@
 <x-layouts.admin>
-    <!-- Back Button -->
-    <div class="mb-4">
-        <a href="{{ route('admin.orders.index') }}" 
-           class="inline-block px-4 py-2 text-blue-600 hover:text-blue-800 transition duration-300">
-            ← Back to Orders
-        </a>
+    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-900">Edit Order #{{ $order->id }}</h1>
+            <a href="{{ route('users.orders.show', [$order->user_id, $order->id]) }}"
+                class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                ← Back to Order
+            </a>
+        </div>
+
+        <form action="{{ route('users.orders.update', ['user' => $order->user_id, 'order' => $order->id]) }}" method="POST" class="space-y-6">
+            @csrf
+            @method('PUT')
+
+            <!-- Order Status -->
+            <div class="bg-white rounded-lg shadow border border-gray-200 p-6">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Order Status</h2>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    @foreach (['pending', 'processed', 'completed', 'cancelled'] as $status)
+                        <label class="flex items-center">
+                            <input type="radio" name="status" value="{{ $status }}"
+                                {{ $order->status == $status ? 'checked' : '' }}
+                                class="mr-2 text-blue-600 focus:ring-blue-500">
+                            <span class="text-gray-700 capitalize">{{ $status }}</span>
+                        </label>
+                    @endforeach
+                </div>
+                @error('status')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Order Items -->
+            <div class="bg-white rounded-lg shadow border border-gray-200 p-6">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Order Items</h2>
+
+                <div class="space-y-4">
+                    @foreach ($order->orderItems as $index => $item)
+                        <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Product</label>
+                                    <p class="p-2 bg-white border border-gray-300 rounded text-gray-900">
+                                        {{ $item->product->name }}
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Quantity</label>
+                                    <input type="number" name="items[{{ $index }}][quantity]"
+                                        value="{{ $item->quantity }}" min="1"
+                                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Price per Item (Paisa Not Rs.)</label>
+                                    <input type="number" name="items[{{ $index }}][amount_per_item]"
+                                        value="{{$item->amount_per_item}}" step="0.01"
+                                        min="0"
+                                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </div>
+
+                                <input type="hidden" name="items[{{ $index }}][id]" value="{{ $item->id }}">
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow border border-gray-200 p-6">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Shipping Address</h2>
+
+                <div class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Country</label>
+                            <input type="text" name="address[country]" value="{{ $order->address->country }}"
+                                class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            @error('address.country')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">State</label>
+                            <input type="text" name="address[state]" value="{{ $order->address->state }}"
+                                class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            @error('address.state')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">City</label>
+                        <input type="text" name="address[city]" value="{{ $order->address->city }}"
+                            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        @error('address.city')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Street Address 1</label>
+                        <input type="text" name="address[street_address_1]"
+                            value="{{ $order->address->street_address_1 }}"
+                            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        @error('address.street_address_1')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Street Address 2 (Optional)</label>
+                        <input type="text" name="address[street_address_2]"
+                            value="{{ $order->address->street_address_2 }}"
+                            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        @error('address.street_address_2')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-4">
+                <a href="{{ route('users.orders.show', [$order->user_id, $order->id]) }}"
+                    class="bg-gray-500 text-white px-6 py-3 rounded hover:bg-gray-600">
+                    Cancel
+                </a>
+                <button type="submit" class="bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-600">
+                    Update Order
+                </button>
+            </div>
+        </form>
     </div>
-
-    <!-- Page Heading -->
-    <div class="mb-6">
-        <h1 class="text-2xl font-bold text-gray-900">Edit Order</h1>
-    </div>
-
-    <!-- Main Form -->
-    <form action="#" method="post" class="max-w-2xl">
-        @csrf
-
-        <!-- Order Details -->
-        <div class="bg-white rounded-lg shadow-sm border p-6 mb-6">
-            <h2 class="text-lg font-semibold mb-4">Order Information</h2>
-            
-            <!-- User Field -->
-            <div class="mb-4">
-                <label for="user" class="block text-sm font-medium text-gray-700 mb-1">User</label>
-                <input type="text" name="user" id="user" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-            </div>
-
-            <!-- Address Field -->
-            <div class="mb-4">
-                <label for="address" class="block text-sm font-medium text-gray-700 mb-1">Address</label>
-                <textarea name="address" id="address" rows="3" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-            </div>
-
-            <!-- Status Field -->
-            <div class="mb-4">
-                <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                <select name="status" id="status" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Select Status</option>
-                    <option value="pending">Pending</option>
-                    <option value="processed">Processed</option>
-                    <option value="completed">Completed</option>
-                    <option value="cancelled">Cancelled</option>
-                </select>
-            </div>
-        </div>
-
-        <!-- Order Items -->
-        <div class="bg-white rounded-lg shadow-sm border p-6 mb-6">
-            <h2 class="text-lg font-semibold mb-4">Order Items</h2>
-            
-            <!-- Product Selection -->
-            <div class="mb-4">
-                <label for="product_id" class="block text-sm font-medium text-gray-700 mb-1">Product</label>
-                <select name="product_id" id="product_id" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Select Product</option>
-                    <option value="1">Laptop</option>
-                    <option value="2">Mobile</option>
-                </select>
-            </div>
-
-            <!-- Quantity -->
-            <div class="mb-4">
-                <label for="quantity" class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
-                <input type="number" name="quantity" id="quantity" min="1" max="100" 
-                       class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-            </div>
-
-            <!-- Price -->
-            <div class="mb-4">
-                <label for="price" class="block text-sm font-medium text-gray-700 mb-1">Price per Item (in paisa)</label>
-                <input type="number" name="price" id="price" min="100" value="100" 
-                       class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-            </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="flex items-center gap-3">
-            <!-- Add Item Button -->
-            <button type="button" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition duration-300">
-                + Add Item
-            </button>
-            
-            <!-- Update Button -->
-            <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300">
-                Update Order
-            </button>
-        </div>
-    </form>
 </x-layouts.admin>

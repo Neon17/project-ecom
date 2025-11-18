@@ -110,7 +110,7 @@
 
                     <div>
                         <label for="address_street_address_2"
-                            class="block text-sm font-medium text-gray-700 mb-2">Street Address 2 (Optional)</label>
+                            class="block text-sm font-medium text-gray-700 mb-2">Street Address 2(Optional)</label>
                         <input type="text" name="address[street_address_2]" id="address_street_address_2"
                             class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
                             placeholder="Enter additional address information">
