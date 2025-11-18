@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController as ControllersProductController;
 use App\Http\Controllers\UserController;
 use App\Models\Cart;
@@ -68,34 +69,13 @@ Route::get('/admin/orders', [OrderController::class, 'index'])->name('admin.orde
 // Route::get('/orders/{order}/checkout', [OrderController::class, 'checkout'])->name('orders.checkout')->middleware('auth');
 
 // Route::get('/payments/all', [OrderController::class, 'allIndex'])->name('payments.index');
-// Route::resource('users.payments', OrderController::class)
-//     ->only(['index', 'store', 'update', 'destroy', 'edit', 'show'])
-//     ->middleware('auth');
-
-Route::get('/admin/payments', function () {
-    return view('admin.payments.index');
-})->name('admin.payments.index');
+Route::resource('payments', PaymentController::class)->names('admin.payments');
 
 Route::get('/admin/dashboard', function () {
     return view('admin.dashboard.index');
 })->name('admin.dashboard.index');
 
-Route::get('/admin/payments/create', function () {
-    return view('admin.payments.create');
-})->name('admin.payments.create');
-
-// Route::get('/admin/products/edit', function () {
-//     return view('admin.products.edit');
-// })->name('admin.products.edit');
-
-Route::get('/admin/orders/edit', function () {
-    return view('admin.orders.edit');
-})->name('admin.orders.edit');
-
 Route::get('/admin/payments/edit', function () {
     return view('admin.payments.edit');
 })->name('admin.payments.edit');
 
-Route::get('/admin/addresses', function () {
-    return view('admin.addresses.index');
-})->name('admin.addresses.index');

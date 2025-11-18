@@ -30,7 +30,7 @@
                     <td class="text-center p-2 px-5">{{$loop->iteration}}</td>
                     <td class="text-center p-2 px-5">{{$order->user->name}}</td>
                     <td class="text-center p-2 px-5">{{$order->address->city}}</td>
-                    <td class="text-center p-2 px-5">{{$order->payment_status??'null'}}</td>
+                    <td class="text-center p-2 px-5">{{$order->payment?->status->value??'null'}}</td>
                     <td class="text-center p-2 px-5">{{$order->status??'null'}}</td>
                     <td class="text-center p-2 px-5 flex justify-center">
                         <a href="{{ route('users.orders.edit', ['order' => $order->id, 'user' => $order->user->id] ) }}"

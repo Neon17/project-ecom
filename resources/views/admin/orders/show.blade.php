@@ -54,16 +54,20 @@
                                                 <span class="text-gray-400 text-xs">No Image</span>
                                             </div>
                                         @endif
+                                        @php
+                                            $price = $item->amount_per_item / 100;
+                                        @endphp
                                         <div>
                                             <h3 class="font-medium text-gray-900">{{ $item->product->name }}</h3>
                                             <p class="text-gray-500 text-sm">Price: Rs
-                                                {{ number_format($item->amount_per_item / 100, 2) }}</p>
+                                                {{ number_format(($price*1)/100, 2) }}
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="text-right">
                                         <p class="text-gray-600">Qty: {{ $item->quantity }}</p>
                                         <p class="font-semibold text-gray-900">
-                                            Rs. {{ number_format(($item->amount_per_item/100 * $item->quantity) / 100, 2) }}
+                                            Rs. {{ number_format(($price * $item->quantity) / 100, 2) }}
                                         </p>
                                     </div>
                                 </div>
@@ -74,7 +78,7 @@
                         <div class="mt-6 pt-4 border-t border-gray-200">
                             @php
                                 $totalAmount = $order->orderItems->sum(function ($item) {
-                                    return $item->amount_per_item/100 * $item->quantity;
+                                    return ($item->amount_per_item/100) * $item->quantity;
                                 });
                             @endphp
                             <div class="flex justify-between items-center text-lg font-semibold">
