@@ -24,7 +24,7 @@
                         @foreach ($cartItems as $cartItem)
                             @php
                                 $product = $cartItem->product;
-                                $itemTotal = $product->price * $cartItem->quantity;
+                                $itemTotal = $product->price/100 * $cartItem->quantity;
                                 $grandTotal += $itemTotal;
                             @endphp
 
