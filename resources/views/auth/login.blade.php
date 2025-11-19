@@ -2,47 +2,71 @@
 
 
 @section('content')
-    <div class="p-10 rounded bg-gray-50 shadow-lg max-w-xl mx-auto my-5">
+    <div class="min-h-screen flex items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full bg-white rounded-xl shadow-2xl p-8 space-y-8 border border-gray-200">
+            <div class="text-center">
+                <h2 class="mt-6 text-4xl font-extrabold text-gray-900">
+                    Welcome Back!
+                </h2>
+                <p class="mt-2 text-sm text-gray-600">
+                    Sign in to your account to continue
+                </p>
+            </div>
 
-        <div class="form-heading pb-6 px-1">
-            <h2 class="text-2xl bold text-center">
-                Welcome to our app!
-            </h2>
-        </div>
+            <form class="mt-8 space-y-6" action="{{ url('/login') }}" method="POST">
+                @csrf
 
-
-        <form action="{{ url('/login') }}" class="pt-6" method="POST">
-            @csrf
-
-            <div class="form-group p-1 flex flex-col">
-                <label for="email">Email:</label>
-                <input type="email" class="border p-2" id="email" name="email" required />
-                <div class="min-h-6">
+                <!-- Email Input -->
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                    <input id="email" name="email" type="email" autocomplete="email" required
+                        class="appearance-none relative block w-full px-4 py-3 border border-gray-300 rounded-md placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition duration-200"
+                        placeholder="Enter your email address" value="{{ old('email') }}">
                     @error('email')
-                        <span class="text-red-300 dark:text-red-700 text-sm">{{ $message }}</span>
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
-            </div>
 
-            <div class="form-group p-1 flex flex-col">
-                <label for="password">Password: </label>
-                <input type="password" class="border p-2" id="password" name="password" required />
-                <div class="min-h-6">
+                <!-- Password Input -->
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <input id="password" name="password" type="password" autocomplete="current-password" required
+                        class="appearance-none relative block w-full px-4 py-3 border border-gray-300 rounded-md placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition duration-200"
+                        placeholder="Enter your password">
                     @error('password')
-                        <span class="text-red-300 dark:text-red-700 text-sm">{{ $message }}</span>
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
-            </div>
 
-            <div class="button-wrapper py-3 px-1">
-                <button type="submit"
-                    class="bg-blue-600 text-white p-2 hover:cursor-pointer hover:bg-blue-500 rounded">Login</button>
-                <a href="{{route('password.request')}}" class="text-blue-500 hover:text-blue-800 hover:cursor-pointer mx-3">
-                    Forgot Password?
-                </a>
-            </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input id="remember_me" name="remember" type="checkbox"
+                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                        <label for="remember_me" class="ml-2 block text-sm text-gray-900">
+                            Remember me
+                        </label>
+                    </div>
 
-        </form>
+                    <div class="text-sm">
+                        <a href="{{ route('password.request') }}"
+                            class="font-medium text-blue-600 hover:text-blue-500 transition duration-200">
+                            Forgot your password?
+                        </a>
+                    </div>
+                </div>
 
+                <div>
+                    <button type="submit"
+                        class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-lg font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-200 shadow-md">
+                        Sign In
+                    </button>
+                </div>
+
+                <div class="text-center text-sm text-gray-600">
+                    Don't have an account? <a href="{{ route('register') }}"
+                        class="font-medium text-blue-600 hover:text-blue-500 transition duration-200">Sign up</a>
+                </div>
+            </form>
+        </div>
     </div>
 @endsection

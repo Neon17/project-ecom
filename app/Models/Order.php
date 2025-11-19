@@ -12,12 +12,22 @@ class Order extends Model
 {
     /** @use HasFactory<\Database\Factories\OrderFactory> */
     use HasFactory;
+    protected $appends = ['total'];
 
     protected $fillable = [
         'user_id',
         'address_id',
         'status',
     ];
+
+    public function getTotalAttribute(): int
+    {
+        $total = 0;
+        foreach ($this->orderItems as $orderItem) {
+            $total += $orderItem->total;
+        }
+        return $total;
+    }
 
     public function address(): BelongsTo
     {

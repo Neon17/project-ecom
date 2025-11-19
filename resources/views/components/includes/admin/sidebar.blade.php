@@ -1,47 +1,43 @@
 <div class="min-h-screen flex">
-
-    <div class="w-64 bg-white shadow-lg fixed h-full">
-        
-        <div class="p-6 border-b border-gray-200">
-            <div class="text-xl font-bold text-gray-800 text-center">
-                Admin Panel
-            </div>
+    <div class="w-64 bg-gray-800 fixed h-full text-white">
+        <div class="p-5 border-b border-gray-700">
+            <h2 class="text-xl font-bold text-white">Admin Panel</h2>
         </div>
 
-        <nav class="mt-6">
+        <nav class="mt-4">
             <a href="{{ route('admin.dashboard.index') }}" 
-               class="flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors {{ request()->routeIs('admin.dashboard*') ? 'bg-blue-50 text-blue-600 border-r-2 border-blue-600' : '' }}">
-                <span class="ml-3 font-medium">Dashboard</span>
+               class="block px-5 py-3 text-gray-300 hover:bg-gray-700 {{ request()->routeIs('admin.dashboard*') ? 'bg-gray-700 text-white border-l-4 border-blue-500' : '' }}">
+                Dashboard
             </a>
 
             <a href="{{ route('admin.users.index') }}" 
-               class="flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors {{ request()->routeIs('admin.users*') ? 'bg-blue-50 text-blue-600 border-r-2 border-blue-600' : '' }}">
-                <span class="ml-3 font-medium">Users</span>
+               class="block px-5 py-3 text-gray-300 hover:bg-gray-700 {{ request()->routeIs('admin.users*') ? 'bg-gray-700 text-white border-l-4 border-blue-500' : '' }}">
+                Users
             </a>
 
             <a href="{{ route('admin.categories.index') }}" 
-               class="flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors {{ request()->routeIs('admin.categories*') ? 'bg-blue-50 text-blue-600 border-r-2 border-blue-600' : '' }}">
-                <span class="ml-3 font-medium">Categories</span>
+               class="block px-5 py-3 text-gray-300 hover:bg-gray-700 {{ request()->routeIs('admin.categories*') ? 'bg-gray-700 text-white border-l-4 border-blue-500' : '' }}">
+                Categories
             </a>
 
             <a href="{{ route('admin.products.index') }}" 
-               class="flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors {{ request()->routeIs('admin.products*') ? 'bg-blue-50 text-blue-600 border-r-2 border-blue-600' : '' }}">
-                <span class="ml-3 font-medium">Products</span>
+               class="block px-5 py-3 text-gray-300 hover:bg-gray-700 {{ request()->routeIs('admin.products*') ? 'bg-gray-700 text-white border-l-4 border-blue-500' : '' }}">
+                Products
             </a>
 
             <a href="{{ route('admin.orders.index') }}" 
-               class="flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors {{ request()->routeIs('admin.orders*') ? 'bg-blue-50 text-blue-600 border-r-2 border-blue-600' : '' }}">
-                <span class="ml-3 font-medium">Orders</span>
+               class="block px-5 py-3 text-gray-300 hover:bg-gray-700 {{ request()->routeIs('admin.orders*') ? 'bg-gray-700 text-white border-l-4 border-blue-500' : '' }}">
+                Orders
             </a>
 
             <a href="{{ route('admin.payments.index') }}" 
-               class="flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors {{ request()->routeIs('admin.payments*') ? 'bg-blue-50 text-blue-600 border-r-2 border-blue-600' : '' }}">
-                <span class="ml-3 font-medium">Payments</span>
+               class="block px-5 py-3 text-gray-300 hover:bg-gray-700 {{ request()->routeIs('admin.payments*') ? 'bg-gray-700 text-white border-l-4 border-blue-500' : '' }}">
+                Payments
             </a>
 
             <a href="{{ route('admin.addresses.all') }}" 
-               class="flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors {{ request()->routeIs('admin.addresses*') ? 'bg-blue-50 text-blue-600 border-r-2 border-blue-600' : '' }}">
-                <span class="ml-3 font-medium">Addresses</span>
+               class="block px-5 py-3 text-gray-300 hover:bg-gray-700 {{ request()->routeIs('admin.addresses*') ? 'bg-gray-700 text-white border-l-4 border-blue-500' : '' }}">
+                Addresses
             </a>
         </nav>
     </div>

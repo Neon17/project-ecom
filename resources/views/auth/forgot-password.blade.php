@@ -2,35 +2,43 @@
 
 
 @section('content')
-    <div class="p-3 rounded bg-gray-50 shadow-lg max-w-xl mx-auto my-5">
+    <div class="min-h-screen flex items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full bg-white rounded-xl shadow-2xl p-8 space-y-8 border border-gray-200">
+            <div class="text-center">
+                <h2 class="mt-6 text-4xl font-extrabold text-gray-900">
+                    Forgot Your Password?
+                </h2>
+                <p class="mt-2 text-sm text-gray-600">
+                    Enter your email address and we'll send you a reset link.
+                </p>
+            </div>
 
-        <div class="form-heading py-3 px-1 my-3">
-            <h2 class="text-2xl pb-3 bold">
-                Send Forgot Password Email
-            </h2>
-        </div>
+            <form class="mt-8 space-y-6" action="{{ url('/forgot-password') }}" method="POST">
+                @csrf
 
-
-        <form action="{{ url('/forgot-password') }}" method="POST">
-            @csrf
-
-            <div class="form-group p-1 flex flex-col">
-                <label for="email">Email:</label>
-                <input type="email" class="border p-2" id="email" name="email" required />
-                <div class="min-h-6">
+                <!-- Email Input -->
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                    <input id="email" name="email" type="email" autocomplete="email" required
+                        class="appearance-none relative block w-full px-4 py-3 border border-gray-300 rounded-md placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition duration-200"
+                        placeholder="Enter your email address" value="{{ old('email') }}">
                     @error('email')
-                        <span class="text-red-300 dark:text-red-700 text-sm">{{ $message }}</span>
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
-            </div>
 
+                <div>
+                    <button type="submit"
+                        class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-lg font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-200 shadow-md">
+                        Send Reset Link
+                    </button>
+                </div>
 
-            <div class="button-wrapper py-3 px-1">
-                <button type="submit"
-                    class="bg-blue-600 text-white p-2 hover:cursor-pointer hover:bg-blue-500 rounded">Send Reset Password Link</button>
-            </div>
-
-        </form>
-
+                <div class="text-center text-sm text-gray-600">
+                    Remembered your password? <a href="{{ route('login') }}"
+                        class="font-medium text-blue-600 hover:text-blue-500 transition duration-200">Sign in</a>
+                </div>
+            </form>
+        </div>
     </div>
 @endsection
