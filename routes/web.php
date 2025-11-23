@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
@@ -77,4 +78,19 @@ Route::get('/admin/dashboard', [DashboardController::class, 'adminDashboard'])->
 Route::get('/admin/payments/edit', function () {
     return view('admin.payments.edit');
 })->name('admin.payments.edit');
+
+
+Route::get('/carts/{cart}/view-checkout', [CheckoutController::class, 'viewCheckout'])->name('carts.view-checkout')->middleware('auth');
+
+// pass an cart id and place order
+Route::post('/carts/{cart}/checkout', [CheckoutController::class, 'checkout'])->name('carts.checkout')->middleware('auth');
+
+// pass the order id
+Route::get('/orders/{order}/pay', [CheckoutController::class, 'showPaymentPage'])->name('orders.pay')->middleware('auth');
+Route::post('/orders/{order}/pay', [CheckoutController::class, 'processPayment'])->name('orders.process-payment')->middleware('auth');
+
+Route::get('payment/khalti/callback', [CheckoutController::class, 'khaltiCallback'])->name('payment.khalti.callback');
+Route::get('payment/{payment}/success', [CheckoutController::class, 'successUrl'])->name('payment.success');
+Route::get('payment/{payment}/failure', [CheckoutController::class, 'failureUrl'])->name('payment.failure');
+
 
