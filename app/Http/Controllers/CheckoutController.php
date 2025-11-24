@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\OrderStatusEnum;
 use App\Enums\PaymentMethodEnum;
+use App\Enums\PaymentStatusEnum;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Payment;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Xentixar\EsewaSdk\Esewa;
 
 use function Laravel\Prompts\error;
 
@@ -132,48 +134,26 @@ class CheckoutController extends Controller
             return $item->amount_per_item * $item->quantity;
         });
 
-        // Use fixed values that match their working example
         $tax_amount = 10;
         $product_service_charge = 0;
         $product_delivery_charge = 0;
-        $total_amount = $amount + $tax_amount; // 100 + 10 = 110 like their example
+        $total_amount = $amount + $tax_amount;
 
-        // Use a simple numeric transaction UUID like their example
-        $transaction_uuid = time(); // or any simple numeric ID
-
-        $product_code = "EPAYTEST";
+        $transaction_uuid = time();
 
         $success_url = route('payment.success', $payment->id);
         $failure_url = route('payment.failure', $payment->id);
-
-        $signed_field_names = "total_amount,transaction_uuid,product_code";
-
-        $secretKey = env('ESEWA_SECRET_KEY');
-        if (!$secretKey) {
-            return redirect()->route('orders.index')->with('error', 'Esewa Secret Key is missing in .env');
-        }
-
-        $stringToSign = $total_amount . "," . $transaction_uuid . "," . $product_code;
-        $signature = base64_encode(hash_hmac('sha256', $stringToSign, $secretKey, true));
 
         $payment->update([
             'transaction_id' => $transaction_uuid,
             'total_amount' => $total_amount,
         ]);
 
-        return view('users.orders.esewa-payment-form', [
-            'amount' => $amount,
-            'tax_amount' => $tax_amount,
-            'total_amount' => $total_amount,
-            'transaction_uuid' => $transaction_uuid,
-            'product_code' => $product_code,
-            'product_service_charge' => $product_service_charge,
-            'product_delivery_charge' => $product_delivery_charge,
-            'success_url' => $success_url,
-            'failure_url' => $failure_url,
-            'signed_field_names' => $signed_field_names,
-            'signature' => $signature,
-        ]);
+        $esewa = new Esewa();
+        $esewa->config($success_url, $failure_url, (float)$total_amount, $transaction_uuid);
+        $esewa->init();
+
+        return view('users.orders.pay', compact('order'));
     }
 
     public function payOrderViaKhalti(Request $request, Order $order)
@@ -276,12 +256,14 @@ class CheckoutController extends Controller
 
     public function successUrl(Request $request, Payment $payment)
     {
+        $esewa = new Esewa($request->all());
+        $responseData = $esewa->decode();
         $payment->update([
-            'status' => 'success',
-            'transaction_code' => $request->input('tid')
-                ?? $request->input('transaction_code')
-                ?? $request->input('ref_id')
-                ?? $request->input('purchase_order_id')
+            'status' => PaymentStatusEnum::Completed,
+            'transaction_code' => $responseData['tid']
+                ?? $responseData['transaction_code']
+                ?? $responseData['ref_id']
+                ?? $responseData['purchase_order_id']
                 ?? null,
         ]);
 
@@ -290,12 +272,14 @@ class CheckoutController extends Controller
 
     public function failureUrl(Request $request, Payment $payment)
     {
+        $esewa = new Esewa($request->all());
+        $responseData = $esewa->decode();
         $payment->update([
-            'status' => 'failed',
-            'transaction_code' => $request->input('tid')
-                ?? $request->input('transaction_code')
-                ?? $request->input('ref_id')
-                ?? $request->input('purchase_order_id')
+            'status' => PaymentStatusEnum::Failed,
+            'transaction_code' => $responseData['tid']
+                ?? $responseData['transaction_code']
+                ?? $responseData['ref_id']
+                ?? $responseData['purchase_order_id']
                 ?? null,
         ]);
 
