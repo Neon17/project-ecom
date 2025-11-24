@@ -1,6 +1,4 @@
-@extends('components.layouts.user')
-
-@section('content')
+<x-layouts.user>
 <div class="container mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold mb-8 text-gray-800">Checkout</h1>
 
@@ -116,4 +114,4 @@
         </div>
     </div>
 </div>
-@endsection
+</x-layouts.user>

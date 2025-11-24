@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\User;
@@ -9,18 +10,13 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-    public function allIndex(Request $request)
-    {
-        $carts = Cart::with(['cartItems', 'user'])->get();
 
-        return view('admin.carts.index', compact('carts'));
-    }
 
     public function index(User $user)
     {
         $user = User::with('cart')->findOrFail($user->id);
         $carts = $user->cart()->with(['cartItems', 'user'])->get();
-        return view('users.carts.index', compact('carts'));
+        return view('user.carts.index', compact('carts'));
     }
 
     public function create() {}
@@ -61,7 +57,7 @@ class CartController extends Controller
     public function show(User $user, Cart $cart)
     {
         $cart = $user->cart()->where('id', $cart->id)->with(['cartItems', 'user'])->first();
-        return view('users.carts.show', compact('cart'));
+        return view('user.carts.show', compact('cart'));
     }
 
     public function edit(User $user, Cart $cart)

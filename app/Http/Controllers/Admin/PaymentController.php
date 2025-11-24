@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Payment;
-use App\Models\Order;
 use App\Enums\PaymentMethodEnum;
 use App\Enums\PaymentStatusEnum;
 use App\Enums\OrderStatusEnum;
+use App\Http\Controllers\Controller;
+use App\Models\Payment;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller

@@ -1,14 +1,18 @@
 <x-layouts.header />
-<x-includes.admin.navbar />
+    <x-includes.user.navbar />
 
-<div class="flex h-full w-full">
-    <x-ui.success-error-topup />
+    <div class="flex h-full w-full bg-gray-50">
+        <x-ui.success-error-topup />
+        <x-ui.cart-modal />
 
-    <div class="slot w-full min-h-screen p-3">
-        @yield('content')
+        <div class="hidden md:block">
+            <x-includes.user.sidebar />
+        </div>
+
+        <div class="flex-1 p-6 md:p-8 overflow-y-auto">
+            {{ $slot }}
+        </div>
+
     </div>
-
-</div>
-
 
 <x-layouts.footer />

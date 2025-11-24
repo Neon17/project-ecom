@@ -1,5 +1,5 @@
 <x-layouts.header />
-<x-includes.admin.navbar />
+<x-includes.user.navbar />
 
 <div class="flex w-full">
     <x-ui.success-error-topup />

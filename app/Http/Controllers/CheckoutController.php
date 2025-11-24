@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Xentixar\EsewaSdk\Esewa;
 
 use function Laravel\Prompts\error;
 
@@ -26,9 +25,9 @@ class CheckoutController extends Controller
 
         $cart = $request->user()->cart()->with(['cartItems.product', 'user'])->first();
         if (!$cart || $cart->cartItems->isEmpty()) {
-            return redirect()->route('carts.index')->with('error', 'Your cart is empty.');
+            return redirect()->route('user.cart.index')->with('error', 'Your cart is empty.');
         }
-        return view('users.orders.place', compact('cart'));
+        return view('user.orders.place', compact('cart'));
     }
 
     public function checkout(Request $request, Cart $cart)
@@ -71,7 +70,7 @@ class CheckoutController extends Controller
     public function showPaymentPage(Request $request, Order $order)
     {
         $order->load(['user', 'address', 'orderItems.product', 'payment']);
-        return view('users.orders.pay', compact('order'));
+        return view('user.orders.pay', compact('order'));
     }
 
     public function processPayment(Request $request, Order $order)
@@ -108,7 +107,7 @@ class CheckoutController extends Controller
         // Handle other payment methods or default success for COD (if applicable)
         // For now, redirect to success if not Esewa (or handle accordingly)
 
-        return redirect()->route('orders.index')->with('success', 'Payment method selected.');
+        return redirect()->route('user.orders.index')->with('success', 'Payment method selected.');
     }
 
     public function payOrderViaEsewa(Request $request, Order $order)
@@ -137,23 +136,46 @@ class CheckoutController extends Controller
         $tax_amount = 10;
         $product_service_charge = 0;
         $product_delivery_charge = 0;
-        $total_amount = $amount + $tax_amount;
+        $total_amount = $amount + $tax_amount + $product_service_charge + $product_delivery_charge;
 
-        $transaction_uuid = time();
+        $transaction_uuid = (string) time();
 
         $success_url = route('payment.success', $payment->id);
         $failure_url = route('payment.failure', $payment->id);
+
+        $secret_key = env('ESEWA_SECRET_KEY', '8gBm/:&EnhH.1/q');
+        $product_code = env('ESEWA_PRODUCT_CODE', 'EPAYTEST');
+        $production = env('ESEWA_PRODUCTION', false);
+
+        $data = 'total_amount=' . $total_amount . ',transaction_uuid=' . $transaction_uuid . ',product_code=' . $product_code;
+        $signature = hash_hmac('sha256', $data, $secret_key, true);
+        $signature = base64_encode($signature);
+        $signed_field_names = "total_amount,transaction_uuid,product_code";
 
         $payment->update([
             'transaction_id' => $transaction_uuid,
             'total_amount' => $total_amount,
         ]);
 
-        $esewa = new Esewa();
-        $esewa->config($success_url, $failure_url, (float)$total_amount, $transaction_uuid);
-        $esewa->init();
+        $payment->save();
 
-        return view('users.orders.pay', compact('order'));
+        $esewa_url = 'https://rc-epay.esewa.com.np/api/epay/main/v2/form';
+
+        $postData = [
+            'amount' => $amount,
+            'tax_amount' => $tax_amount,
+            'total_amount' => $total_amount,
+            'transaction_uuid' => $transaction_uuid,
+            'product_code' => $product_code,
+            'product_service_charge' => $product_service_charge,
+            'product_delivery_charge' => $product_delivery_charge,
+            'success_url' => $success_url,
+            'failure_url' => $failure_url,
+            'signed_field_names' => $signed_field_names,
+            'signature' => $signature,
+        ];
+
+        return view('user.orders.esewa-payment-form', compact('esewa_url', 'postData'));
     }
 
     public function payOrderViaKhalti(Request $request, Order $order)
@@ -171,6 +193,7 @@ class CheckoutController extends Controller
                 'status' => 'pending',
             ]);
         }
+
         $order->fresh(['payment', 'orderItems', 'user', 'address']);
         $payment = $order->payment;
 
@@ -187,7 +210,7 @@ class CheckoutController extends Controller
         $amountInPaisa = $amount * 100;
 
         $payload = [
-            "return_url" => route('payment.khalti.callback'),
+            "return_url" => route('payment.success', $payment->id), // Use unified success URL
             "website_url" => config('app.url'),
             "amount" => $amountInPaisa,
             "purchase_order_id" => (string) $order->id,
@@ -206,83 +229,93 @@ class CheckoutController extends Controller
 
         if ($response->successful()) {
             $data = $response->json();
-            // Store pidx if needed, for now just redirect
             return redirect($data['payment_url']);
         }
 
         return redirect()->back()->with('error', 'Khalti payment initiation failed: ' . $response->body());
     }
 
-    public function khaltiCallback(Request $request)
-    {
-        $secretKey = env('KHALTI_SECRET_KEY');
-        if (!$secretKey) {
-            return redirect()->route('orders.index')->with('error', 'Khalti Secret Key is missing in .env');
-        }
-
-        $pidx = $request->input('pidx');
-        $status = $request->input('status');
-        $purchase_order_id = $request->input('purchase_order_id');
-
-        if (!$pidx) {
-            return redirect()->route('orders.index')->with('error', 'Invalid payment callback.');
-        }
-
-        // Verify with Lookup API
-        $response = Http::withHeaders([
-            'Authorization' => 'Key ' . $secretKey,
-            'Content-Type' => 'application/json',
-        ])->post('https://dev.khalti.com/api/v2/epayment/lookup/', [
-            'pidx' => $pidx
-        ]);
-
-        if ($response->successful()) {
-            $data = $response->json();
-
-            if ($data['status'] === 'Completed') {
-                $order = Order::find($purchase_order_id);
-                if ($order && $order->payment) {
-                    $order->payment->update([
-                        'status' => 'success',
-                        'transaction_code' => $data['transaction_id'] ?? $pidx,
-                    ]);
-                    return redirect()->route('orders.index')->with('success', 'Payment successful via Khalti!');
-                }
-            }
-        }
-
-        return redirect()->route('orders.index')->with('error', 'Payment verification failed or cancelled.');
-    }
-
     public function successUrl(Request $request, Payment $payment)
     {
-        $esewa = new Esewa($request->all());
-        $responseData = $esewa->decode();
+        $responseData = $this->decodePaymentResponse($request);
+
         $payment->update([
             'status' => PaymentStatusEnum::Completed,
-            'transaction_code' => $responseData['tid']
-                ?? $responseData['transaction_code']
-                ?? $responseData['ref_id']
-                ?? $responseData['purchase_order_id']
-                ?? null,
+            'transaction_code' => $this->extractTransactionCode($responseData),
+            'payment_response' => json_encode($responseData),
+            'paid_at' => now(),
         ]);
 
-        return redirect()->route('orders.index')->with('success', 'Payment successful!');
+        return redirect()->route('user.orders.index')->with('success', 'Payment successful!');
     }
 
     public function failureUrl(Request $request, Payment $payment)
     {
-        $esewa = new Esewa($request->all());
-        $responseData = $esewa->decode();
+        $responseData = $this->decodePaymentResponse($request);
+
         $payment->update([
             'status' => PaymentStatusEnum::Failed,
-            'transaction_code' => $responseData['tid']
-                ?? $responseData['transaction_code']
-                ?? $responseData['ref_id']
-                ?? $responseData['purchase_order_id']
-                ?? null,
+            'transaction_code' => $this->extractTransactionCode($responseData),
+            'payment_response' => json_encode($responseData),
+            'failed_at' => now(),
         ]);
 
-        return redirect()->route('orders.index')->with('error', 'Payment failed!');
+        return redirect()->route('user.orders.index')->with('error', 'Payment failed!');
+    }
+
+    /**
+     * Decode payment response for eSewa and Khalti
+     */
+    protected function decodePaymentResponse(Request $request): array
+    {
+        $data = [];
+
+        // eSewa response format (data parameter as base64 encoded JSON)
+        if ($request->has('data')) {
+            $jsonString = base64_decode($request->input('data'));
+            $data = json_decode($jsonString, true) ?? [];
+        }
+
+        // Khalti response format (direct JSON parameters)
+        elseif ($request->has('pidx')) {
+            $data = $request->all();
+        }
+
+        // General fallback
+        else {
+            $data = $request->all();
+        }
+
+        return $data;
+    }
+
+    /**
+     * Extract transaction code from eSewa and Khalti responses
+     */
+    protected function extractTransactionCode(array $responseData): ?string
+    {
+        // eSewa transaction codes
+        if (isset($responseData['transaction_code'])) {
+            return $responseData['transaction_code'];
+        }
+        if (isset($responseData['ref_id'])) {
+            return $responseData['ref_id'];
+        }
+        if (isset($responseData['tid'])) {
+            return $responseData['tid'];
+        }
+        if (isset($responseData['purchase_order_id'])) {
+            return $responseData['purchase_order_id'];
+        }
+
+        // Khalti transaction codes
+        if (isset($responseData['pidx'])) {
+            return $responseData['pidx'];
+        }
+        if (isset($responseData['transaction_id'])) {
+            return $responseData['transaction_id'];
+        }
+
+        return null;
     }
 }
