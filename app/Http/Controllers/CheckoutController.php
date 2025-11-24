@@ -10,6 +10,9 @@ use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+
+use function Laravel\Prompts\error;
 
 class CheckoutController extends Controller
 {
@@ -42,7 +45,7 @@ class CheckoutController extends Controller
         // Check if user already has this address or create new one
         // For simplicity, we'll create a new one or you could search for existing
         $address = request()->user()->addresses()->create($validated['address']);
-        
+
         $order = Order::create([
             'user_id' => $request->user()->id,
             'address_id' => $address->id,
@@ -102,19 +105,22 @@ class CheckoutController extends Controller
 
         // Handle other payment methods or default success for COD (if applicable)
         // For now, redirect to success if not Esewa (or handle accordingly)
-        
+
         return redirect()->route('orders.index')->with('success', 'Payment method selected.');
     }
 
     public function payOrderViaEsewa(Request $request, Order $order)
     {
+        $order->load(['payment', 'orderItems', 'user', 'address']);
+
         if (!$order->payment) {
             $order->payment()->create([
                 'payment_method' => PaymentMethodEnum::Esewa->value,
                 'status' => 'pending',
             ]);
         }
-        
+
+        $order->fresh(['payment', 'orderItems', 'user', 'address']);
         $payment = $order->payment;
 
         $payment->update([
@@ -126,40 +132,48 @@ class CheckoutController extends Controller
             return $item->amount_per_item * $item->quantity;
         });
 
-        $tax_amount = 0;
-        $total_amount = $amount;
-
-        $transaction_uuid = $payment->id;
-        $product_code = "EPAYTEST";
-
+        // Use fixed values that match their working example
+        $tax_amount = 10;
         $product_service_charge = 0;
         $product_delivery_charge = 0;
+        $total_amount = $amount + $tax_amount; // 100 + 10 = 110 like their example
+
+        // Use a simple numeric transaction UUID like their example
+        $transaction_uuid = time(); // or any simple numeric ID
+
+        $product_code = "EPAYTEST";
 
         $success_url = route('payment.success', $payment->id);
         $failure_url = route('payment.failure', $payment->id);
 
         $signed_field_names = "total_amount,transaction_uuid,product_code";
 
-        $string_to_sign = "$total_amount,$transaction_uuid,$product_code";
+        $secretKey = env('ESEWA_SECRET_KEY');
+        if (!$secretKey) {
+            return redirect()->route('orders.index')->with('error', 'Esewa Secret Key is missing in .env');
+        }
 
-        $signature = base64_encode(
-            hash_hmac('sha256', $string_to_sign, env('ESEWA_SECRET_KEY'), true)
-        );
+        $stringToSign = $total_amount . "," . $transaction_uuid . "," . $product_code;
+        $signature = base64_encode(hash_hmac('sha256', $stringToSign, $secretKey, true));
 
-        $body = [
+        $payment->update([
+            'transaction_id' => $transaction_uuid,
             'total_amount' => $total_amount,
+        ]);
+
+        return view('users.orders.esewa-payment-form', [
+            'amount' => $amount,
             'tax_amount' => $tax_amount,
-            'product_service_charge' => $product_service_charge,
-            'product_delivery_charge' => $product_delivery_charge,
+            'total_amount' => $total_amount,
             'transaction_uuid' => $transaction_uuid,
             'product_code' => $product_code,
+            'product_service_charge' => $product_service_charge,
+            'product_delivery_charge' => $product_delivery_charge,
             'success_url' => $success_url,
             'failure_url' => $failure_url,
             'signed_field_names' => $signed_field_names,
             'signature' => $signature,
-        ];
-
-        return Http::post('https://rc-epay.esewa.com.np/api/epay/main/v2/form', $body);
+        ]);
     }
 
     public function payOrderViaKhalti(Request $request, Order $order)
@@ -169,14 +183,17 @@ class CheckoutController extends Controller
             return redirect()->back()->with('error', 'Khalti Secret Key is missing in .env');
         }
 
+        $order->fresh(['payment', 'orderItems', 'user', 'address']);
+
         if (!$order->payment) {
             $order->payment()->create([
                 'payment_method' => PaymentMethodEnum::Khalti->value,
                 'status' => 'pending',
             ]);
         }
-        
+        $order->fresh(['payment', 'orderItems', 'user', 'address']);
         $payment = $order->payment;
+
         $payment->update([
             'payment_method' => PaymentMethodEnum::Khalti->value,
             'status' => 'pending',
@@ -241,7 +258,7 @@ class CheckoutController extends Controller
 
         if ($response->successful()) {
             $data = $response->json();
-            
+
             if ($data['status'] === 'Completed') {
                 $order = Order::find($purchase_order_id);
                 if ($order && $order->payment) {
@@ -261,8 +278,13 @@ class CheckoutController extends Controller
     {
         $payment->update([
             'status' => 'success',
-            'transaction_code' => $request->input('tid'),
+            'transaction_code' => $request->input('tid')
+                ?? $request->input('transaction_code')
+                ?? $request->input('ref_id')
+                ?? $request->input('purchase_order_id')
+                ?? null,
         ]);
+
         return redirect()->route('orders.index')->with('success', 'Payment successful!');
     }
 
@@ -270,8 +292,13 @@ class CheckoutController extends Controller
     {
         $payment->update([
             'status' => 'failed',
-            'transaction_code' => $request->input('tid'),
+            'transaction_code' => $request->input('tid')
+                ?? $request->input('transaction_code')
+                ?? $request->input('ref_id')
+                ?? $request->input('purchase_order_id')
+                ?? null,
         ]);
+
         return redirect()->route('orders.index')->with('error', 'Payment failed!');
     }
 }

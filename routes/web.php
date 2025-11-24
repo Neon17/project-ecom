@@ -59,7 +59,7 @@ Route::middleware('auth')->group(function () {
         ->name('cart-items.destroy');
 });
 
-Route::get('/orders/all', [OrderController::class, 'allIndex'])->name('orders.index');
+Route::get('/orders/all', [OrderController::class, 'index'])->name('orders.index');
 Route::resource('users.orders', OrderController::class)
     ->only(['index', 'store', 'update', 'destroy', 'edit', 'show']);
     // ->middleware('auth');
