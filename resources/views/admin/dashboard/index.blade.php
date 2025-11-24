@@ -170,105 +170,101 @@
         <!-- Recent Activity Section -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <!-- Recent Orders -->
-            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                <div class="p-6 border-b border-gray-100">
-                    <div class="flex items-center justify-between">
-                        <h2 class="text-xl font-bold text-gray-900">Recent Orders</h2>
-                        <a href="#" class="text-blue-600 hover:text-blue-700 text-sm font-medium">View All</a>
-                    </div>
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                    <h2 class="text-lg font-bold text-gray-800">Recent Orders</h2>
+                    <a href="{{ route('admin.orders.index') }}" class="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center gap-1">
+                        View All
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </a>
                 </div>
                 
-                <div class="divide-y divide-gray-100">
-                    @if($recentOrders->count() > 0)
-                        @foreach($recentOrders as $order)
-                        <div class="p-4 hover:bg-gray-50 transition-colors duration-200">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-4">
-                                    <div class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center">
-                                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-                                        </svg>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <tbody class="divide-y divide-gray-50">
+                            @forelse($recentOrders as $order)
+                            <tr class="hover:bg-gray-50 transition-colors duration-200">
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <div class="font-semibold text-gray-900 text-sm">Order #{{ $order->id }}</div>
+                                            <div class="text-xs text-gray-500">{{ $order->user->name ?? 'Guest User' }}</div>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <div class="font-semibold text-gray-900">Order #{{ $order->id }}</div>
-                                        <div class="text-sm text-gray-500">{{ $order->user->name ?? 'Guest User' }}</div>
-                                    </div>
-                                </div>
-                                <div class="text-right">
-                                    <div class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium 
-                                        {{ $order->status === 'completed' ? 'bg-green-100 text-green-800' : '' }}
-                                        {{ $order->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : '' }}
-                                        {{ $order->status === 'processing' ? 'bg-blue-100 text-blue-800' : '' }}
-                                        {{ $order->status === 'cancelled' ? 'bg-red-100 text-red-800' : '' }}">
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-medium border
+                                        {{ $order->status === 'completed' ? 'bg-green-50 text-green-700 border-green-100' : 
+                                           ($order->status === 'pending' ? 'bg-yellow-50 text-yellow-700 border-yellow-100' : 
+                                           ($order->status === 'processing' ? 'bg-blue-50 text-blue-700 border-blue-100' : 'bg-red-50 text-red-700 border-red-100')) }}">
                                         {{ ucfirst($order->status) }}
-                                    </div>
-                                    <div class="text-xs text-gray-500 mt-1">{{ $order->created_at->format('M d, Y') }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        @endforeach
-                    @else
-                        <div class="p-8 text-center">
-                            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-                                </svg>
-                            </div>
-                            <p class="text-gray-500 text-lg font-medium">No recent orders</p>
-                            <p class="text-gray-400 text-sm mt-1">New orders will appear here</p>
-                        </div>
-                    @endif
+                                    </span>
+                                    <div class="text-xs text-gray-400 mt-1">{{ $order->created_at->format('M d, Y') }}</div>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="2" class="px-6 py-8 text-center text-gray-500">
+                                    No recent orders
+                                </td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
             <!-- Recent Payments -->
-            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                <div class="p-6 border-b border-gray-100">
-                    <div class="flex items-center justify-between">
-                        <h2 class="text-xl font-bold text-gray-900">Recent Payments</h2>
-                        <a href="#" class="text-blue-600 hover:text-blue-700 text-sm font-medium">View All</a>
-                    </div>
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                    <h2 class="text-lg font-bold text-gray-800">Recent Payments</h2>
+                    <a href="{{ route('admin.payments.index') }}" class="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center gap-1">
+                        View All
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </a>
                 </div>
                 
-                <div class="divide-y divide-gray-100">
-                    @if($recentPayments->count() > 0)
-                        @foreach($recentPayments as $payment)
-                        <div class="p-4 hover:bg-gray-50 transition-colors duration-200">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-4">
-                                    <div class="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center">
-                                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                        </svg>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <tbody class="divide-y divide-gray-50">
+                            @forelse($recentPayments as $payment)
+                            <tr class="hover:bg-gray-50 transition-colors duration-200">
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center text-green-600">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <div class="font-semibold text-gray-900 text-sm">Payment #{{ $payment->id }}</div>
+                                            <div class="text-xs text-gray-500">{{ $payment->order->user->name ?? 'Guest User' }}</div>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <div class="font-semibold text-gray-900">Payment #{{ $payment->id }}</div>
-                                        <div class="text-sm text-gray-500">{{ $payment->user->name ?? 'Guest User' }}</div>
-                                    </div>
-                                </div>
-                                <div class="text-right">
-                                    <div class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium 
-                                        {{ $payment->status->value === 'completed' ? 'bg-green-100 text-green-800' : '' }}
-                                        {{ $payment->status->value === 'pending' ? 'bg-yellow-100 text-yellow-800' : '' }}
-                                        {{ $payment->status->value === 'failed' ? 'bg-red-100 text-red-800' : '' }}">
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-medium border
+                                        {{ $payment->status->value === 'completed' ? 'bg-green-50 text-green-700 border-green-100' : 
+                                           ($payment->status->value === 'pending' ? 'bg-yellow-50 text-yellow-700 border-yellow-100' : 'bg-red-50 text-red-700 border-red-100') }}">
                                         {{ ucfirst($payment->status->value) }}
-                                    </div>
-                                    <div class="text-xs text-gray-500 mt-1">{{ $payment->created_at->format('M d, Y') }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        @endforeach
-                    @else
-                        <div class="p-8 text-center">
-                            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
-                            </div>
-                            <p class="text-gray-500 text-lg font-medium">No recent payments</p>
-                            <p class="text-gray-400 text-sm mt-1">Payment activities will appear here</p>
-                        </div>
-                    @endif
+                                    </span>
+                                    <div class="text-xs text-gray-400 mt-1">{{ $payment->created_at->format('M d, Y') }}</div>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="2" class="px-6 py-8 text-center text-gray-500">
+                                    No recent payments
+                                </td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

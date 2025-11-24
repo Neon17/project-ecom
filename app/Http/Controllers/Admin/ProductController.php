@@ -20,13 +20,33 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        $query = Product::query();
-        if ($request->has('search')) {
-            $query = $this->getResults($request, $query);
-        }
-        $products = $query->paginate(10);
+        $query = Product::query()->with('categories');
 
-        return view('admin.products.index', compact('products'));
+        if ($request->has('search') && $request->search) {
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
+                  ->orWhere('description', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        if ($request->has('category_id') && $request->category_id) {
+            $query->whereHas('categories', function ($q) use ($request) {
+                $q->where('categories.id', $request->category_id);
+            });
+        }
+
+        if ($request->has('min_price') && $request->min_price) {
+            $query->where('price', '>=', $request->min_price * 100);
+        }
+
+        if ($request->has('max_price') && $request->max_price) {
+            $query->where('price', '<=', $request->max_price * 100);
+        }
+
+        $products = $query->latest()->paginate(10);
+        $categories = Category::all();
+
+        return view('admin.products.index', compact('products', 'categories'));
     }
 
     public function create()

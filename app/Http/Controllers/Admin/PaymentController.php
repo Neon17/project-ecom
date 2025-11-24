@@ -12,9 +12,29 @@ use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $payments = Payment::with(['order.user'])->get();
+        $query = Payment::query()->with(['order.user']);
+
+        if ($request->has('search') && $request->search) {
+            $query->where(function ($q) use ($request) {
+                $q->where('transaction_code', 'like', '%' . $request->search . '%')
+                  ->orWhereHas('order.user', function ($u) use ($request) {
+                      $u->where('name', 'like', '%' . $request->search . '%')
+                        ->orWhere('email', 'like', '%' . $request->search . '%');
+                  });
+            });
+        }
+
+        if ($request->has('status') && $request->status) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->has('payment_method') && $request->payment_method) {
+            $query->where('payment_method', $request->payment_method);
+        }
+
+        $payments = $query->latest()->paginate(10);
         return view('admin.payments.index', compact('payments'));
     }
 

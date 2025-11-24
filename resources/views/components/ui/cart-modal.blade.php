@@ -65,7 +65,7 @@
                                     </svg>
                                     View
                                 </a>
-                                <form action="{{ route('users.carts.destroy', ['cart' => $cartItem->id, 'user' => auth()->id()]) }}" method="POST">
+                                <form action="{{ route('user.cart-items.destroy', ['cartItem' => $cartItem->id]) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"

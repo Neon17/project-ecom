@@ -1,7 +1,7 @@
 <x-layouts.header />
     <x-includes.user.navbar />
 
-    <div class="flex h-full w-full bg-gray-50">
+    <div class="flex h-full w-full bg-white">
         <x-ui.success-error-topup />
         <x-ui.cart-modal />
 

@@ -145,7 +145,7 @@
                         <div class="space-y-4 mt-8">
                             @if (auth()->check())
                                 <!-- Add to Cart Form -->
-                                <form action="{{ route('users.carts.store', ['user' => Auth::user()->id ?? null]) }}"
+                                <form action="{{ route('user.cart.store', ['user' => Auth::user()->id ?? null]) }}"
                                     method="POST" class="w-full">
                                     @csrf
                                     <input type="hidden" name="product_id" value="{{ $product->id }}">

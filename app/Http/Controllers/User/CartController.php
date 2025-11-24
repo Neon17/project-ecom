@@ -7,6 +7,7 @@ use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
@@ -23,18 +24,23 @@ class CartController extends Controller
 
     public function store(Request $request, User $user)
     {
+        if (!$user->email){
+            $user = User::where("id", Auth::user()->id)->first();
+            if (!$user){
+                return redirect()->route('login');
+            }
+        }
         // to store cart, we should have at least one cart item
         $validated = $request->validate([
             'product_id' => 'required',
             'quantity' => 'required',
         ]);
 
-        if (!$user->cart()->exists()) {
-            $user->cart()->create([
-                'user_id' => $user->id,
-            ]);
-        }
-        $cart = $user->cart();
+        $user->load(['cart']);
+
+        $cart = $user->cart()->firstOrCreate([
+            'user_id' => $user->id
+        ]);
         $cart = $cart->with(['cartItems', 'user'])->first();
         $cartItem = $cart->cartItems()->where('product_id', $validated['product_id'])->first();
         info($cartItem);
