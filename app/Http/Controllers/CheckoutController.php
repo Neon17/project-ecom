@@ -17,12 +17,8 @@ use function Laravel\Prompts\error;
 
 class CheckoutController extends Controller
 {
-    public function viewCheckout(Request $request)
+    public function index(Request $request)
     {
-        // here we can checkout the order from the cart
-        // for that we have to get the cart from user
-        // every data is same as cart, we have to add address, payment method
-
         $cart = $request->user()->cart()->with(['cartItems.product', 'user'])->first();
         if (!$cart || $cart->cartItems->isEmpty()) {
             return redirect()->route('user.cart.index')->with('error', 'Your cart is empty.');
@@ -30,10 +26,21 @@ class CheckoutController extends Controller
         return view('user.orders.place', compact('cart'));
     }
 
+    public function viewCheckout(Request $request)
+    {
+        $cart = $request->user()->cart()->with(['cartItems.product', 'user'])->first();
+        $addresses = $request->user()->addresses()->get();
+        if (!$cart || $cart->cartItems->isEmpty()) {
+            return redirect()->route('user.cart.index')->with('error', 'Your cart is empty.');
+        }
+        return view('user.orders.place', compact('cart', 'addresses'));
+    }
+
     public function checkout(Request $request, Cart $cart)
     {
         $validated = $request->validate([
-            'address' => 'required|array',
+            'address_id' => 'nullable|exists:addresses,id',
+            'address' => 'required_unless:address_id,exists|array',
             'address.country' => 'required|string',
             'address.state' => 'required|string',
             'address.city' => 'required|string',
@@ -43,9 +50,11 @@ class CheckoutController extends Controller
 
         $cart = $cart->with(['cartItems', 'user'])->first();
 
-        // Check if user already has this address or create new one
-        // For simplicity, we'll create a new one or you could search for existing
-        $address = request()->user()->addresses()->create($validated['address']);
+        if ($validated['address_id']) {
+            $address = $request->user()->addresses()->find($validated['address_id']);
+        } else {
+            $address = $request->user()->addresses()->create($validated['address']);
+        }
 
         $order = Order::create([
             'user_id' => $request->user()->id,

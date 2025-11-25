@@ -1,9 +1,8 @@
 <x-layouts.header />
     <x-includes.admin.navbar />
 
-    <div class="flex h-full w-full">
+    <div class="flex min-h-screen w-full">
         <x-ui.success-error-topup />
-        <x-ui.cart-modal />
 
         <x-includes.admin.sidebar />
 

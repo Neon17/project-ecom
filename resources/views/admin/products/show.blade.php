@@ -72,6 +72,21 @@
                 </div>
             @endif
 
+            <!-- Product Image -->
+            <!-- Product Image -->
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Product Image</label>
+                @if($product->image)
+                    <div class="p-4 bg-gray-50 border border-gray-300 rounded-lg">
+                        <img src="{{ $product->image_url }}" 
+                             alt="{{ $product->name }}" 
+                             class="max-w-md h-auto rounded-lg shadow-md">
+                    </div>
+                @else
+                    <p class="text-base text-gray-500 p-4 bg-gray-50 border border-gray-300 rounded-lg">No image uploaded</p>
+                @endif
+            </div>
+
             <!-- Actions -->
             <div class="flex justify-end gap-4 pt-6 border-t border-gray-200">
                 <a href="{{ route('admin.products.index') }}"

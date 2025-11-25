@@ -35,4 +35,12 @@ class Product extends Model
     {
         return $this->hasMany(CartItem::class);
     }
+
+    public function getImageUrlAttribute(): string
+    {
+        if ($this->image) {
+            return asset('storage/' . $this->image);
+        }
+        return 'https://via.placeholder.com/400x300?text=No+Image';
+    }
 }

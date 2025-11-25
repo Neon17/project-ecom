@@ -2,16 +2,16 @@
     @stack('script')
 
     <script src="https://xentixar.github.io/formlytic/src/js/form.js"></script>
-    <footer class="bg-gray-800 text-white py-6 mt-12">
+    <footer class="bg-blue-800 text-white py-8 mt-auto border-t border-blue-900">
         <div class="container mx-auto px-4">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="mb-4 md:mb-0">
-                    <p class="text-sm">&copy; {{ date('Y') }} Ecommerce. All rights reserved.</p>
+                    <p class="text-sm text-blue-100">&copy; {{ date('Y') }} Ecommerce. All rights reserved.</p>
                 </div>
-                <div class="flex gap-4 text-sm">
-                    <a href="#" class="hover:text-gray-300">Privacy Policy</a>
-                    <a href="#" class="hover:text-gray-300">Terms of Service</a>
-                    <a href="#" class="hover:text-gray-300">Contact</a>
+                <div class="flex gap-6 text-sm text-blue-100">
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                    <a href="#" class="hover:text-white transition-colors">Contact</a>
                 </div>
             </div>
         </div>

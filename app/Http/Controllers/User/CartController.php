@@ -5,52 +5,66 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\CartItem;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
-
-
-    public function index(User $user)
+    public function index()
     {
-        $user = User::with('cart')->findOrFail($user->id);
-        $carts = $user->cart()->with(['cartItems', 'user'])->get();
-        return view('user.carts.index', compact('carts'));
+        $user = Auth::user();
+        $cart = $user->cart()->with(['cartItems.product', 'user'])->first();
+        return view('user.carts.index', compact('cart'));
     }
 
     public function create() {}
 
-    public function store(Request $request, User $user)
+    public function store(Request $request, User $user = null)
     {
-        if (!$user->email){
-            $user = User::where("id", Auth::user()->id)->first();
-            if (!$user){
-                return redirect()->route('login');
-            }
+        // Get the authenticated user
+        $user = Auth::user();
+        
+        if (!$user) {
+            return redirect()->route('login');
         }
-        // to store cart, we should have at least one cart item
+
+        // Validate request
         $validated = $request->validate([
-            'product_id' => 'required',
-            'quantity' => 'required',
+            'product_id' => 'required|exists:products,id',
+            'quantity' => 'required|integer|min:1',
         ]);
 
-        $user->load(['cart']);
-
+        // Get the product to check stock
+        $product = Product::findOrFail($validated['product_id']);
+        
+        // Get or create cart for the user
         $cart = $user->cart()->firstOrCreate([
             'user_id' => $user->id
         ]);
-        $cart = $cart->with(['cartItems', 'user'])->first();
+
+        // Check if product already exists in cart
         $cartItem = $cart->cartItems()->where('product_id', $validated['product_id'])->first();
-        info($cartItem);
+        
+        // Calculate total quantity (existing + new)
+        $totalQuantity = $cartItem ? ($cartItem->quantity + $validated['quantity']) : $validated['quantity'];
+        
+        // Check if total quantity exceeds available stock
+        if ($totalQuantity > $product->quantity) {
+            $availableToAdd = $product->quantity - ($cartItem ? $cartItem->quantity : 0);
+            if ($availableToAdd <= 0) {
+                return redirect()->back()->with('error', 'Stock full! This product is already at maximum quantity in your cart.');
+            }
+            return redirect()->back()->with('error', "Stock full! You can only add {$availableToAdd} more of this item. (Available: {$product->quantity}, In cart: {$cartItem->quantity})");
+        }
 
         if ($cartItem) {
-            $cartItem->update([
-                'quantity' => $validated['quantity'],
-            ]);
+            // Update existing cart item quantity (increment it)
+            $cartItem->increment('quantity', $validated['quantity']);
         } else {
-            $cart->cartItems()->create([
+            // Create new cart item
+            $cartItem = $cart->cartItems()->create([
                 'product_id' => $validated['product_id'],
                 'quantity' => $validated['quantity'],
                 'user_id' => $user->id
@@ -107,6 +121,9 @@ class CartController extends Controller
 
     public function destroyItem(CartItem $cartItem)
     {
+        if ($cartItem->cart->cartItems->count() == 1) {
+            $cartItem->cart->delete();
+        }
         $cartItem->delete();
         return redirect()->back()->with('success', 'Cart item deleted successfully');
     }

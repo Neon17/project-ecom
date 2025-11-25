@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
@@ -78,20 +79,18 @@ class ProductController extends Controller
             return redirect()->back()->with('error', 'This product already exists. Please edit the product to change it.');
         }
 
-        Product::create($validated);
-
-        if (array_key_exists('categories', $validated) && $validated['categories']) {
-            $product = Product::latest()->first();
-            $product->categories()->attach($validated['categories']);
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imagePath = $image->store('products', 'public');
+            $validated['image'] = $imagePath;
         }
 
-        // if ($request->hasFile('image')) {
-        //     $image = $request->file('image');
-        //     $imageName = time() . '.' . $image->getClientOriginalExtension();
-        //     $image->move(public_path('images'), $imageName);
-        //     $product->image = $imageName;
-        //     $product->save();
-        // }
+        $product = Product::create($validated);
+
+        if (array_key_exists('categories', $validated) && $validated['categories']) {
+            $product->categories()->attach($validated['categories']);
+        }
 
         return redirect()->route('admin.products.index')->with('success', 'Product created successfully.');
     }
@@ -137,19 +136,23 @@ class ProductController extends Controller
             return redirect()->back()->with('error', 'This slug already exists. Please make the slug unique. Or you change the product name and try again.');
         }
 
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($product->image && Storage::disk('public')->exists($product->image)) {
+                Storage::disk('public')->delete($product->image);
+            }
+            
+            $image = $request->file('image');
+            $imagePath = $image->store('products', 'public');
+            $validated['image'] = $imagePath;
+        }
+
         $product->update($validated);
 
         if (array_key_exists('categories', $validated) && $validated['categories']) {
             $product->categories()->sync($validated['categories']);
         }
-
-        // if ($request->hasFile('image')) {
-        //     $image = $request->file('image');
-        //     $imageName = time() . '.' . $image->getClientOriginalExtension();
-        //     $image->move(public_path('images'), $imageName);
-        //     $product->image = $imageName;
-        //     $product->save();
-        // }
 
         return redirect()->route('admin.products.index')->with('success', 'Product updated successfully.');
     }
@@ -157,6 +160,12 @@ class ProductController extends Controller
     public function destroy(string $id)
     {
         $product = Product::with('categories')->findOrFail($id);
+        
+        // Delete image if exists
+        if ($product->image && Storage::disk('public')->exists($product->image)) {
+            Storage::disk('public')->delete($product->image);
+        }
+        
         $product->delete();
 
         return redirect()->route('admin.products.index');

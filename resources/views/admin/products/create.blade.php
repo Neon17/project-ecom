@@ -16,7 +16,7 @@
             </div>
 
             <!-- Form -->
-            <form action="{{ route('admin.products.store') }}" method="POST"
+            <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data"
                 class="bg-white rounded-lg shadow-sm border border-gray-200">
                 @csrf
 
@@ -102,6 +102,26 @@
                             </div>
                         @endif
                     </div>
+
+                    <!-- Product Image -->
+                    <div>
+                        <label for="image" class="block text-sm font-medium text-gray-700 mb-2">
+                            Product Image
+                        </label>
+                        <input type="file" name="image" id="image" accept="image/*"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                            onchange="previewImage(event)">
+                        @error('image')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                        <p class="text-xs text-gray-500 mt-1">Accepted formats: JPEG, PNG, JPG, GIF, SVG (Max: 2MB)</p>
+                        
+                        <!-- Image Preview -->
+                        <div id="imagePreview" class="mt-4 hidden">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Preview</label>
+                            <img id="preview" class="max-w-xs h-auto rounded-lg border border-gray-300 shadow-sm" alt="Image preview">
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Form Actions -->
@@ -140,4 +160,20 @@
             background-color: #eff6ff;
         }
     </style>
+
+    <script>
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('preview');
+                    const previewContainer = document.getElementById('imagePreview');
+                    preview.src = e.target.result;
+                    previewContainer.classList.remove('hidden');
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
 </x-layouts.admin>
