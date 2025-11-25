@@ -2,151 +2,251 @@
 
 @section('content')
     <!-- Hero Section -->
-    <section class="bg-gradient-to-r from-blue-50 to-indigo-50 py-12">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col lg:flex-row items-center min-h-[75vh]">
-                <div class="lg:w-1/2 mb-8 lg:mb-0">
-                    <h1 class="text-4xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-                        Discover Your Perfect Style
+    <section class="relative bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white py-20">
+        <div class="absolute inset-0 bg-black opacity-20"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="flex flex-col lg:flex-row items-center gap-12">
+                <div class="lg:w-1/2 text-center lg:text-left">
+                    <h1 class="text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">
+                        Welcome to Our Store
                     </h1>
-                    <p class="text-lg lg:text-xl text-gray-600 mb-8 leading-relaxed">
-                        Explore our carefully curated collection of premium products. From fashion essentials to
-                        must-have accessories, we bring you quality and style in every purchase.
+                    <p class="text-xl lg:text-2xl text-blue-100 mb-8 leading-relaxed">
+                        Discover amazing products across multiple categories. Quality you can trust, prices you'll love.
                     </p>
-                    <div class="flex flex-wrap gap-4 mb-6">
+                    <div class="flex flex-wrap gap-4 justify-center lg:justify-start">
                         <a href="{{ route('products.index') }}"
-                            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-lg transition duration-300 flex items-center">
-                            <i class="fas fa-shopping-bag mr-3"></i>
-                            Shop Now
+                            class="bg-white text-blue-900 hover:bg-blue-50 font-bold px-8 py-4 rounded-lg transition duration-300 shadow-lg transform hover:scale-105">
+                            <i class="fas fa-shopping-bag mr-2"></i>
+                            Browse All Products
                         </a>
-                        <a href="#featured"
-                            class="border-2 border-gray-800 hover:bg-gray-800 hover:text-white text-gray-800 font-semibold px-8 py-4 rounded-lg transition duration-300 flex items-center">
-                            <i class="fas fa-star mr-3"></i>
-                            Featured Items
+                        <a href="#categories"
+                            class="bg-blue-700 hover:bg-blue-600 text-white font-bold px-8 py-4 rounded-lg transition duration-300 border-2 border-white">
+                            <i class="fas fa-list mr-2"></i>
+                            Shop by Category
                         </a>
                     </div>
-                    <div class="flex items-center text-gray-500">
-                        <i class="fas fa-shipping-fast mr-2"></i>
-                        <span class="text-sm">Free shipping on orders over $50</span>
+                    <div class="mt-8 flex items-center justify-center lg:justify-start gap-6 text-blue-100">
+                        <div class="flex items-center">
+                            <i class="fas fa-shipping-fast text-2xl mr-2"></i>
+                            <span>Free Shipping</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-shield-alt text-2xl mr-2"></i>
+                            <span>Secure Payment</span>
+                        </div>
                     </div>
                 </div>
                 <div class="lg:w-1/2 flex justify-center">
-                    <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-                        alt="Fashion Collection"
-                        class="rounded-2xl shadow-2xl w-full max-w-lg transform hover:scale-105 transition duration-500">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                            alt="Shopping" 
+                            class="rounded-2xl shadow-2xl transform hover:scale-105 transition duration-500 max-w-md">
+                        <div class="absolute -bottom-6 -right-6 bg-yellow-400 text-gray-900 px-6 py-3 rounded-lg shadow-lg font-bold text-lg">
+                            <i class="fas fa-tag mr-2"></i> Special Offers!
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Featured Categories -->
-    <section class="py-16 bg-white">
+    <!-- Categories Section -->
+    <section id="categories" class="py-16 bg-gray-50">
         <div class="container mx-auto px-4">
             <div class="text-center mb-12">
                 <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">Shop by Category</h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Find exactly what you're looking for in our diverse
-                    categories</p>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                    Browse our diverse collection of products organized by category
+                </p>
             </div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                @php
-                    $categories = [
-                        ['name' => 'Men\'s Fashion', 'icon' => 'fa-tshirt', 'color' => 'blue'],
-                        ['name' => 'Women\'s Fashion', 'icon' => 'fa-female', 'color' => 'pink'],
-                        ['name' => 'Electronics', 'icon' => 'fa-laptop', 'color' => 'green'],
-                        ['name' => 'Home & Living', 'icon' => 'fa-home', 'color' => 'purple'],
-                    ];
-                @endphp
 
-                @foreach ($categories as $category)
-                    <div class="group">
-                        <div
-                            class="bg-white border border-gray-200 rounded-xl p-6 text-center shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 h-full">
-                            <div
-                                class="w-16 h-16 mx-auto mb-4 rounded-full bg-{{ $category['color'] }}-100 flex items-center justify-center group-hover:bg-{{ $category['color'] }}-200 transition duration-300">
-                                <i class="fas {{ $category['icon'] }} text-{{ $category['color'] }}-600 text-2xl"></i>
+            @if($categories->count() > 0)
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
+                    @foreach($categories as $category)
+                        <a href="{{ route('welcome', ['category' => $category->id]) }}#categories"
+                            class="group bg-white rounded-xl p-6 shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 text-center {{ $selectedCategory && $selectedCategory->id == $category->id ? 'ring-4 ring-blue-500 bg-blue-50' : '' }}">
+                            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center group-hover:scale-110 transition duration-300">
+                                <i class="fas fa-box text-white text-2xl"></i>
                             </div>
-                            <h3 class="font-bold text-gray-900 text-lg mb-2">{{ $category['name'] }}</h3>
-                            <p class="text-gray-500 text-sm">Explore collection</p>
-                        </div>
+                            <h3 class="font-bold text-gray-900 mb-2">{{ $category->name }}</h3>
+                            <p class="text-sm text-gray-500">{{ $category->products_count }} {{ Str::plural('product', $category->products_count) }}</p>
+                        </a>
+                    @endforeach
+                </div>
+
+                @if($selectedCategory)
+                    <div class="mt-6 text-center">
+                        <a href="{{ route('welcome') }}#categories" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold">
+                            <i class="fas fa-times mr-2"></i>
+                            Clear filter (Showing: {{ $selectedCategory->name }})
+                        </a>
                     </div>
-                @endforeach
-            </div>
+                @endif
+            @else
+                <div class="text-center py-12">
+                    <i class="fas fa-box-open text-6xl text-gray-300 mb-4"></i>
+                    <p class="text-gray-500 text-lg">No categories available yet.</p>
+                </div>
+            @endif
         </div>
     </section>
 
-    <!-- Featured Products -->
-    <section id="featured" class="py-16 bg-gray-50">
+    <!-- Products Section -->
+    <section class="py-16 bg-white">
         <div class="container mx-auto px-4">
             <div class="flex flex-col lg:flex-row justify-between items-center mb-12">
                 <div class="mb-6 lg:mb-0">
-                    <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-3">Featured Products</h2>
-                    <p class="text-xl text-gray-600">Handpicked items just for you</p>
+                    <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-3">
+                        {{ $selectedCategory ? $selectedCategory->name . ' Products' : 'Featured Products' }}
+                    </h2>
+                    <p class="text-xl text-gray-600">
+                        {{ $products->count() }} {{ Str::plural('product', $products->count()) }} available
+                    </p>
                 </div>
                 <a href="{{ route('products.index') }}"
-                    class="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white font-semibold px-6 py-3 rounded-lg transition duration-300 flex items-center">
-                    View All <i class="fas fa-arrow-right ml-2"></i>
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-lg transition duration-300 flex items-center shadow-lg">
+                    View All Products <i class="fas fa-arrow-right ml-2"></i>
                 </a>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                @for ($i = 0; $i < 4; $i++)
-                    <div
-                        class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden group">
-                        <div class="relative overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
-                                class="w-full h-48 object-cover group-hover:scale-110 transition duration-500"
-                                alt="Product {{ $i + 1 }}">
-                            <div class="absolute top-3 right-3">
-                                <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Hot</span>
+            @if($products->count() > 0)
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    @foreach($products as $product)
+                        <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden group border border-gray-100">
+                            <div class="relative overflow-hidden">
+                                <a href="{{ route('products.show', $product->id) }}">
+                                    <img src="{{ $product->image_url }}" 
+                                        alt="{{ $product->name }}"
+                                        class="w-full h-56 object-cover group-hover:scale-110 transition duration-500">
+                                </a>
+                                @if($product->quantity > 0)
+                                    <div class="absolute top-3 right-3">
+                                        <span class="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                                            In Stock
+                                        </span>
+                                    </div>
+                                @else
+                                    <div class="absolute top-3 right-3">
+                                        <span class="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                                            Out of Stock
+                                        </span>
+                                    </div>
+                                @endif
                             </div>
-                            <div
-                                class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition duration-300">
-                            </div>
-                        </div>
-                        <div class="p-6 flex flex-col h-48">
-                            <h3 class="font-bold text-gray-900 text-lg mb-2">Premium Product {{ $i + 1 }}</h3>
-                            <p class="text-gray-600 text-sm flex-grow mb-4">
-                                High-quality product with excellent features and modern design perfect for everyday use.
-                            </p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-2xl font-bold text-blue-600">${{ rand(20, 100) }}.99</span>
-                                <div class="flex space-x-2">
-                                    <button
-                                        class="w-10 h-10 rounded-full border border-gray-300 hover:border-gray-400 flex items-center justify-center transition duration-300 hover:bg-gray-50">
-                                        <i class="far fa-heart text-gray-600"></i>
-                                    </button>
-                                    <button
-                                        class="w-10 h-10 rounded-full bg-blue-600 hover:bg-blue-700 flex items-center justify-center transition duration-300 text-white add-to-cart">
-                                        <i class="fas fa-shopping-cart"></i>
-                                    </button>
+                            
+                            <div class="p-5">
+                                <a href="{{ route('products.show', $product->id) }}">
+                                    <h3 class="font-bold text-gray-900 text-lg mb-2 line-clamp-2 hover:text-blue-600 transition">
+                                        {{ $product->name }}
+                                    </h3>
+                                </a>
+                                
+                                <p class="text-gray-600 text-sm mb-4 line-clamp-2">
+                                    {{ Str::limit($product->description, 80) }}
+                                </p>
+
+                                @if($product->categories->count() > 0)
+                                    <div class="flex flex-wrap gap-1 mb-4">
+                                        @foreach($product->categories->take(2) as $cat)
+                                            <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
+                                                {{ $cat->name }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                @endif
+
+                                <div class="flex justify-between items-center">
+                                    <div class="text-2xl font-bold text-blue-600">
+                                        NPR {{ number_format($product->price / 100, 2) }}
+                                    </div>
+                                    
+                                    @auth
+                                        @if($product->quantity > 0)
+                                            <form action="{{ route('user.cart.store') }}" method="POST" class="inline">
+                                                @csrf
+                                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                                <input type="hidden" name="quantity" value="1">
+                                                <button type="submit"
+                                                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300 flex items-center text-sm font-semibold shadow-md">
+                                                    <i class="fas fa-cart-plus mr-1"></i>
+                                                    Add
+                                                </button>
+                                            </form>
+                                        @else
+                                            <button disabled
+                                                class="bg-gray-300 text-gray-500 px-4 py-2 rounded-lg cursor-not-allowed text-sm font-semibold">
+                                                <i class="fas fa-ban mr-1"></i>
+                                                Unavailable
+                                            </button>
+                                        @endif
+                                    @else
+                                        <a href="{{ route('login') }}"
+                                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300 text-sm font-semibold shadow-md">
+                                            <i class="fas fa-sign-in-alt mr-1"></i>
+                                            Login
+                                        </a>
+                                    @endauth
                                 </div>
                             </div>
                         </div>
-                    </div>
-                @endfor
-            </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="text-center py-16 bg-gray-50 rounded-2xl">
+                    <i class="fas fa-shopping-basket text-6xl text-gray-300 mb-4"></i>
+                    <h3 class="text-2xl font-bold text-gray-700 mb-2">No Products Found</h3>
+                    <p class="text-gray-500 mb-6">
+                        {{ $selectedCategory ? 'No products available in this category.' : 'No products available at the moment.' }}
+                    </p>
+                    @if($selectedCategory)
+                        <a href="{{ route('welcome') }}" class="text-blue-600 hover:text-blue-800 font-semibold">
+                            Browse all products
+                        </a>
+                    @endif
+                </div>
+            @endif
         </div>
     </section>
 
-    <!-- Shopping Stats -->
-    <section class="py-16 bg-gradient-to-r from-blue-600 to-purple-700 text-white">
+    <!-- Why Choose Us -->
+    <section class="py-16 bg-gradient-to-r from-blue-800 to-indigo-900 text-white">
         <div class="container mx-auto px-4">
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-                <div class="p-6">
-                    <div class="text-5xl lg:text-6xl font-bold mb-2">10K+</div>
-                    <p class="text-blue-100 text-lg">Happy Customers</p>
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-4">Why Shop With Us?</h2>
+                <p class="text-xl text-blue-100">Your satisfaction is our priority</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center p-6">
+                    <div class="w-20 h-20 mx-auto mb-4 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-shipping-fast text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Free Shipping</h3>
+                    <p class="text-blue-100">On all orders across Nepal</p>
                 </div>
-                <div class="p-6">
-                    <div class="text-5xl lg:text-6xl font-bold mb-2">500+</div>
-                    <p class="text-blue-100 text-lg">Products</p>
+                
+                <div class="text-center p-6">
+                    <div class="w-20 h-20 mx-auto mb-4 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-shield-alt text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Secure Payment</h3>
+                    <p class="text-blue-100">100% secure transactions</p>
                 </div>
-                <div class="p-6">
-                    <div class="text-5xl lg:text-6xl font-bold mb-2">50+</div>
-                    <p class="text-blue-100 text-lg">Brands</p>
+                
+                <div class="text-center p-6">
+                    <div class="w-20 h-20 mx-auto mb-4 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-undo text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Easy Returns</h3>
+                    <p class="text-blue-100">7-day return policy</p>
                 </div>
-                <div class="p-6">
-                    <div class="text-5xl lg:text-6xl font-bold mb-2">24/7</div>
-                    <p class="text-blue-100 text-lg">Support</p>
+                
+                <div class="text-center p-6">
+                    <div class="w-20 h-20 mx-auto mb-4 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-headset text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">24/7 Support</h3>
+                    <p class="text-blue-100">Always here to help</p>
                 </div>
             </div>
         </div>
@@ -155,86 +255,22 @@
     <!-- Newsletter -->
     <section class="py-16 bg-white">
         <div class="container mx-auto px-4">
-            <div class="max-w-2xl mx-auto text-center">
-                <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">Stay Updated</h2>
+            <div class="max-w-3xl mx-auto text-center bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-12 shadow-lg">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Stay Updated!</h2>
                 <p class="text-xl text-gray-600 mb-8">
-                    Subscribe to get special offers, free giveaways, and exclusive deals.
+                    Subscribe to get special offers, product updates, and exclusive deals.
                 </p>
-                <div class="flex flex-col sm:flex-row gap-4 mb-4">
+                <div class="flex flex-col sm:flex-row gap-4">
                     <input type="email" placeholder="Enter your email"
-                        class="flex-grow px-6 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg">
+                        class="flex-grow px-6 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg">
                     <button
-                        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-lg transition duration-300 whitespace-nowrap">
+                        class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-4 rounded-lg transition duration-300 whitespace-nowrap shadow-lg">
+                        <i class="fas fa-envelope mr-2"></i>
                         Subscribe
                     </button>
                 </div>
-                <p class="text-gray-500 text-sm">We respect your privacy. Unsubscribe at any time.</p>
+                <p class="text-gray-500 text-sm mt-4">We respect your privacy. Unsubscribe anytime.</p>
             </div>
         </div>
     </section>
-
-    <!-- Shopping Cart Toast Notification -->
-    <div id="cart-toast"
-        class="fixed top-4 right-4 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg transform translate-x-full transition-transform duration-300 z-50 hidden">
-        <div class="flex items-center">
-            <i class="fas fa-check-circle mr-3"></i>
-            <span>Product added to cart successfully!</span>
-        </div>
-    </div>
-@endsection
-
-@section('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add to cart functionality
-            const addToCartButtons = document.querySelectorAll('.add-to-cart');
-            const cartToast = document.getElementById('cart-toast');
-
-            addToCartButtons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-
-                    // Show toast notification
-                    cartToast.classList.remove('hidden');
-                    cartToast.classList.remove('translate-x-full');
-
-                    // Hide toast after 3 seconds
-                    setTimeout(() => {
-                        cartToast.classList.add('translate-x-full');
-                        setTimeout(() => cartToast.classList.add('hidden'), 300);
-                    }, 3000);
-
-                    // Update cart count (simulated)
-                    updateCartCount();
-                });
-            });
-
-            function updateCartCount() {
-                // This would typically be an AJAX call to update the cart
-                const cartCount = document.querySelector('.cart-count');
-                if (cartCount) {
-                    const currentCount = parseInt(cartCount.textContent) || 0;
-                    cartCount.textContent = currentCount + 1;
-
-                    // Add animation
-                    cartCount.classList.add('scale-150');
-                    setTimeout(() => cartCount.classList.remove('scale-150'), 300);
-                }
-            }
-
-            // Smooth scroll for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
-                });
-            });
-        });
-    </script>
 @endsection
