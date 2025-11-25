@@ -76,7 +76,7 @@
                                     <a href="{{ route('products.show', $product->id) }}" class="block relative aspect-w-4 aspect-h-3 bg-gray-100 overflow-hidden">
                                         <img src="{{ $product->image_url ?? 'https://via.placeholder.com/400x300' }}" 
                                              alt="{{ $product->name }}" 
-                                             class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500">
+                                             class="object-cover w-full h-60 group-hover:scale-105 transition-transform duration-500">
                                         @if($product->quantity <= 0)
                                             <div class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
                                                 Out of Stock
