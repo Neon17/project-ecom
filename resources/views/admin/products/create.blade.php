@@ -1,15 +1,15 @@
 <x-layouts.admin>
-    <div class="min-h-screen bg-gray-50 py-8">
+    <div class="min-h-screen bg-gray-50 dark:bg-slate-800 py-8">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Header -->
             <div class="mb-8">
                 <div class="flex items-center justify-between">
                     <div>
-                        <h1 class="text-2xl font-bold text-gray-900">Add New Product</h1>
-                        <p class="text-gray-600 mt-2">Create a new product for your store</p>
+                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Add New Product</h1>
+                        <p class="text-gray-600 dark:text-gray-300 dark:text-gray-600 mt-2">Create a new product for your store</p>
                     </div>
                     <a href="{{ route('admin.products.index') }}"
-                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 dark:bg-slate-800 transition-colors">
                         ← Back to Products
                     </a>
                 </div>
@@ -17,17 +17,17 @@
 
             <!-- Form -->
             <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data"
-                class="bg-white rounded-lg shadow-sm border border-gray-200">
+                class="bg-white dark:bg-slate-900 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700">
                 @csrf
 
                 <div class="p-6 space-y-6">
                     <!-- Product Name -->
                     <div>
-                        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+                        <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-2">
                             Product Name <span class="text-red-500">*</span>
                         </label>
                         <input type="text" name="name" id="name" value="{{ old('name') }}" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                             placeholder="Enter product name">
                         @error('name')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -36,11 +36,11 @@
 
                     <!-- Description -->
                     <div>
-                        <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+                        <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-2">
                             Description <span class="text-red-500">*</span>
                         </label>
                         <textarea name="description" id="description" rows="4" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                             placeholder="Describe the product...">{{ old('description') }}</textarea>
                         @error('description')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -50,12 +50,12 @@
                     <!-- Price & Quantity -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label for="price" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="price" class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-2">
                                 Price (NPR) <span class="text-red-500">*</span>
                             </label>
                             <input type="number" name="price" id="price" value="{{ old('price') }}" required
                                 step="0.01" min="0"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                                 placeholder="0.00">
                             @error('price')
                                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -63,12 +63,12 @@
                         </div>
 
                         <div>
-                            <label for="quantity" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="quantity" class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-2">
                                 Quantity <span class="text-red-500">*</span>
                             </label>
                             <input type="number" name="quantity" id="quantity" value="{{ old('quantity') }}" required
                                 min="0"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                                 placeholder="0">
                             @error('quantity')
                                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -78,12 +78,12 @@
 
                     <!-- Categories -->
                     <div>
-                        <label for="categories" class="block text-sm font-medium text-gray-700 mb-2">
+                        <label for="categories" class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-2">
                             Categories
                         </label>
                         @if ($categories->count() > 0)
                             <select name="categories[]" id="categories" searchable="true" multiple
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}"
                                         {{ in_array($category->id, old('categories', [])) ? 'selected' : '' }}>
@@ -91,7 +91,7 @@
                                     </option>
                                 @endforeach
                             </select>
-                            <p class="text-xs text-gray-500 mt-1">Hold Ctrl/Cmd to select multiple categories</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500 mt-1">Hold Ctrl/Cmd to select multiple categories</p>
                         @else
                             <div class="bg-yellow-50 border border-yellow-200 rounded-md p-4">
                                 <p class="text-sm text-yellow-800">
@@ -105,30 +105,30 @@
 
                     <!-- Product Image -->
                     <div>
-                        <label for="image" class="block text-sm font-medium text-gray-700 mb-2">
+                        <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-2">
                             Product Image
                         </label>
                         <input type="file" name="image" id="image" accept="image/*"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                             onchange="previewImage(event)">
                         @error('image')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
-                        <p class="text-xs text-gray-500 mt-1">Accepted formats: JPEG, PNG, JPG, GIF, SVG (Max: 2MB)</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500 mt-1">Accepted formats: JPEG, PNG, JPG, GIF, SVG (Max: 2MB)</p>
                         
                         <!-- Image Preview -->
                         <div id="imagePreview" class="mt-4 hidden">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Preview</label>
-                            <img id="preview" class="max-w-xs h-auto rounded-lg border border-gray-300 shadow-sm" alt="Image preview">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-2">Preview</label>
+                            <img id="preview" class="max-w-xs h-auto rounded-lg border border-gray-300 dark:border-gray-600 shadow-sm" alt="Image preview">
                         </div>
                     </div>
                 </div>
 
                 <!-- Form Actions -->
-                <div class="bg-gray-50 px-6 py-4 border-t border-gray-200 rounded-b-lg">
+                <div class="bg-gray-50 dark:bg-slate-800 px-6 py-4 border-t border-gray-200 dark:border-slate-700 rounded-b-lg">
                     <div class="flex justify-end space-x-3">
                         <a href="{{ route('admin.products.index') }}"
-                            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
+                            class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-slate-700 dark:bg-slate-800 transition-colors">
                             Cancel
                         </a>
                         <button type="submit"

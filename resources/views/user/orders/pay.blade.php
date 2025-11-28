@@ -1,47 +1,47 @@
 <x-layouts.user>
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-3xl mx-auto">
-        <h1 class="text-3xl font-bold mb-8 text-center text-gray-800">Payment</h1>
+        <h1 class="text-3xl font-bold mb-8 text-center text-gray-800 dark:text-gray-200">Payment</h1>
 
         <!-- Order Summary Card -->
-        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-            <h2 class="text-xl font-semibold mb-4 text-gray-700 border-b pb-2">Order Summary</h2>
+        <div class="bg-white dark:bg-slate-900 rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4 text-gray-700 dark:text-gray-300 dark:text-gray-600 border-b pb-2">Order Summary</h2>
             <div class="flex justify-between items-center mb-2">
-                <span class="text-gray-600">Order ID</span>
-                <span class="font-medium text-gray-900">#{{ $order->id }}</span>
+                <span class="text-gray-600 dark:text-gray-300 dark:text-gray-600">Order ID</span>
+                <span class="font-medium text-gray-900 dark:text-white">#{{ $order->id }}</span>
             </div>
             <div class="flex justify-between items-center mb-2">
-                <span class="text-gray-600">Total Items</span>
-                <span class="font-medium text-gray-900">{{ $order->orderItems->count() }}</span>
+                <span class="text-gray-600 dark:text-gray-300 dark:text-gray-600">Total Items</span>
+                <span class="font-medium text-gray-900 dark:text-white">{{ $order->orderItems->count() }}</span>
             </div>
             <div class="space-y-2 mt-4 pt-4 border-t">
-                 <div class="flex justify-between items-center text-sm text-gray-600">
+                 <div class="flex justify-between items-center text-sm text-gray-600 dark:text-gray-300 dark:text-gray-600">
                     <span>Subtotal</span>
                     <span>NPR {{ number_format($order->orderItems->sum(fn($i) => $i->amount_per_item * $i->quantity), 2) }}</span>
                 </div>
-                <div class="flex justify-between items-center text-sm text-gray-600">
+                <div class="flex justify-between items-center text-sm text-gray-600 dark:text-gray-300 dark:text-gray-600">
                     <span>Tax</span>
                     <span>NPR {{ number_format($order->tax_amount, 2) }}</span>
                 </div>
-                <div class="flex justify-between items-center text-sm text-gray-600">
+                <div class="flex justify-between items-center text-sm text-gray-600 dark:text-gray-300 dark:text-gray-600">
                     <span>Service Charge</span>
                     <span>NPR {{ number_format($order->service_charge, 2) }}</span>
                 </div>
-                <div class="flex justify-between items-center text-sm text-gray-600">
+                <div class="flex justify-between items-center text-sm text-gray-600 dark:text-gray-300 dark:text-gray-600">
                     <span>Delivery Charge</span>
                     <span>NPR {{ number_format($order->delivery_charge, 2) }}</span>
                 </div>
             </div>
             <div class="flex justify-between items-center pt-4 border-t mt-4">
-                <span class="text-xl font-bold text-gray-800">Total Amount</span>
-                <span class="text-2xl font-bold text-blue-600">NPR {{ number_format($order->total, 2) }}</span>
+                <span class="text-xl font-bold text-gray-800 dark:text-gray-200">Total Amount</span>
+                <span class="text-2xl font-bold text-blue-600 dark:text-blue-400">NPR {{ number_format($order->total, 2) }}</span>
             </div>
         </div>
 
         <!-- Payment Method Selection -->
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <h2 class="text-xl font-semibold mb-6 text-gray-700 flex items-center">
-                <i class="fas fa-credit-card mr-2 text-blue-600"></i>
+        <div class="bg-white dark:bg-slate-900 rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-6 text-gray-700 dark:text-gray-300 dark:text-gray-600 flex items-center">
+                <i class="fas fa-credit-card mr-2 text-blue-600 dark:text-blue-400"></i>
                 Select Payment Method
             </h2>
 
@@ -51,14 +51,14 @@
                     <!-- Cash on Delivery -->
                     <label class="cursor-pointer relative">
                         <input type="radio" name="payment_method" value="cash" class="peer sr-only" required>
-                        <div class="p-4 border-2 border-gray-200 rounded-xl hover:border-blue-400 peer-checked:border-blue-600 peer-checked:bg-blue-50 transition-all duration-300 h-full flex flex-col items-center justify-center text-center">
+                        <div class="p-4 border-2 border-gray-200 dark:border-slate-700 rounded-xl hover:border-blue-400 peer-checked:border-blue-600 peer-checked:bg-blue-50 transition-all duration-300 h-full flex flex-col items-center justify-center text-center">
                             <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-3 text-green-600">
                                 <i class="fas fa-money-bill-wave text-2xl"></i>
                             </div>
-                            <span class="font-semibold text-gray-800">Cash On Delivery</span>
-                            <span class="text-xs text-gray-500 mt-1">Pay when you receive</span>
+                            <span class="font-semibold text-gray-800 dark:text-gray-200">Cash On Delivery</span>
+                            <span class="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500 mt-1">Pay when you receive</span>
                         </div>
-                        <div class="absolute top-2 right-2 text-blue-600 opacity-0 peer-checked:opacity-100 transition-opacity">
+                        <div class="absolute top-2 right-2 text-blue-600 dark:text-blue-400 opacity-0 peer-checked:opacity-100 transition-opacity">
                             <i class="fas fa-check-circle"></i>
                         </div>
                     </label>
@@ -66,12 +66,12 @@
                     <!-- Esewa -->
                     <label class="cursor-pointer relative">
                         <input type="radio" name="payment_method" value="esewa" class="peer sr-only">
-                        <div class="p-4 border-2 border-gray-200 rounded-xl hover:border-green-400 peer-checked:border-green-600 peer-checked:bg-green-50 transition-all duration-300 h-full flex flex-col items-center justify-center text-center">
+                        <div class="p-4 border-2 border-gray-200 dark:border-slate-700 rounded-xl hover:border-green-400 peer-checked:border-green-600 peer-checked:bg-green-50 transition-all duration-300 h-full flex flex-col items-center justify-center text-center">
                             <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-3 text-green-600">
                                 <i class="fas fa-wallet text-2xl"></i>
                             </div>
-                            <span class="font-semibold text-gray-800">eSewa</span>
-                            <span class="text-xs text-gray-500 mt-1">Digital Wallet</span>
+                            <span class="font-semibold text-gray-800 dark:text-gray-200">eSewa</span>
+                            <span class="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500 mt-1">Digital Wallet</span>
                         </div>
                         <div class="absolute top-2 right-2 text-green-600 opacity-0 peer-checked:opacity-100 transition-opacity">
                             <i class="fas fa-check-circle"></i>
@@ -81,12 +81,12 @@
                     <!-- Khalti -->
                     <label class="cursor-pointer relative">
                         <input type="radio" name="payment_method" value="khalti" class="peer sr-only">
-                        <div class="p-4 border-2 border-gray-200 rounded-xl hover:border-purple-400 peer-checked:border-purple-600 peer-checked:bg-purple-50 transition-all duration-300 h-full flex flex-col items-center justify-center text-center">
+                        <div class="p-4 border-2 border-gray-200 dark:border-slate-700 rounded-xl hover:border-purple-400 peer-checked:border-purple-600 peer-checked:bg-purple-50 transition-all duration-300 h-full flex flex-col items-center justify-center text-center">
                             <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-3 text-purple-600">
                                 <i class="fas fa-mobile-alt text-2xl"></i>
                             </div>
-                            <span class="font-semibold text-gray-800">Khalti</span>
-                            <span class="text-xs text-gray-500 mt-1">Digital Wallet</span>
+                            <span class="font-semibold text-gray-800 dark:text-gray-200">Khalti</span>
+                            <span class="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500 mt-1">Digital Wallet</span>
                         </div>
                         <div class="absolute top-2 right-2 text-purple-600 opacity-0 peer-checked:opacity-100 transition-opacity">
                             <i class="fas fa-check-circle"></i>
@@ -102,7 +102,7 @@
             </form>
         </div>
         
-        <div class="text-center mt-6 text-gray-500 text-sm">
+        <div class="text-center mt-6 text-gray-500 dark:text-gray-400 dark:text-gray-500 text-sm">
             <i class="fas fa-shield-alt mr-1"></i> Secure Payment Processing
         </div>
     </div>

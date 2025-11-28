@@ -1,36 +1,36 @@
 @extends('components.layouts.guest')
 
 @section('content')
-    <div class="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div class="min-h-screen bg-gray-50 dark:bg-slate-800 py-8 px-4 sm:px-6 lg:px-8">
         <div class="max-w-6xl mx-auto">
             <!-- Breadcrumb -->
             <nav class="mb-6">
-                <div class="flex items-center space-x-2 text-sm text-gray-600">
-                    <a href="{{ route('products.index') }}" class="hover:text-blue-600">
+                <div class="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-300 dark:text-gray-600">
+                    <a href="{{ route('products.index') }}" class="hover:text-blue-600 dark:text-blue-400">
                         Products
                     </a>
                     <span>›</span>
-                    <span class="text-gray-900">{{ $product->name }}</span>
+                    <span class="text-gray-900 dark:text-white">{{ $product->name }}</span>
                 </div>
             </nav>
 
             <!-- Product Card -->
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="bg-white dark:bg-slate-900 rounded-xl shadow-lg overflow-hidden">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
                     <!-- Product Image -->
-                    <div class="flex items-center justify-center bg-gray-50 rounded-xl p-6">
+                    <div class="flex items-center justify-center bg-gray-50 dark:bg-slate-800 rounded-xl p-6">
                         <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
                             class="w-full h-auto max-h-96 object-contain rounded-lg">
                     </div>
 
                     <!-- Product Details -->
                     <div class="flex flex-col">
-                        <h1 class="text-3xl font-bold text-gray-900 mb-4">
+                        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
                             {{ $product->name }}
                         </h1>
 
                         <!-- Description -->
-                        <p class="text-gray-600 mb-6 leading-relaxed">
+                        <p class="text-gray-600 dark:text-gray-300 dark:text-gray-600 mb-6 leading-relaxed">
                             {{ $product->description }}
                         </p>
 
@@ -49,8 +49,8 @@
 
                         <!-- Availability & Price -->
                         <div class="space-y-4 mb-6">
-                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                <span class="text-gray-700">Availability:</span>
+                            <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-slate-800 rounded-lg">
+                                <span class="text-gray-700 dark:text-gray-300 dark:text-gray-600">Availability:</span>
                                 <span class="font-semibold {{ $product->quantity > 0 ? 'text-green-600' : 'text-red-600' }}">
                                     @if($product->quantity > 0)
                                         In Stock ({{ $product->quantity }} items)
@@ -61,8 +61,8 @@
                             </div>
 
                             <div class="flex items-center justify-between p-4 bg-blue-50 rounded-lg border border-blue-100">
-                                <span class="text-lg text-gray-700">Price:</span>
-                                <span class="text-3xl font-bold text-blue-600">
+                                <span class="text-lg text-gray-700 dark:text-gray-300 dark:text-gray-600">Price:</span>
+                                <span class="text-3xl font-bold text-blue-600 dark:text-blue-400">
                                     NPR {{ number_format($product->price, 2) }}
                                 </span>
                             </div>
@@ -70,11 +70,11 @@
 
                         <!-- Quantity Selector -->
                         <div class="mb-6">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Quantity</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-2">Quantity</label>
                             <div class="flex items-center space-x-4">
-                                <div class="flex items-center border border-gray-300 rounded-lg bg-white">
+                                <div class="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-slate-900">
                                     <button type="button"
-                                        class="w-10 h-10 bg-gray-50 hover:bg-gray-100 text-gray-700 font-bold flex items-center justify-center"
+                                        class="w-10 h-10 bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 dark:bg-slate-800 text-gray-700 dark:text-gray-300 dark:text-gray-600 font-bold flex items-center justify-center"
                                         onclick="decreaseQuantity()">
                                         -
                                     </button>
@@ -82,12 +82,12 @@
                                         max="{{ $product->quantity }}"
                                         class="w-16 h-10 text-center border-none focus:outline-none focus:ring-0">
                                     <button type="button"
-                                        class="w-10 h-10 bg-gray-50 hover:bg-gray-100 text-gray-700 font-bold flex items-center justify-center"
+                                        class="w-10 h-10 bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 dark:bg-slate-800 text-gray-700 dark:text-gray-300 dark:text-gray-600 font-bold flex items-center justify-center"
                                         onclick="increaseQuantity()">
                                         +
                                     </button>
                                 </div>
-                                <span class="text-sm text-gray-500">Max: {{ $product->quantity }}</span>
+                                <span class="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">Max: {{ $product->quantity }}</span>
                             </div>
                         </div>
 
@@ -100,21 +100,21 @@
                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
                                     <input type="hidden" name="quantity" id="quantity-hidden" value="1">
                                     <button type="submit" {{ $product->quantity === 0 ? 'disabled' : '' }}
-                                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                                        class="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
                                         <i class="fas fa-shopping-cart mr-2"></i>
                                         Add to Cart
                                     </button>
                                 </form>
                             @else
                                 <a href="{{ route('login') }}"
-                                    class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 text-center">
+                                    class="block w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 text-center">
                                     <i class="fas fa-shopping-cart mr-2"></i>
                                     Add to Cart
                                 </a>
                             @endif
 
                             <a href="{{ route('products.index') }}"
-                                class="block w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-3 px-6 rounded-lg transition-colors duration-300 text-center">
+                                class="block w-full bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:bg-slate-700 text-gray-800 dark:text-gray-200 font-semibold py-3 px-6 rounded-lg transition-colors duration-300 text-center">
                                 <i class="fas fa-arrow-left mr-2"></i>
                                 Continue Shopping
                             </a>
@@ -126,19 +126,19 @@
             <!-- Related Products -->
             @if(isset($relatedProducts) && $relatedProducts->count() > 0)
                 <div class="mt-12">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Related Products</h2>
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Related Products</h2>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         @foreach($relatedProducts as $relatedProduct)
-                            <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                            <div class="bg-white dark:bg-slate-900 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
                                 <a href="{{ route('products.show', $relatedProduct) }}">
-                                    <div class="relative h-48 bg-gray-100">
+                                    <div class="relative h-48 bg-gray-100 dark:bg-slate-800">
                                         <img src="{{ $relatedProduct->image_url }}" alt="{{ $relatedProduct->name }}"
                                             class="w-full h-full object-cover">
                                     </div>
                                     <div class="p-4">
-                                        <h3 class="text-lg font-semibold text-gray-900 mb-2 truncate">{{ $relatedProduct->name }}</h3>
+                                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2 truncate">{{ $relatedProduct->name }}</h3>
                                         <div class="flex items-center justify-between">
-                                            <span class="text-blue-600 font-bold">NPR {{ number_format($relatedProduct->price, 2) }}</span>
+                                            <span class="text-blue-600 dark:text-blue-400 font-bold">NPR {{ number_format($relatedProduct->price, 2) }}</span>
                                         </div>
                                     </div>
                                 </a>

@@ -52,11 +52,11 @@
     </section>
 
     <!-- Categories Section -->
-    <section id="categories" class="py-16 bg-gray-50">
+    <section id="categories" class="py-16 bg-gray-50 dark:bg-slate-800">
         <div class="container mx-auto px-4">
             <div class="text-center mb-12">
-                <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">Shop by Category</h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">Shop by Category</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
                     Browse our diverse collection of products organized by category
                 </p>
             </div>
@@ -65,13 +65,13 @@
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
                     @foreach ($categories as $category)
                         <a href="{{ route('welcome', ['category' => $category->id]) }}#categories-products"
-                            class="group bg-white rounded-xl p-6 shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 text-center {{ $selectedCategory && $selectedCategory->id == $category->id ? 'ring-4 ring-blue-500 bg-blue-50' : '' }}">
+                            class="group bg-white dark:bg-slate-700 rounded-xl p-6 shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 text-center {{ $selectedCategory && $selectedCategory->id == $category->id ? 'ring-4 ring-blue-500 bg-blue-50 dark:bg-slate-600' : '' }}">
                             <div
                                 class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center group-hover:scale-110 transition duration-300">
                                 <i class="fas fa-box text-white text-2xl"></i>
                             </div>
-                            <h3 class="font-bold text-gray-900 mb-2">{{ $category->name }}</h3>
-                            <p class="text-sm text-gray-500">{{ $category->products_count }}
+                            <h3 class="font-bold text-gray-900 dark:text-white mb-2">{{ $category->name }}</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">{{ $category->products_count }}
                                 {{ Str::plural('product', $category->products_count) }}</p>
                         </a>
                     @endforeach
@@ -80,7 +80,7 @@
                 @if ($selectedCategory)
                     <div class="mt-6 text-center">
                         <a href="{{ route('welcome') }}#categories-products"
-                            class="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold">
+                            class="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-semibold">
                             <i class="fas fa-times mr-2"></i>
                             Clear filter (Showing: {{ $selectedCategory->name }})
                         </a>
@@ -88,28 +88,28 @@
                 @endif
             @else
                 <div class="text-center py-12">
-                    <i class="fas fa-box-open text-6xl text-gray-300 mb-4"></i>
-                    <p class="text-gray-500 text-lg">No categories available yet.</p>
+                    <i class="fas fa-box-open text-6xl text-gray-300 dark:text-gray-600 mb-4"></i>
+                    <p class="text-gray-500 dark:text-gray-400 text-lg">No categories available yet.</p>
                 </div>
             @endif
         </div>
     </section>
 
     <!-- Products Section -->
-    <div id="categories-products" class="py-5 bg-white">
-        <section class="py-16 bg-white">
+    <div id="categories-products" class="py-5 bg-white dark:bg-slate-900">
+        <section class="py-16 bg-white dark:bg-slate-900">
             <div class="container mx-auto px-4">
                 <div class="flex flex-col lg:flex-row justify-between items-center mb-12">
                     <div class="mb-6 lg:mb-0">
-                        <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-3">
+                        <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-3">
                             {{ $selectedCategory ? $selectedCategory->name . ' Products' : 'Featured Products' }}
                         </h2>
-                        <p class="text-xl text-gray-600">
+                        <p class="text-xl text-gray-600 dark:text-gray-300">
                             {{ $products->count() }} {{ Str::plural('product', $products->count()) }} available
                         </p>
                     </div>
                     <a href="{{ route('products.index') }}"
-                        class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-lg transition duration-300 flex items-center shadow-lg">
+                        class="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-bold px-6 py-3 rounded-lg transition duration-300 flex items-center shadow-lg">
                         View All Products <i class="fas fa-arrow-right ml-2"></i>
                     </a>
                 </div>
@@ -118,7 +118,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                         @foreach ($products as $product)
                             <div
-                                class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden group border border-gray-100">
+                                class="bg-white dark:bg-slate-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden group border border-gray-100 dark:border-gray-700">
                                 <div class="relative overflow-hidden">
                                     <a href="{{ route('products.show', $product->id) }}">
                                         <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
@@ -144,19 +144,19 @@
                                 <div class="p-5">
                                     <a href="{{ route('products.show', $product->id) }}">
                                         <h3
-                                            class="font-bold text-gray-900 text-lg mb-2 line-clamp-2 hover:text-blue-600 transition">
+                                            class="font-bold text-gray-900 dark:text-white text-lg mb-2 line-clamp-2 hover:text-blue-600 dark:hover:text-blue-400 transition">
                                             {{ $product->name }}
                                         </h3>
                                     </a>
 
-                                    <p class="text-gray-600 text-sm mb-4 line-clamp-2">
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
                                         {{ Str::limit($product->description, 80) }}
                                     </p>
 
                                     @if ($product->categories->count() > 0)
                                         <div class="flex flex-wrap gap-1 mb-4">
                                             @foreach ($product->categories->take(2) as $cat)
-                                                <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
+                                                <span class="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-1 rounded">
                                                     {{ $cat->name }}
                                                 </span>
                                             @endforeach
@@ -175,21 +175,21 @@
                                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
                                                     <input type="hidden" name="quantity" value="1">
                                                     <button type="submit"
-                                                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300 flex items-center text-sm font-semibold shadow-md">
+                                                        class="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition duration-300 flex items-center text-sm font-semibold shadow-md">
                                                         <i class="fas fa-cart-plus mr-1"></i>
                                                         Add
                                                     </button>
                                                 </form>
                                             @else
                                                 <button disabled
-                                                    class="bg-gray-300 text-gray-500 px-4 py-2 rounded-lg cursor-not-allowed text-sm font-semibold">
+                                                    class="bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 px-4 py-2 rounded-lg cursor-not-allowed text-sm font-semibold">
                                                     <i class="fas fa-ban mr-1"></i>
                                                     Unavailable
                                                 </button>
                                             @endif
                                         @else
                                             <a href="{{ route('login') }}"
-                                                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300 text-sm font-semibold shadow-md">
+                                                class="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition duration-300 text-sm font-semibold shadow-md">
                                                 <i class="fas fa-sign-in-alt mr-1"></i>
                                                 Login
                                             </a>
@@ -200,14 +200,14 @@
                         @endforeach
                     </div>
                 @else
-                    <div class="text-center py-16 bg-gray-50 rounded-2xl">
-                        <i class="fas fa-shopping-basket text-6xl text-gray-300 mb-4"></i>
-                        <h3 class="text-2xl font-bold text-gray-700 mb-2">No Products Found</h3>
-                        <p class="text-gray-500 mb-6">
+                    <div class="text-center py-16 bg-gray-50 dark:bg-slate-800 rounded-2xl">
+                        <i class="fas fa-shopping-basket text-6xl text-gray-300 dark:text-gray-600 mb-4"></i>
+                        <h3 class="text-2xl font-bold text-gray-700 dark:text-gray-300 mb-2">No Products Found</h3>
+                        <p class="text-gray-500 dark:text-gray-400 mb-6">
                             {{ $selectedCategory ? 'No products available in this category.' : 'No products available at the moment.' }}
                         </p>
                         @if ($selectedCategory)
-                            <a href="{{ route('welcome') }}" class="text-blue-600 hover:text-blue-800 font-semibold">
+                            <a href="{{ route('welcome') }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-semibold">
                                 Browse all products
                             </a>
                         @endif
@@ -266,24 +266,24 @@
     </section>
 
     <!-- Newsletter -->
-    <section class="py-16 bg-white">
+    <section class="py-16 bg-white dark:bg-slate-900">
         <div class="container mx-auto px-4">
             <div
-                class="max-w-3xl mx-auto text-center bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-12 shadow-lg">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Stay Updated!</h2>
-                <p class="text-xl text-gray-600 mb-8">
+                class="max-w-3xl mx-auto text-center bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-700 rounded-2xl p-12 shadow-lg">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Stay Updated!</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
                     Subscribe to get special offers, product updates, and exclusive deals.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4">
                     <input type="email" placeholder="Enter your email"
-                        class="flex-grow px-6 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg">
+                        class="flex-grow px-6 py-4 border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg">
                     <button
-                        class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-4 rounded-lg transition duration-300 whitespace-nowrap shadow-lg">
+                        class="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-bold px-8 py-4 rounded-lg transition duration-300 whitespace-nowrap shadow-lg">
                         <i class="fas fa-envelope mr-2"></i>
                         Subscribe
                     </button>
                 </div>
-                <p class="text-gray-500 text-sm mt-4">We respect your privacy. Unsubscribe anytime.</p>
+                <p class="text-gray-500 dark:text-gray-400 text-sm mt-4">We respect your privacy. Unsubscribe anytime.</p>
             </div>
         </div>
     </section>

@@ -4,13 +4,13 @@
         <div class="mb-8">
             <div class="flex items-center justify-between">
                 <div>
-                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Dashboard Overview</h1>
-                    <p class="text-gray-600 text-lg">Welcome back! Here's what's happening with your store today.</p>
+                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Dashboard Overview</h1>
+                    <p class="text-gray-600 dark:text-gray-300 dark:text-gray-600 text-lg">Welcome back! Here's what's happening with your store today.</p>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <div class="bg-white rounded-2xl px-4 py-2 shadow-sm border border-gray-100">
-                        <div class="text-sm text-gray-500">Today</div>
-                        <div class="text-lg font-semibold text-gray-900">{{ now()->format('M d, Y') }}</div>
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl px-4 py-2 shadow-sm border border-gray-100 dark:border-gray-700">
+                        <div class="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">Today</div>
+                        <div class="text-lg font-semibold text-gray-900 dark:text-white">{{ now()->format('M d, Y') }}</div>
                     </div>
                 </div>
             </div>
@@ -34,24 +34,24 @@
         <!-- Main Stats Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
             <!-- Total Orders -->
-            <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                 <div class="flex items-center justify-between mb-4">
                     <div class="p-3 bg-blue-50 rounded-xl">
-                        <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                         </svg>
                     </div>
                     <div class="text-right">
                         <div class="text-sm font-medium text-green-600">+12%</div>
-                        <div class="text-xs text-gray-500">from last month</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">from last month</div>
                     </div>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-900 mb-1">{{ $generalStats['total_orders'] }}</h3>
-                <p class="text-gray-600 text-sm">Total Orders</p>
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">{{ $generalStats['total_orders'] }}</h3>
+                <p class="text-gray-600 dark:text-gray-300 dark:text-gray-600 text-sm">Total Orders</p>
             </div>
 
             <!-- Total Products -->
-            <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                 <div class="flex items-center justify-between mb-4">
                     <div class="p-3 bg-green-50 rounded-xl">
                         <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -60,15 +60,15 @@
                     </div>
                     <div class="text-right">
                         <div class="text-sm font-medium text-green-600">+8%</div>
-                        <div class="text-xs text-gray-500">from last month</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">from last month</div>
                     </div>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-900 mb-1">{{ $generalStats['total_products'] }}</h3>
-                <p class="text-gray-600 text-sm">Total Products</p>
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">{{ $generalStats['total_products'] }}</h3>
+                <p class="text-gray-600 dark:text-gray-300 dark:text-gray-600 text-sm">Total Products</p>
             </div>
 
             <!-- Total Users -->
-            <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                 <div class="flex items-center justify-between mb-4">
                     <div class="p-3 bg-purple-50 rounded-xl">
                         <svg class="h-6 w-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -77,15 +77,15 @@
                     </div>
                     <div class="text-right">
                         <div class="text-sm font-medium text-green-600">+15%</div>
-                        <div class="text-xs text-gray-500">from last month</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">from last month</div>
                     </div>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-900 mb-1">{{ $generalStats['total_users'] }}</h3>
-                <p class="text-gray-600 text-sm">Total Users</p>
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">{{ $generalStats['total_users'] }}</h3>
+                <p class="text-gray-600 dark:text-gray-300 dark:text-gray-600 text-sm">Total Users</p>
             </div>
 
             <!-- Total Categories -->
-            <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                 <div class="flex items-center justify-between mb-4">
                     <div class="p-3 bg-amber-50 rounded-xl">
                         <svg class="h-6 w-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -94,24 +94,24 @@
                     </div>
                     <div class="text-right">
                         <div class="text-sm font-medium text-green-600">+5%</div>
-                        <div class="text-xs text-gray-500">from last month</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">from last month</div>
                     </div>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-900 mb-1">{{ $generalStats['total_categories'] }}</h3>
-                <p class="text-gray-600 text-sm">Total Categories</p>
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">{{ $generalStats['total_categories'] }}</h3>
+                <p class="text-gray-600 dark:text-gray-300 dark:text-gray-600 text-sm">Total Categories</p>
             </div>
         </div>
 
         <!-- Analytics Section -->
         <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-8">
             <!-- Order Status -->
-            <div class="xl:col-span-2 bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+            <div class="xl:col-span-2 bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700">
                 <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-xl font-bold text-gray-900">Order Analytics</h2>
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white">Order Analytics</h2>
                     <div class="flex space-x-2">
-                        <button class="px-3 py-1 text-sm bg-blue-50 text-blue-600 rounded-lg font-medium">Week</button>
-                        <button class="px-3 py-1 text-sm text-gray-500 hover:text-gray-700 rounded-lg font-medium">Month</button>
-                        <button class="px-3 py-1 text-sm text-gray-500 hover:text-gray-700 rounded-lg font-medium">Year</button>
+                        <button class="px-3 py-1 text-sm bg-blue-50 text-blue-600 dark:text-blue-400 rounded-lg font-medium">Week</button>
+                        <button class="px-3 py-1 text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:text-gray-600 rounded-lg font-medium">Month</button>
+                        <button class="px-3 py-1 text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:text-gray-600 rounded-lg font-medium">Year</button>
                     </div>
                 </div>
                 
@@ -125,7 +125,7 @@
                         <div class="text-sm font-medium text-yellow-700">Pending</div>
                     </div>
                     <div class="text-center p-4 bg-blue-50 rounded-xl border border-blue-100">
-                        <div class="text-2xl font-bold text-blue-600 mb-1">{{ $orderStats['processing'] }}</div>
+                        <div class="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-1">{{ $orderStats['processing'] }}</div>
                         <div class="text-sm font-medium text-blue-700">Processing</div>
                     </div>
                     <div class="text-center p-4 bg-red-50 rounded-xl border border-red-100">
@@ -136,8 +136,8 @@
             </div>
 
             <!-- Payment Status -->
-            <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-                <h2 class="text-xl font-bold text-gray-900 mb-6">Payment Status</h2>
+            <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Payment Status</h2>
                 
                 <div class="space-y-4">
                     <div class="flex items-center justify-between p-4 bg-green-50 rounded-xl border border-green-100">
@@ -170,10 +170,10 @@
         <!-- Recent Activity Section -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <!-- Recent Orders -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-                    <h2 class="text-lg font-bold text-gray-800">Recent Orders</h2>
-                    <a href="{{ route('admin.orders.index') }}" class="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center gap-1">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-slate-800">
+                    <h2 class="text-lg font-bold text-gray-800 dark:text-gray-200">Recent Orders</h2>
+                    <a href="{{ route('admin.orders.index') }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-700 text-sm font-medium flex items-center gap-1">
                         View All
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </a>
@@ -183,17 +183,17 @@
                     <table class="w-full text-left">
                         <tbody class="divide-y divide-gray-50">
                             @forelse($recentOrders as $order)
-                            <tr class="hover:bg-gray-50 transition-colors duration-200">
+                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700 dark:bg-slate-800 transition-colors duration-200">
                                 <td class="px-6 py-4">
                                     <div class="flex items-center space-x-4">
-                                        <div class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600">
+                                        <div class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-400">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
                                             </svg>
                                         </div>
                                         <div>
-                                            <div class="font-semibold text-gray-900 text-sm">Order #{{ $order->id }}</div>
-                                            <div class="text-xs text-gray-500">{{ $order->user->name ?? 'Guest User' }}</div>
+                                            <div class="font-semibold text-gray-900 dark:text-white text-sm">Order #{{ $order->id }}</div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">{{ $order->user->name ?? 'Guest User' }}</div>
                                         </div>
                                     </div>
                                 </td>
@@ -204,12 +204,12 @@
                                            ($order->status === 'processing' ? 'bg-blue-50 text-blue-700 border-blue-100' : 'bg-red-50 text-red-700 border-red-100')) }}">
                                         {{ ucfirst($order->status) }}
                                     </span>
-                                    <div class="text-xs text-gray-400 mt-1">{{ $order->created_at->format('M d, Y') }}</div>
+                                    <div class="text-xs text-gray-400 dark:text-gray-500 mt-1">{{ $order->created_at->format('M d, Y') }}</div>
                                 </td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="2" class="px-6 py-8 text-center text-gray-500">
+                                <td colspan="2" class="px-6 py-8 text-center text-gray-500 dark:text-gray-400 dark:text-gray-500">
                                     No recent orders
                                 </td>
                             </tr>
@@ -220,10 +220,10 @@
             </div>
 
             <!-- Recent Payments -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-                    <h2 class="text-lg font-bold text-gray-800">Recent Payments</h2>
-                    <a href="{{ route('admin.payments.index') }}" class="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center gap-1">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-slate-800">
+                    <h2 class="text-lg font-bold text-gray-800 dark:text-gray-200">Recent Payments</h2>
+                    <a href="{{ route('admin.payments.index') }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-700 text-sm font-medium flex items-center gap-1">
                         View All
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </a>
@@ -233,7 +233,7 @@
                     <table class="w-full text-left">
                         <tbody class="divide-y divide-gray-50">
                             @forelse($recentPayments as $payment)
-                            <tr class="hover:bg-gray-50 transition-colors duration-200">
+                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700 dark:bg-slate-800 transition-colors duration-200">
                                 <td class="px-6 py-4">
                                     <div class="flex items-center space-x-4">
                                         <div class="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center text-green-600">
@@ -242,8 +242,8 @@
                                             </svg>
                                         </div>
                                         <div>
-                                            <div class="font-semibold text-gray-900 text-sm">Payment #{{ $payment->id }}</div>
-                                            <div class="text-xs text-gray-500">{{ $payment->order->user->name ?? 'Guest User' }}</div>
+                                            <div class="font-semibold text-gray-900 dark:text-white text-sm">Payment #{{ $payment->id }}</div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">{{ $payment->order->user->name ?? 'Guest User' }}</div>
                                         </div>
                                     </div>
                                 </td>
@@ -253,12 +253,12 @@
                                            ($payment->status->value === 'pending' ? 'bg-yellow-50 text-yellow-700 border-yellow-100' : 'bg-red-50 text-red-700 border-red-100') }}">
                                         {{ ucfirst($payment->status->value) }}
                                     </span>
-                                    <div class="text-xs text-gray-400 mt-1">{{ $payment->created_at->format('M d, Y') }}</div>
+                                    <div class="text-xs text-gray-400 dark:text-gray-500 mt-1">{{ $payment->created_at->format('M d, Y') }}</div>
                                 </td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="2" class="px-6 py-8 text-center text-gray-500">
+                                <td colspan="2" class="px-6 py-8 text-center text-gray-500 dark:text-gray-400 dark:text-gray-500">
                                     No recent payments
                                 </td>
                             </tr>

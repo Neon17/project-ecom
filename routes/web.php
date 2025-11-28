@@ -16,6 +16,8 @@ use App\Http\Controllers\User\CartController as UserCartController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\OrderController as UserOrderController;
 use App\Http\Controllers\User\ProfileController as UserProfileController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,8 +48,23 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    // User Routes
-    Route::prefix('user')->name('user.')->group(function () {
+    // Email Verification Routes
+    Route::get('/email/verify', function () {
+        return view('auth.verify-email');
+    })->name('verification.notice');
+
+    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+        $request->fulfill();
+        return redirect()->route('user.dashboard.index')->with('success', 'Email verified successfully!');
+    })->middleware('signed')->name('verification.verify');
+
+    Route::post('/email/verification-notification', function () {
+        Auth::user()->sendEmailVerificationNotification();
+        return back()->with('success', 'Verification link sent!');
+    })->middleware('throttle:6,1')->name('verification.send');
+
+    // User Routes (require email verification)
+    Route::middleware('verified')->prefix('user')->name('user.')->group(function () {
         Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard.index');
         
         // Orders
@@ -69,18 +86,20 @@ Route::middleware('auth')->group(function () {
         Route::delete('/cart-items/{cartItem}', [UserCartController::class, 'destroyItem'])->name('cart-items.destroy');
     });
 
-    // Checkout & Payment (User facing but handled by CheckoutController)
-    Route::get('/carts/{cart}/view-checkout', [CheckoutController::class, 'viewCheckout'])->name('carts.view-checkout');
-    Route::post('/carts/{cart}/checkout', [CheckoutController::class, 'checkout'])->name('carts.checkout');
-    Route::get('/orders/{order}/pay', [CheckoutController::class, 'showPaymentPage'])->name('orders.pay');
-    Route::post('/orders/{order}/pay', [CheckoutController::class, 'processPayment'])->name('orders.process-payment');
-    Route::get('payment/khalti/callback', [CheckoutController::class, 'khaltiCallback'])->name('payment.khalti.callback');
-    Route::get('payment/{payment}/success', [CheckoutController::class, 'successUrl'])->name('payment.success');
-    Route::get('payment/{payment}/failure', [CheckoutController::class, 'failureUrl'])->name('payment.failure');
+    // Checkout & Payment (User facing but handled by CheckoutController) - require email verification
+    Route::middleware('verified')->group(function () {
+        Route::get('/carts/{cart}/view-checkout', [CheckoutController::class, 'viewCheckout'])->name('carts.view-checkout');
+        Route::post('/carts/{cart}/checkout', [CheckoutController::class, 'checkout'])->name('carts.checkout');
+        Route::get('/orders/{order}/pay', [CheckoutController::class, 'showPaymentPage'])->name('orders.pay');
+        Route::post('/orders/{order}/pay', [CheckoutController::class, 'processPayment'])->name('orders.process-payment');
+        Route::get('payment/khalti/callback', [CheckoutController::class, 'khaltiCallback'])->name('payment.khalti.callback');
+        Route::get('payment/{payment}/success', [CheckoutController::class, 'successUrl'])->name('payment.success');
+        Route::get('payment/{payment}/failure', [CheckoutController::class, 'failureUrl'])->name('payment.failure');
+    });
 });
 
-// Admin Routes
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+// Admin Routes (require email verification)
+Route::middleware(['auth', 'admin', 'verified'])->prefix('admin')->name('admin.')->group(function () {
     // Dashboard
     Route::get('/dashboard', [AdminDashboardController::class, 'adminDashboard'])->name('dashboard.index');
     
