@@ -12,7 +12,7 @@
             </a>
             <div class="flex justify-between items-center">
                 <h1 class="text-2xl font-bold text-gray-900">Order #{{ $order->id }}</h1>
-                <a href="{{ route('users.orders.edit', ['order' => $order, 'user' => $order->user]) }}"
+                <a href="{{ route('admin.orders.edit', ['order' => $order]) }}"
                     class="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 text-sm font-medium transition-colors">
                     Edit Order
                 </a>
@@ -58,13 +58,13 @@
                                     <div>
                                         <h3 class="font-semibold text-gray-900">{{ $item->product->name }}</h3>
                                         <p class="text-gray-600 text-sm">NPR
-                                            {{ number_format($item->amount_per_item / 100, 2) }}</p>
+                                            {{ number_format($item->amount_per_item, 2) }}</p>
                                     </div>
                                 </div>
                                 <div class="text-right">
                                     <p class="text-gray-700">Qty: {{ $item->quantity }}</p>
                                     <p class="font-semibold text-gray-900 text-lg">
-                                        NPR {{ number_format(($item->amount_per_item / 100) * $item->quantity, 2) }}
+                                        NPR {{ number_format($item->amount_per_item * $item->quantity, 2) }}
                                     </p>
                                 </div>
                             </div>
@@ -74,13 +74,31 @@
                     <!-- Total -->
                     <div class="mt-8 pt-6 border-t border-gray-200">
                         @php
-                            $totalAmount = $order->orderItems->sum(function ($item) {
-                                return ($item->amount_per_item / 100) * $item->quantity;
+                            $subtotal = $order->orderItems->sum(function ($item) {
+                                return $item->amount_per_item * $item->quantity;
                             });
                         @endphp
-                        <div class="flex justify-between items-center font-bold text-gray-900 text-lg">
+                        <div class="space-y-2 mb-4">
+                            <div class="flex justify-between items-center text-gray-600">
+                                <span>Subtotal:</span>
+                                <span>NPR {{ number_format($subtotal, 2) }}</span>
+                            </div>
+                            <div class="flex justify-between items-center text-gray-600">
+                                <span>Tax:</span>
+                                <span>NPR {{ number_format($order->tax_amount, 2) }}</span>
+                            </div>
+                            <div class="flex justify-between items-center text-gray-600">
+                                <span>Service Charge:</span>
+                                <span>NPR {{ number_format($order->service_charge, 2) }}</span>
+                            </div>
+                            <div class="flex justify-between items-center text-gray-600">
+                                <span>Delivery Charge:</span>
+                                <span>NPR {{ number_format($order->delivery_charge, 2) }}</span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center font-bold text-gray-900 text-lg border-t border-gray-200 pt-4">
                             <span>Total Amount:</span>
-                            <span>NPR {{ number_format($totalAmount, 2) }}</span>
+                            <span>NPR {{ number_format($order->total, 2) }}</span>
                         </div>
                     </div>
                 </div>

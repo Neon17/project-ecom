@@ -18,15 +18,61 @@ class Order extends Model
         'user_id',
         'address_id',
         'status',
+        'tax_amount',
+        'service_charge',
+        'delivery_charge',
+        'total_amount',
     ];
 
-    public function getTotalAttribute(): int
+    public function getTotalAttribute(): float
     {
-        $total = 0;
-        foreach ($this->orderItems as $orderItem) {
-            $total += $orderItem->total;
+        // If total_amount is stored in DB, use it. 
+        // The accessor for total_amount returns float (NPR).
+        if ($this->total_amount !== null) {
+            return $this->total_amount;
         }
-        return $total;
+        
+        // Fallback for legacy orders: sum of items (which are stored in paisa)
+        $totalPaisa = 0;
+        foreach ($this->orderItems as $orderItem) {
+            // orderItem->total() returns paisa (int)
+            $totalPaisa += $orderItem->total();
+        }
+        
+        // Convert to NPR
+        return $totalPaisa / 100;
+    }
+
+    protected function taxAmount(): Attribute
+    {
+        return Attribute::make(
+            get: fn (int $value) => $value / 100,
+            set: fn (float $value) => $value * 100,
+        );
+    }
+
+    protected function serviceCharge(): Attribute
+    {
+        return Attribute::make(
+            get: fn (int $value) => $value / 100,
+            set: fn (float $value) => $value * 100,
+        );
+    }
+
+    protected function deliveryCharge(): Attribute
+    {
+        return Attribute::make(
+            get: fn (int $value) => $value / 100,
+            set: fn (float $value) => $value * 100,
+        );
+    }
+
+    protected function totalAmount(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?int $value) => $value ? $value / 100 : null,
+            set: fn (float $value) => $value * 100,
+        );
     }
 
     public function address(): BelongsTo

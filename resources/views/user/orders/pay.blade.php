@@ -14,9 +14,27 @@
                 <span class="text-gray-600">Total Items</span>
                 <span class="font-medium text-gray-900">{{ $order->orderItems->count() }}</span>
             </div>
+            <div class="space-y-2 mt-4 pt-4 border-t">
+                 <div class="flex justify-between items-center text-sm text-gray-600">
+                    <span>Subtotal</span>
+                    <span>NPR {{ number_format($order->orderItems->sum(fn($i) => $i->amount_per_item * $i->quantity), 2) }}</span>
+                </div>
+                <div class="flex justify-between items-center text-sm text-gray-600">
+                    <span>Tax</span>
+                    <span>NPR {{ number_format($order->tax_amount, 2) }}</span>
+                </div>
+                <div class="flex justify-between items-center text-sm text-gray-600">
+                    <span>Service Charge</span>
+                    <span>NPR {{ number_format($order->service_charge, 2) }}</span>
+                </div>
+                <div class="flex justify-between items-center text-sm text-gray-600">
+                    <span>Delivery Charge</span>
+                    <span>NPR {{ number_format($order->delivery_charge, 2) }}</span>
+                </div>
+            </div>
             <div class="flex justify-between items-center pt-4 border-t mt-4">
                 <span class="text-xl font-bold text-gray-800">Total Amount</span>
-                <span class="text-2xl font-bold text-blue-600">${{ number_format($order->orderItems->sum(fn($i) => $i->amount_per_item * $i->quantity), 2) }}</span>
+                <span class="text-2xl font-bold text-blue-600">NPR {{ number_format($order->total, 2) }}</span>
             </div>
         </div>
 

@@ -39,9 +39,10 @@
                 <div class="lg:w-1/2 flex justify-center">
                     <div class="relative">
                         <img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                            alt="Shopping" 
+                            alt="Shopping"
                             class="rounded-2xl shadow-2xl transform hover:scale-105 transition duration-500 max-w-md">
-                        <div class="absolute -bottom-6 -right-6 bg-yellow-400 text-gray-900 px-6 py-3 rounded-lg shadow-lg font-bold text-lg">
+                        <div
+                            class="absolute -bottom-6 -right-6 bg-yellow-400 text-gray-900 px-6 py-3 rounded-lg shadow-lg font-bold text-lg">
                             <i class="fas fa-tag mr-2"></i> Special Offers!
                         </div>
                     </div>
@@ -60,23 +61,26 @@
                 </p>
             </div>
 
-            @if($categories->count() > 0)
+            @if ($categories->count() > 0)
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
-                    @foreach($categories as $category)
-                        <a href="{{ route('welcome', ['category' => $category->id]) }}#categories"
+                    @foreach ($categories as $category)
+                        <a href="{{ route('welcome', ['category' => $category->id]) }}#categories-products"
                             class="group bg-white rounded-xl p-6 shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 text-center {{ $selectedCategory && $selectedCategory->id == $category->id ? 'ring-4 ring-blue-500 bg-blue-50' : '' }}">
-                            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center group-hover:scale-110 transition duration-300">
+                            <div
+                                class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center group-hover:scale-110 transition duration-300">
                                 <i class="fas fa-box text-white text-2xl"></i>
                             </div>
                             <h3 class="font-bold text-gray-900 mb-2">{{ $category->name }}</h3>
-                            <p class="text-sm text-gray-500">{{ $category->products_count }} {{ Str::plural('product', $category->products_count) }}</p>
+                            <p class="text-sm text-gray-500">{{ $category->products_count }}
+                                {{ Str::plural('product', $category->products_count) }}</p>
                         </a>
                     @endforeach
                 </div>
 
-                @if($selectedCategory)
+                @if ($selectedCategory)
                     <div class="mt-6 text-center">
-                        <a href="{{ route('welcome') }}#categories" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold">
+                        <a href="{{ route('welcome') }}#categories-products"
+                            class="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold">
                             <i class="fas fa-times mr-2"></i>
                             Clear filter (Showing: {{ $selectedCategory->name }})
                         </a>
@@ -92,121 +96,126 @@
     </section>
 
     <!-- Products Section -->
-    <section class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col lg:flex-row justify-between items-center mb-12">
-                <div class="mb-6 lg:mb-0">
-                    <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-3">
-                        {{ $selectedCategory ? $selectedCategory->name . ' Products' : 'Featured Products' }}
-                    </h2>
-                    <p class="text-xl text-gray-600">
-                        {{ $products->count() }} {{ Str::plural('product', $products->count()) }} available
-                    </p>
+    <div id="categories-products" class="py-5 bg-white">
+        <section class="py-16 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col lg:flex-row justify-between items-center mb-12">
+                    <div class="mb-6 lg:mb-0">
+                        <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-3">
+                            {{ $selectedCategory ? $selectedCategory->name . ' Products' : 'Featured Products' }}
+                        </h2>
+                        <p class="text-xl text-gray-600">
+                            {{ $products->count() }} {{ Str::plural('product', $products->count()) }} available
+                        </p>
+                    </div>
+                    <a href="{{ route('products.index') }}"
+                        class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-lg transition duration-300 flex items-center shadow-lg">
+                        View All Products <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
                 </div>
-                <a href="{{ route('products.index') }}"
-                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-lg transition duration-300 flex items-center shadow-lg">
-                    View All Products <i class="fas fa-arrow-right ml-2"></i>
-                </a>
-            </div>
 
-            @if($products->count() > 0)
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                    @foreach($products as $product)
-                        <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden group border border-gray-100">
-                            <div class="relative overflow-hidden">
-                                <a href="{{ route('products.show', $product->id) }}">
-                                    <img src="{{ $product->image_url }}" 
-                                        alt="{{ $product->name }}"
-                                        class="w-full h-56 object-cover group-hover:scale-110 transition duration-500">
-                                </a>
-                                @if($product->quantity > 0)
-                                    <div class="absolute top-3 right-3">
-                                        <span class="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
-                                            In Stock
-                                        </span>
-                                    </div>
-                                @else
-                                    <div class="absolute top-3 right-3">
-                                        <span class="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
-                                            Out of Stock
-                                        </span>
-                                    </div>
-                                @endif
-                            </div>
-                            
-                            <div class="p-5">
-                                <a href="{{ route('products.show', $product->id) }}">
-                                    <h3 class="font-bold text-gray-900 text-lg mb-2 line-clamp-2 hover:text-blue-600 transition">
-                                        {{ $product->name }}
-                                    </h3>
-                                </a>
-                                
-                                <p class="text-gray-600 text-sm mb-4 line-clamp-2">
-                                    {{ Str::limit($product->description, 80) }}
-                                </p>
-
-                                @if($product->categories->count() > 0)
-                                    <div class="flex flex-wrap gap-1 mb-4">
-                                        @foreach($product->categories->take(2) as $cat)
-                                            <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
-                                                {{ $cat->name }}
+                @if ($products->count() > 0)
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                        @foreach ($products as $product)
+                            <div
+                                class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden group border border-gray-100">
+                                <div class="relative overflow-hidden">
+                                    <a href="{{ route('products.show', $product->id) }}">
+                                        <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
+                                            class="w-full h-56 object-cover group-hover:scale-110 transition duration-500">
+                                    </a>
+                                    @if ($product->quantity > 0)
+                                        <div class="absolute top-3 right-3">
+                                            <span
+                                                class="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                                                In Stock
                                             </span>
-                                        @endforeach
-                                    </div>
-                                @endif
-
-                                <div class="flex justify-between items-center">
-                                    <div class="text-2xl font-bold text-blue-600">
-                                        NPR {{ number_format($product->price / 100, 2) }}
-                                    </div>
-                                    
-                                    @auth
-                                        @if($product->quantity > 0)
-                                            <form action="{{ route('user.cart.store') }}" method="POST" class="inline">
-                                                @csrf
-                                                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                                <input type="hidden" name="quantity" value="1">
-                                                <button type="submit"
-                                                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300 flex items-center text-sm font-semibold shadow-md">
-                                                    <i class="fas fa-cart-plus mr-1"></i>
-                                                    Add
-                                                </button>
-                                            </form>
-                                        @else
-                                            <button disabled
-                                                class="bg-gray-300 text-gray-500 px-4 py-2 rounded-lg cursor-not-allowed text-sm font-semibold">
-                                                <i class="fas fa-ban mr-1"></i>
-                                                Unavailable
-                                            </button>
-                                        @endif
+                                        </div>
                                     @else
-                                        <a href="{{ route('login') }}"
-                                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300 text-sm font-semibold shadow-md">
-                                            <i class="fas fa-sign-in-alt mr-1"></i>
-                                            Login
-                                        </a>
-                                    @endauth
+                                        <div class="absolute top-3 right-3">
+                                            <span
+                                                class="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                                                Out of Stock
+                                            </span>
+                                        </div>
+                                    @endif
+                                </div>
+
+                                <div class="p-5">
+                                    <a href="{{ route('products.show', $product->id) }}">
+                                        <h3
+                                            class="font-bold text-gray-900 text-lg mb-2 line-clamp-2 hover:text-blue-600 transition">
+                                            {{ $product->name }}
+                                        </h3>
+                                    </a>
+
+                                    <p class="text-gray-600 text-sm mb-4 line-clamp-2">
+                                        {{ Str::limit($product->description, 80) }}
+                                    </p>
+
+                                    @if ($product->categories->count() > 0)
+                                        <div class="flex flex-wrap gap-1 mb-4">
+                                            @foreach ($product->categories->take(2) as $cat)
+                                                <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
+                                                    {{ $cat->name }}
+                                                </span>
+                                            @endforeach
+                                        </div>
+                                    @endif
+
+                                    <div class="flex justify-between items-center">
+                                        <div class="text-2xl font-bold text-blue-600">
+                                            NPR {{ number_format($product->price / 100, 2) }}
+                                        </div>
+
+                                        @auth
+                                            @if ($product->quantity > 0)
+                                                <form action="{{ route('user.cart.store') }}" method="POST" class="inline">
+                                                    @csrf
+                                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                                    <input type="hidden" name="quantity" value="1">
+                                                    <button type="submit"
+                                                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300 flex items-center text-sm font-semibold shadow-md">
+                                                        <i class="fas fa-cart-plus mr-1"></i>
+                                                        Add
+                                                    </button>
+                                                </form>
+                                            @else
+                                                <button disabled
+                                                    class="bg-gray-300 text-gray-500 px-4 py-2 rounded-lg cursor-not-allowed text-sm font-semibold">
+                                                    <i class="fas fa-ban mr-1"></i>
+                                                    Unavailable
+                                                </button>
+                                            @endif
+                                        @else
+                                            <a href="{{ route('login') }}"
+                                                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300 text-sm font-semibold shadow-md">
+                                                <i class="fas fa-sign-in-alt mr-1"></i>
+                                                Login
+                                            </a>
+                                        @endauth
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
-                </div>
-            @else
-                <div class="text-center py-16 bg-gray-50 rounded-2xl">
-                    <i class="fas fa-shopping-basket text-6xl text-gray-300 mb-4"></i>
-                    <h3 class="text-2xl font-bold text-gray-700 mb-2">No Products Found</h3>
-                    <p class="text-gray-500 mb-6">
-                        {{ $selectedCategory ? 'No products available in this category.' : 'No products available at the moment.' }}
-                    </p>
-                    @if($selectedCategory)
-                        <a href="{{ route('welcome') }}" class="text-blue-600 hover:text-blue-800 font-semibold">
-                            Browse all products
-                        </a>
-                    @endif
-                </div>
-            @endif
-        </div>
-    </section>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="text-center py-16 bg-gray-50 rounded-2xl">
+                        <i class="fas fa-shopping-basket text-6xl text-gray-300 mb-4"></i>
+                        <h3 class="text-2xl font-bold text-gray-700 mb-2">No Products Found</h3>
+                        <p class="text-gray-500 mb-6">
+                            {{ $selectedCategory ? 'No products available in this category.' : 'No products available at the moment.' }}
+                        </p>
+                        @if ($selectedCategory)
+                            <a href="{{ route('welcome') }}" class="text-blue-600 hover:text-blue-800 font-semibold">
+                                Browse all products
+                            </a>
+                        @endif
+                    </div>
+                @endif
+            </div>
+        </section>
+    </div>
 
     <!-- Why Choose Us -->
     <section class="py-16 bg-gradient-to-r from-blue-800 to-indigo-900 text-white">
@@ -215,34 +224,38 @@
                 <h2 class="text-4xl font-bold mb-4">Why Shop With Us?</h2>
                 <p class="text-xl text-blue-100">Your satisfaction is our priority</p>
             </div>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <div class="text-center p-6">
-                    <div class="w-20 h-20 mx-auto mb-4 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                    <div
+                        class="w-20 h-20 mx-auto mb-4 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
                         <i class="fas fa-shipping-fast text-4xl"></i>
                     </div>
                     <h3 class="text-xl font-bold mb-2">Free Shipping</h3>
                     <p class="text-blue-100">On all orders across Nepal</p>
                 </div>
-                
+
                 <div class="text-center p-6">
-                    <div class="w-20 h-20 mx-auto mb-4 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                    <div
+                        class="w-20 h-20 mx-auto mb-4 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
                         <i class="fas fa-shield-alt text-4xl"></i>
                     </div>
                     <h3 class="text-xl font-bold mb-2">Secure Payment</h3>
                     <p class="text-blue-100">100% secure transactions</p>
                 </div>
-                
+
                 <div class="text-center p-6">
-                    <div class="w-20 h-20 mx-auto mb-4 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                    <div
+                        class="w-20 h-20 mx-auto mb-4 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
                         <i class="fas fa-undo text-4xl"></i>
                     </div>
                     <h3 class="text-xl font-bold mb-2">Easy Returns</h3>
                     <p class="text-blue-100">7-day return policy</p>
                 </div>
-                
+
                 <div class="text-center p-6">
-                    <div class="w-20 h-20 mx-auto mb-4 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                    <div
+                        class="w-20 h-20 mx-auto mb-4 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
                         <i class="fas fa-headset text-4xl"></i>
                     </div>
                     <h3 class="text-xl font-bold mb-2">24/7 Support</h3>
@@ -255,7 +268,8 @@
     <!-- Newsletter -->
     <section class="py-16 bg-white">
         <div class="container mx-auto px-4">
-            <div class="max-w-3xl mx-auto text-center bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-12 shadow-lg">
+            <div
+                class="max-w-3xl mx-auto text-center bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-12 shadow-lg">
                 <h2 class="text-4xl font-bold text-gray-900 mb-4">Stay Updated!</h2>
                 <p class="text-xl text-gray-600 mb-8">
                     Subscribe to get special offers, product updates, and exclusive deals.

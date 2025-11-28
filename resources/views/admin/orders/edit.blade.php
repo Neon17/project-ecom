@@ -2,7 +2,7 @@
     <div class="w-full py-6 px-4 sm:px-6 lg:px-8">
         <!-- Header -->
         <div class="mb-8">
-            <a href="{{ route('users.orders.show', [$order->user_id, $order->id]) }}"
+            <a href="{{ route('admin.orders.show', ['order' => $order->id]) }}"
                 class="inline-flex items-center text-blue-500 hover:text-blue-700 text-sm font-medium mb-4 transition-colors">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -13,7 +13,7 @@
             <h1 class="text-2xl font-bold text-gray-900">Edit Order #{{ $order->id }}</h1>
         </div>
 
-        <form action="{{ route('users.orders.update', ['user' => $order->user_id, 'order' => $order->id]) }}"
+        <form action="{{ route('admin.orders.update', [$order->user_id, $order->id]) }}"
             method="POST" class="space-y-6">
             @csrf
             @method('PUT')
@@ -133,7 +133,7 @@
             </div>
 
             <div class="flex justify-end gap-4 pt-4">
-                <a href="{{ route('users.orders.show', [$order->user_id, $order->id]) }}"
+                <a href="{{ route('admin.orders.show', ['order' => $order->id]) }}"
                     class="px-6 py-3 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 font-medium transition-colors">
                     Cancel
                 </a>

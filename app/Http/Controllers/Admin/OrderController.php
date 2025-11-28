@@ -128,9 +128,12 @@ class OrderController extends Controller
         return view('admin.orders.edit', compact('order'));
     }
 
-    public function update(Request $request, string $userId, string $orderId)
+    public function update(Request $request, string $orderId)
     {
         $order = Order::findOrFail($orderId);
+        $order->load(['user', 'address', 'orderItems.product']);
+        $userId = $order->user_id;
+
         $validated = $request->validate([
             'status' => 'required|in:' . implode(',', enum_values(OrderStatusEnum::class)),
             'address' => 'required|array',
@@ -160,7 +163,7 @@ class OrderController extends Controller
             ]);
         }
 
-        return redirect()->route('users.orders.show', [$userId, $orderId])
+        return redirect()->route('admin.orders.show', $order->id)
             ->with('success', 'Order updated successfully!');
     }
 

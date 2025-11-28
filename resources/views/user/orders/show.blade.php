@@ -28,8 +28,8 @@
                                 <p class="text-gray-500 text-sm">Quantity: {{ $item->quantity }}</p>
                             </div>
                             <div class="text-right">
-                                <p class="font-bold text-gray-900">${{ number_format($item->amount_per_item / 100, 2) }}</p>
-                                <p class="text-gray-500 text-sm">Total: ${{ number_format(($item->amount_per_item * $item->quantity) / 100, 2) }}</p>
+                                <p class="font-bold text-gray-900">NPR {{ number_format($item->amount_per_item, 2) }}</p>
+                                <p class="text-gray-500 text-sm">Total: NPR {{ number_format($item->amount_per_item * $item->quantity, 2) }}</p>
                             </div>
                         </div>
                     @endforeach
@@ -37,15 +37,23 @@
                 <div class="bg-gray-50 px-6 py-4 border-t border-gray-100">
                     <div class="flex justify-between items-center mb-2">
                         <span class="text-gray-600">Subtotal</span>
-                        <span class="font-medium text-gray-900">${{ number_format($order->total_amount / 100, 2) }}</span>
+                        <span class="font-medium text-gray-900">NPR {{ number_format($order->orderItems->sum(fn($i) => $i->amount_per_item * $i->quantity), 2) }}</span>
                     </div>
                     <div class="flex justify-between items-center mb-2">
-                        <span class="text-gray-600">Shipping</span>
-                        <span class="font-medium text-gray-900">Free</span>
+                        <span class="text-gray-600">Tax</span>
+                        <span class="font-medium text-gray-900">NPR {{ number_format($order->tax_amount, 2) }}</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-gray-600">Service Charge</span>
+                        <span class="font-medium text-gray-900">NPR {{ number_format($order->service_charge, 2) }}</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-gray-600">Delivery Charge</span>
+                        <span class="font-medium text-gray-900">NPR {{ number_format($order->delivery_charge, 2) }}</span>
                     </div>
                     <div class="flex justify-between items-center pt-2 border-t border-gray-200">
                         <span class="text-lg font-bold text-gray-900">Total</span>
-                        <span class="text-lg font-bold text-blue-600">${{ number_format($order->total_amount / 100, 2) }}</span>
+                        <span class="text-lg font-bold text-blue-600">NPR {{ number_format($order->total, 2) }}</span>
                     </div>
                 </div>
             </div>

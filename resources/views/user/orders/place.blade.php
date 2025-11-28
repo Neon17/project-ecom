@@ -138,7 +138,7 @@
                                 </div>
 
                                 <div class="text-sm font-semibold text-gray-900">
-                                    NPR {{ number_format(($item->product->price / 100) * $item->quantity, 2) }}
+                                    NPR {{ number_format($item->product->price * $item->quantity, 2) }}
                                 </div>
 
                             </div>
@@ -149,7 +149,7 @@
                         <div class="flex justify-between text-gray-600">
                             <span>Subtotal</span>
                             <span>NPR
-                                {{ number_format($cart->cartItems->sum(fn($i) => ($i->product->price / 100) * $i->quantity), 2) }}</span>
+                                {{ number_format($cart->cartItems->sum(fn($i) => $i->product->price * $i->quantity), 2) }}</span>
                         </div>
 
                         <div class="flex justify-between text-gray-600">
@@ -160,7 +160,7 @@
                         <div class="flex justify-between text-xl font-bold text-gray-900 pt-4 border-t mt-4">
                             <span>Total</span>
                             <span>NPR
-                                {{ number_format($cart->cartItems->sum(fn($i) => ($i->product->price / 100) * $i->quantity), 2) }}</span>
+                                {{ number_format($cart->cartItems->sum(fn($i) => $i->product->price * $i->quantity), 2) }}</span>
                         </div>
                     </div>
 

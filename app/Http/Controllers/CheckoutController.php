@@ -8,6 +8,7 @@ use App\Enums\PaymentStatusEnum;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -58,17 +59,46 @@ class CheckoutController extends Controller
         }
 
         $order = DB::transaction(function () use ($request, $address, $cart) {
+            // Lock the products to prevent race conditions (e.g. stock changes)
+            // Although we aren't decrementing stock here yet, this is the requested "locking" logic.
+            // We fetch the products involved in the cart to lock their rows.
+            $productIds = $cart->cartItems->pluck('product_id');
+            // We don't strictly need the result, just the lock.
+            // But usually you'd check stock here.
+            Product::whereIn('id', $productIds)->lockForUpdate()->get();
+
+            // Calculate charges
+            // Calculate charges
+            // product->price is float (NPR)
+            $subtotal = $cart->cartItems->sum(fn($item) => $item->product->price * $item->quantity);
+            
+            // Tax 10% of subtotal
+            $taxAmount = $subtotal * 0.10; 
+            
+            $serviceCharge = 0;
+            $deliveryCharge = 0;
+            $totalAmount = $subtotal + $taxAmount + $serviceCharge + $deliveryCharge;
+
             $order = Order::create([
                 'user_id' => $request->user()->id,
                 'address_id' => $address->id,
                 'status' => OrderStatusEnum::Pending->value,
+                'tax_amount' => $taxAmount,
+                'service_charge' => $serviceCharge,
+                'delivery_charge' => $deliveryCharge,
+                'total_amount' => $totalAmount,
             ]);
 
             foreach ($cart->cartItems as $cartItem) {
                 $order->orderItems()->create([
                     'product_id' => $cartItem->product_id,
                     'quantity' => $cartItem->quantity,
-                    'amount_per_item' => $cartItem->amount_per_item || $cartItem->product->price,
+                    // product->price is already divided by 100 via accessor, but we need to store it as float?
+                    // Wait, OrderItem amount_per_item also has an accessor that multiplies by 100 on set.
+                    // So if we pass the float value (e.g. 200.00), the mutator will store 20000.
+                    // $cartItem->product->price returns float (200.00).
+                    // So passing it directly is correct.
+                    'amount_per_item' => $cartItem->product->price,
                 ]);
             }
 
@@ -118,9 +148,6 @@ class CheckoutController extends Controller
             return $this->payOrderViaKhalti($request, $order);
         }
 
-        // Handle other payment methods or default success for COD (if applicable)
-        // For now, redirect to success if not Esewa (or handle accordingly)
-
         return redirect()->route('user.orders.index')->with('success', 'Payment method selected.');
     }
 
@@ -147,10 +174,20 @@ class CheckoutController extends Controller
             return $item->amount_per_item * $item->quantity;
         });
 
-        $tax_amount = 10;
-        $product_service_charge = 0;
-        $product_delivery_charge = 0;
-        $total_amount = $amount + $tax_amount + $product_service_charge + $product_delivery_charge;
+        // Use stored charges from order
+        $tax_amount = $order->tax_amount;
+        $product_service_charge = $order->service_charge;
+        $product_delivery_charge = $order->delivery_charge;
+        $total_amount = $order->total_amount;
+
+        // Fallback if total_amount is not set (legacy orders)
+        if ($total_amount === null) {
+             // Calculate 10% tax on amount
+             $tax_amount = $amount * 0.10;
+             $product_service_charge = 0;
+             $product_delivery_charge = 0;
+             $total_amount = $amount + $tax_amount + $product_service_charge + $product_delivery_charge;
+        }
 
         $transaction_uuid = (string) time();
 
@@ -216,11 +253,18 @@ class CheckoutController extends Controller
             'status' => 'pending',
         ]);
 
-        $amount = $order->orderItems->sum(function ($item) {
-            return $item->amount_per_item * $item->quantity;
-        });
+        $amount = $order->total_amount;
+        
+        // Fallback for legacy orders
+        if (!$amount) {
+             $subtotal = $order->orderItems->sum(function ($item) {
+                return $item->amount_per_item * $item->quantity;
+            });
+            $amount = $subtotal; // Khalti usually takes total amount
+        }
 
         // Khalti expects amount in paisa (multiply by 100)
+        // Our amount is already float (e.g. 200.00), so multiply by 100 -> 20000
         $amountInPaisa = $amount * 100;
 
         $payload = [
