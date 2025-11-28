@@ -14,7 +14,7 @@
                             <div class="mb-6">
                                 <label for="search" class="block text-sm font-medium text-gray-700 mb-2">Search</label>
                                 <input type="text" name="search" id="search" value="{{ request('search') }}" 
-                                    class="w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500 text-sm"
+                                    class="w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500 text-sm p-2"
                                     placeholder="Search products...">
                             </div>
 

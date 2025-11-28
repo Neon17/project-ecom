@@ -17,8 +17,7 @@ class AddressController extends Controller
 
     public function allIndex()
     {
-        $addresses = Address::with('user')->get();
-        info($addresses);
+        $addresses = Address::with('user')->paginate(30);
         return view('admin.addresses.index', compact('addresses'));
     }
 
