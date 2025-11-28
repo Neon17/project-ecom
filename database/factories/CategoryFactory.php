@@ -17,7 +17,12 @@ class CategoryFactory extends Factory
      */
     public function definition(): array
     {
-        $name = fake()->unique()->word();
+        $categories = [
+            'Electronics', 'Fashion', 'Home & Decor', 'Beauty & Health', 
+            'Sports & Outdoors', 'Books', 'Toys & Games', 'Automotive'
+        ];
+        
+        $name = fake()->unique()->randomElement($categories);
 
         return [
             'name' => $name,

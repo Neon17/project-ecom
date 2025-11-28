@@ -117,12 +117,25 @@ class ProductController extends Controller
         }
 
         if ($relatedProducts->isEmpty()) {
-            $relatedProducts = Product::whereHas('categories', function ($q) use ($product) {
-                $q->whereIn('categories.id', $product->categories->pluck('id'));
-            })
+            $categoryIds = $product->categories->pluck('id');
+            
+            if ($categoryIds->isNotEmpty()) {
+                $relatedProducts = Product::whereHas('categories', function ($q) use ($categoryIds) {
+                    $q->whereIn('categories.id', $categoryIds);
+                })
                 ->where('id', '!=', $product->id)
+                ->inRandomOrder()
                 ->take(4)
                 ->get();
+            }
+            
+            // If still empty (e.g., no other products in category), fetch random products
+            if ($relatedProducts->isEmpty()) {
+                $relatedProducts = Product::where('id', '!=', $product->id)
+                    ->inRandomOrder()
+                    ->take(4)
+                    ->get();
+            }
         }
 
         return view('products.show', compact('product', 'relatedProducts'));
