@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 use function Laravel\Prompts\error;
 
@@ -56,22 +57,26 @@ class CheckoutController extends Controller
             $address = $request->user()->addresses()->create($validated['address']);
         }
 
-        $order = Order::create([
-            'user_id' => $request->user()->id,
-            'address_id' => $address->id,
-            'status' => OrderStatusEnum::Pending->value,
-        ]);
-
-        foreach ($cart->cartItems as $cartItem) {
-            $order->orderItems()->create([
-                'product_id' => $cartItem->product_id,
-                'quantity' => $cartItem->quantity,
-                'amount_per_item' => $cartItem->amount_per_item || $cartItem->product->price,
+        $order = DB::transaction(function () use ($request, $address, $cart) {
+            $order = Order::create([
+                'user_id' => $request->user()->id,
+                'address_id' => $address->id,
+                'status' => OrderStatusEnum::Pending->value,
             ]);
-        }
 
-        $cart->cartItems()->delete();
-        $cart->delete();
+            foreach ($cart->cartItems as $cartItem) {
+                $order->orderItems()->create([
+                    'product_id' => $cartItem->product_id,
+                    'quantity' => $cartItem->quantity,
+                    'amount_per_item' => $cartItem->amount_per_item || $cartItem->product->price,
+                ]);
+            }
+
+            $cart->cartItems()->delete();
+            $cart->delete();
+
+            return $order;
+        });
 
         return redirect()->route('orders.pay', $order->id)->with('success', 'Order placed successfully. Please proceed to payment.');
     }
@@ -162,7 +167,7 @@ class CheckoutController extends Controller
         $signed_field_names = "total_amount,transaction_uuid,product_code";
 
         $payment->update([
-            'transaction_id' => $transaction_uuid,
+            'transaction_code' => $transaction_uuid,
             'total_amount' => $total_amount,
         ]);
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\PaymentMethodEnum;
 use App\Enums\PaymentStatusEnum;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,7 +20,16 @@ class Payment extends Model
         'payment_method',
         'transaction_code',
         'status',
+        'total_amount',
     ];
+
+    protected function totalAmount(): Attribute
+    {
+        return Attribute::make(
+            get: fn (int $value) => $value / 100,
+            set: fn (float $value) => $value * 100,
+        );
+    }
 
     protected $casts = [
         'payment_method' => PaymentMethodEnum::class,

@@ -105,7 +105,7 @@
                                         
                                         <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
                                             <span class="text-xl font-bold text-gray-900">
-                                                NPR {{ number_format($product->price / 100, 2) }}
+                                                NPR {{ number_format($product->price, 2) }}
                                             </span>
                                             
                                             <form action="{{ route('user.cart.store') }}" method="POST">

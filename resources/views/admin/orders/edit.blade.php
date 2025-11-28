@@ -63,7 +63,7 @@
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Price (NPR)</label>
                                     <input type="number" name="items[{{ $index }}][amount_per_item]"
-                                        value="{{ $item->amount_per_item*1/100 }}" step="0.01"
+                                        value="{{ $item->amount_per_item*1 }}" step="0.01"
                                         min="0"
                                         class="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
                                 </div>

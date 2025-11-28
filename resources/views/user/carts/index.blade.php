@@ -19,7 +19,7 @@
                         @foreach ($cartItems as $cartItem)
                             @php
                                 $product = $cartItem->product;
-                                $itemTotal = ($product->price / 100) * $cartItem->quantity;
+                                $itemTotal = $product->price * $cartItem->quantity;
                                 $grandTotal += $itemTotal;
                             @endphp
 
@@ -54,7 +54,7 @@
                                                 </div>
                                                 <div>
                                                     <span class="text-sm text-gray-500">Price:</span>
-                                                    <span class="font-semibold text-gray-900 ml-2">NPR {{ number_format($product->price / 100, 2) }}</span>
+                                                    <span class="font-semibold text-gray-900 ml-2">NPR {{ number_format($product->price, 2) }}</span>
                                                 </div>
                                             </div>
 

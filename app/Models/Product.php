@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -42,5 +43,13 @@ class Product extends Model
             return asset('storage/' . $this->image);
         }
         return 'https://via.placeholder.com/400x300?text=No+Image';
+    }
+
+    protected function price(): Attribute
+    {
+        return Attribute::make(
+            get: fn (int $value) => $value / 100,
+            set: fn (float $value) => $value * 100,
+        );
     }
 }

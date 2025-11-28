@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Ramsey\Uuid\Type\Integer;
 
 class OrderItem extends Model
 {
@@ -21,12 +21,20 @@ class OrderItem extends Model
 
     public function total(): int
     {
-        return intval($this->amount_per_item * $this->quantity);
+        return $this->getRawOriginal('amount_per_item') * $this->quantity;
     }
 
     public function getTotalAttribute(): int
     {
         return $this->total();
+    }
+
+    protected function amountPerItem(): Attribute
+    {
+        return Attribute::make(
+            get: fn (int $value) => $value / 100,
+            set: fn (float $value) => $value * 100,
+        );
     }
 
     public function order(): BelongsTo

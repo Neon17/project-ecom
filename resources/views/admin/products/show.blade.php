@@ -41,7 +41,7 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Price (NPR)</label>
                             <div class="px-3 py-2 bg-gray-50 border border-gray-300 rounded-md text-gray-900">
-                                {{ number_format($product->price / 100, 2) }}
+                                {{ number_format($product->price, 2) }}
                             </div>
                         </div>
                         <div>

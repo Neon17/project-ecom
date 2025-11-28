@@ -63,7 +63,7 @@
                             <div class="flex items-center justify-between p-4 bg-blue-50 rounded-lg border border-blue-100">
                                 <span class="text-lg text-gray-700">Price:</span>
                                 <span class="text-3xl font-bold text-blue-600">
-                                    NPR {{ number_format($product->price / 100, 2) }}
+                                    NPR {{ number_format($product->price, 2) }}
                                 </span>
                             </div>
                         </div>
@@ -122,6 +122,31 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Related Products -->
+            @if(isset($relatedProducts) && $relatedProducts->count() > 0)
+                <div class="mt-12">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Related Products</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        @foreach($relatedProducts as $relatedProduct)
+                            <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                                <a href="{{ route('products.show', $relatedProduct) }}">
+                                    <div class="relative h-48 bg-gray-100">
+                                        <img src="{{ $relatedProduct->image_url }}" alt="{{ $relatedProduct->name }}"
+                                            class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="p-4">
+                                        <h3 class="text-lg font-semibold text-gray-900 mb-2 truncate">{{ $relatedProduct->name }}</h3>
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-blue-600 font-bold">NPR {{ number_format($relatedProduct->price, 2) }}</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
 

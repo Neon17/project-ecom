@@ -54,7 +54,7 @@
                             <label for="price" class="block text-sm font-medium text-gray-700 mb-2">
                                 Price (NPR) <span class="text-red-500">*</span>
                             </label>
-                            <input type="number" name="price" id="price" value="{{ old('price', number_format($product->price / 100, 2)) }}" required
+                            <input type="number" name="price" id="price" value="{{ old('price', number_format($product->price, 2)) }}" required
                                 step="0.01" min="0"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                                 placeholder="0.00">
@@ -96,7 +96,7 @@
                             Categories
                         </label>
                         @if ($categories->count() > 0)
-                            <select name="categories[]" id="categories" multiple
+                            <select name="categories[]" id="categories" searchable="true" multiple
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}"

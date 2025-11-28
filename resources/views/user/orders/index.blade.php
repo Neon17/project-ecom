@@ -82,7 +82,7 @@
                                 @endif
                             </td>
                             <td class="px-6 py-4 font-medium text-gray-900">
-                                NPR {{ number_format($order->total_amount / 100, 2) }}</td>
+                                NPR {{ number_format($order->total / 100, 2) }}</td>
                             <td class="px-6 py-4">
                                 <a href="{{ route('user.orders.show', $order) }}"
                                     class="text-blue-600 hover:text-blue-800 font-medium text-sm">View Details</a>
