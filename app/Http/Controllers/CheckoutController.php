@@ -9,6 +9,7 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Product;
+use App\Models\Coupon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -35,7 +36,21 @@ class CheckoutController extends Controller
         if (!$cart || $cart->cartItems->isEmpty()) {
             return redirect()->route('user.cart.index')->with('error', 'Your cart is empty.');
         }
-        return view('user.orders.place', compact('cart', 'addresses'));
+
+        $discountAmount = 0;
+        if (session()->has('coupon_code')) {
+            $coupon = Coupon::where('code', session('coupon_code'))->first();
+            if ($coupon && $coupon->isValid()) {
+                $subtotal = $cart->cartItems->sum(fn($item) => $item->product->price * $item->quantity);
+                $subtotalPaisa = (int)($subtotal * 100);
+                if ($coupon->canBeUsed($subtotalPaisa)) {
+                    $discountPaisa = $coupon->calculateDiscount($subtotalPaisa);
+                    $discountAmount = $discountPaisa / 100;
+                }
+            }
+        }
+
+        return view('user.orders.place', compact('cart', 'addresses', 'discountAmount'));
     }
 
     public function checkout(Request $request, Cart $cart)
@@ -68,16 +83,35 @@ class CheckoutController extends Controller
             Product::whereIn('id', $productIds)->lockForUpdate()->get();
 
             // Calculate charges
-            // Calculate charges
             // product->price is float (NPR)
             $subtotal = $cart->cartItems->sum(fn($item) => $item->product->price * $item->quantity);
             
-            // Tax 10% of subtotal
-            $taxAmount = $subtotal * 0.10; 
+            $discountAmount = 0;
+            $couponId = null;
+            
+            if (session()->has('coupon_code')) {
+                $coupon = Coupon::where('code', session('coupon_code'))->first();
+                if ($coupon && $coupon->isValid()) {
+                    // Calculate discount in paisa
+                    $subtotalPaisa = (int)($subtotal * 100);
+                    if ($coupon->canBeUsed($subtotalPaisa)) {
+                        $discountPaisa = $coupon->calculateDiscount($subtotalPaisa);
+                        $discountAmount = $discountPaisa / 100; // Convert back to NPR
+                        $couponId = $coupon->id;
+                        
+                        // Increment usage
+                        $coupon->incrementUsage();
+                    }
+                }
+            }
+
+            // Tax 10% of (subtotal - discount)
+            $taxableAmount = max(0, $subtotal - $discountAmount);
+            $taxAmount = $taxableAmount * 0.10; 
             
             $serviceCharge = 0;
             $deliveryCharge = 0;
-            $totalAmount = $subtotal + $taxAmount + $serviceCharge + $deliveryCharge;
+            $totalAmount = $taxableAmount + $taxAmount + $serviceCharge + $deliveryCharge;
 
             $order = Order::create([
                 'user_id' => $request->user()->id,
@@ -87,7 +121,12 @@ class CheckoutController extends Controller
                 'service_charge' => $serviceCharge,
                 'delivery_charge' => $deliveryCharge,
                 'total_amount' => $totalAmount,
+                'coupon_id' => $couponId,
+                'discount_amount' => $discountAmount, // Mutator handles conversion to paisa
             ]);
+            
+            // Clear session
+            session()->forget('coupon_code');
 
             foreach ($cart->cartItems as $cartItem) {
                 $order->orderItems()->create([
@@ -370,10 +409,47 @@ class CheckoutController extends Controller
         if (isset($responseData['pidx'])) {
             return $responseData['pidx'];
         }
-        if (isset($responseData['transaction_id'])) {
-            return $responseData['transaction_id'];
+        return null;
+    }
+
+    public function applyCoupon(Request $request)
+    {
+        $request->validate([
+            'code' => 'required|string'
+        ]);
+
+        $code = strtoupper($request->code);
+        $coupon = Coupon::where('code', $code)->first();
+
+        if (!$coupon) {
+            return back()->with('error', 'Invalid coupon code.');
         }
 
-        return null;
+        $cart = $request->user()->cart()->with(['cartItems.product'])->first();
+        if (!$cart) {
+            return back()->with('error', 'Cart is empty.');
+        }
+
+        $subtotal = $cart->cartItems->sum(fn($item) => $item->product->price * $item->quantity);
+        // Convert subtotal to paisa for validation
+        $subtotalPaisa = (int)($subtotal * 100);
+
+        if (!$coupon->isValid()) {
+            return back()->with('error', 'Coupon is invalid or expired.');
+        }
+
+        if (!$coupon->canBeUsed($subtotalPaisa)) {
+            return back()->with('error', 'Minimum purchase requirement not met.');
+        }
+
+        session()->put('coupon_code', $code);
+
+        return back()->with('success', 'Coupon applied successfully!');
+    }
+
+    public function removeCoupon()
+    {
+        session()->forget('coupon_code');
+        return back()->with('success', 'Coupon removed.');
     }
 }

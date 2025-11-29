@@ -22,6 +22,8 @@ class Order extends Model
         'service_charge',
         'delivery_charge',
         'total_amount',
+        'coupon_id',
+        'discount_amount',
     ];
 
     public function getTotalAttribute(): float
@@ -93,5 +95,18 @@ class Order extends Model
     public function payment(): HasOne
     {
         return $this->hasOne(Payment::class);
+    }
+
+    public function coupon(): BelongsTo
+    {
+        return $this->belongsTo(Coupon::class);
+    }
+
+    protected function discountAmount(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?int $value) => $value ? $value / 100 : 0,
+            set: fn (float $value) => $value * 100,
+        );
     }
 }

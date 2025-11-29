@@ -30,9 +30,9 @@
                         </h1>
 
                         <!-- Description -->
-                        <p class="text-gray-600 dark:text-gray-300 dark:text-gray-600 mb-6 leading-relaxed">
-                            {{ $product->description }}
-                        </p>
+                        <div class="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed prose prose-sm dark:prose-invert max-w-none">
+                            {!! nl2br(e($product->description)) !!}
+                        </div>
 
                         <!-- Categories -->
                         @if ($product->categories->count() > 0)

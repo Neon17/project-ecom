@@ -161,7 +161,27 @@
         }
     </style>
 
+    <!-- TinyMCE -->
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
+        tinymce.init({
+            selector: '#description',
+            height: 400,
+            menubar: false,
+            plugins: [
+                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+            ],
+            toolbar: 'undo redo | blocks | ' +
+                'bold italic forecolor | alignleft aligncenter ' +
+                'alignright alignjust | bullist numlist outdent indent | ' +
+                'removeformat | help',
+            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+            skin: document.documentElement.classList.contains('dark') ? 'oxide-dark' : 'oxide',
+            content_css: document.documentElement.classList.contains('dark') ? 'dark' : 'default'
+        });
+
         function previewImage(event) {
             const file = event.target.files[0];
             if (file) {

@@ -152,6 +152,47 @@
                                 {{ number_format($cart->cartItems->sum(fn($i) => $i->product->price * $i->quantity), 2) }}</span>
                         </div>
 
+                        <!-- Coupon Section -->
+                        <div class="py-4 border-b border-gray-200 dark:border-gray-700">
+                            @if(session()->has('coupon_code'))
+                                <div class="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-lg p-3 mb-2">
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <p class="text-sm font-medium text-green-800 dark:text-green-300">Coupon Applied</p>
+                                            <p class="text-xs text-green-600 dark:text-green-400 font-mono font-bold">{{ session('coupon_code') }}</p>
+                                        </div>
+                                        <form action="{{ route('carts.remove-coupon') }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="text-red-500 hover:text-red-700 text-xs font-medium uppercase">Remove</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between text-green-600 dark:text-green-400 font-medium">
+                                    <span>Discount</span>
+                                    <span>- NPR {{ number_format($discountAmount, 2) }}</span>
+                                </div>
+                            @else
+                                <form action="{{ route('carts.apply-coupon') }}" method="POST" class="flex gap-2 mt-2">
+                                    @csrf
+                                    <input type="text" name="code" placeholder="Coupon Code" required
+                                        class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-800 dark:text-white text-sm">
+                                    <button type="submit" class="px-4 py-2 bg-gray-800 dark:bg-gray-700 text-white rounded-lg hover:bg-gray-700 dark:hover:bg-gray-600 text-sm font-medium">
+                                        Apply
+                                    </button>
+                                </form>
+                            @endif
+                        </div>
+
+                        <div class="flex justify-between text-gray-600 dark:text-gray-300 dark:text-gray-600">
+                            <span>Tax (10%)</span>
+                            @php
+                                $subtotal = $cart->cartItems->sum(fn($i) => $i->product->price * $i->quantity);
+                                $taxableAmount = max(0, $subtotal - ($discountAmount ?? 0));
+                                $tax = $taxableAmount * 0.10;
+                            @endphp
+                            <span>NPR {{ number_format($tax, 2) }}</span>
+                        </div>
+
                         <div class="flex justify-between text-gray-600 dark:text-gray-300 dark:text-gray-600">
                             <span>Shipping</span>
                             <span class="text-green-600">Free</span>
@@ -160,7 +201,7 @@
                         <div class="flex justify-between text-xl font-bold text-gray-900 dark:text-white pt-4 border-t mt-4">
                             <span>Total</span>
                             <span>NPR
-                                {{ number_format($cart->cartItems->sum(fn($i) => $i->product->price * $i->quantity), 2) }}</span>
+                                {{ number_format($taxableAmount + $tax, 2) }}</span>
                         </div>
                     </div>
 

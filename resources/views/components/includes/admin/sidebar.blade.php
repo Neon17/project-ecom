@@ -47,6 +47,12 @@
             <span class="font-medium">Payments</span>
         </a>
 
+        <a href="{{ route('admin.coupons.index') }}" 
+           class="flex items-center px-4 md:px-5 py-3 text-blue-100 dark:text-slate-300 hover:bg-blue-900/50 dark:hover:bg-slate-700 hover:text-white transition-all duration-200 {{ request()->routeIs('admin.coupons*') ? 'bg-blue-900 dark:bg-slate-700 text-white border-l-4 border-white shadow-lg' : '' }}">
+            <i class="fas fa-ticket-alt w-5 mr-3"></i>
+            <span class="font-medium">Coupons</span>
+        </a>
+
         <a href="{{ route('admin.addresses.all') }}" 
            class="flex items-center px-4 md:px-5 py-3 text-blue-100 dark:text-slate-300 hover:bg-blue-900/50 dark:hover:bg-slate-700 hover:text-white transition-all duration-200 {{ request()->routeIs('admin.addresses*') ? 'bg-blue-900 dark:bg-slate-700 text-white border-l-4 border-white shadow-lg' : '' }}">
             <i class="fas fa-map-marked-alt w-5 mr-3"></i>

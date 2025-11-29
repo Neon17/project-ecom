@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AddressController as AdminAddressController;
 use App\Http\Controllers\Admin\CartController as AdminCartController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\CouponController as AdminCouponController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\PaymentController as AdminPaymentController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\User\AddressController as UserAddressController;
 use App\Http\Controllers\User\CartController as UserCartController;
@@ -31,6 +33,10 @@ Route::get('/', [App\Http\Controllers\WelcomeController::class, 'index'])->name(
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+
+Route::get('/about', [PageController::class, 'about'])->name('about');
+Route::get('/contact', [PageController::class, 'contact'])->name('contact');
+Route::post('/contact', [PageController::class, 'contactSubmit'])->name('contact.submit');
 
 // Guest Routes
 Route::middleware('guest')->group(function () {
@@ -89,6 +95,8 @@ Route::middleware('auth')->group(function () {
     // Checkout & Payment (User facing but handled by CheckoutController) - require email verification
     Route::middleware('verified')->group(function () {
         Route::get('/carts/{cart}/view-checkout', [CheckoutController::class, 'viewCheckout'])->name('carts.view-checkout');
+        Route::post('/carts/apply-coupon', [CheckoutController::class, 'applyCoupon'])->name('carts.apply-coupon');
+        Route::post('/carts/remove-coupon', [CheckoutController::class, 'removeCoupon'])->name('carts.remove-coupon');
         Route::post('/carts/{cart}/checkout', [CheckoutController::class, 'checkout'])->name('carts.checkout');
         Route::get('/orders/{order}/pay', [CheckoutController::class, 'showPaymentPage'])->name('orders.pay');
         Route::post('/orders/{order}/pay', [CheckoutController::class, 'processPayment'])->name('orders.process-payment');
@@ -110,6 +118,7 @@ Route::middleware(['auth', 'admin', 'verified'])->prefix('admin')->name('admin.'
     Route::resource('categories', AdminCategoryController::class);
     Route::resource('orders', AdminOrderController::class);
     Route::resource('payments', AdminPaymentController::class);
+    Route::resource('coupons', AdminCouponController::class);
     
     // Addresses (Admin view)
     Route::get('/addresses/all', [AdminAddressController::class, 'allIndex'])->name('addresses.all');
