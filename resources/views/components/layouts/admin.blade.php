@@ -10,9 +10,9 @@
              x-transition
              class="fixed inset-0 bg-gray-900 bg-opacity-50 lg:hidden z-40"></div>
 
-        <!-- Sidebar -->
+        <!-- Sidebar (Fixed) -->
         <div :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
-             class="fixed lg:translate-x-0 lg:static inset-y-0 left-0 z-50 lg:z-auto transition-transform duration-300 ease-in-out">
+             class="fixed lg:translate-x-0 inset-y-0 left-0 top-16 z-50 lg:z-auto transition-transform duration-300 ease-in-out">
             <x-includes.admin.sidebar />
         </div>
 
@@ -24,10 +24,13 @@
             </svg>
         </button>
 
-        <div class="slot w-full h-full lg:ml-64 flex-1 p-4 md:p-6">
-            {{$slot}}
+        <!-- Main Content -->
+        <div class="flex-1 lg:ml-64">
+            <div class="p-4 md:p-6">
+                {{$slot}}
+            </div>
         </div>
 
     </div>
 
-<x-layouts.footer />
+    

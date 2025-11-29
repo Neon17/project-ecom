@@ -6,8 +6,9 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
 }
 
 /* Configure dark mode to use class strategy */
@@ -15,5 +16,25 @@
 
 /* Smooth transitions for theme switching */
 * {
-    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    transition: background-color 0.3s ease, border-color 0.3s ease,
+        color 0.3s ease;
+}
+
+/* Mobile responsive utilities */
+@media (max-width: 768px) {
+    /* Touch-friendly targets */
+    .mobile-touch-target {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    /* Mobile table cards */
+    .mobile-card {
+        @apply bg-white dark:bg-slate-900 rounded-lg border border-gray-100 dark:border-gray-700 p-4 shadow-sm;
+    }
+
+    /* Mobile spacing */
+    .mobile-spacing {
+        @apply py-3 px-4;
+    }
 }

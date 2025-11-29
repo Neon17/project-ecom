@@ -1,5 +1,5 @@
 <x-layouts.admin>
-    <div class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50/20 p-6">
+    <div class="min-h-screen">
 
         <div class="mb-8">
             <div class="flex items-center justify-between">
@@ -102,16 +102,85 @@
             </div>
         </div>
 
+        <!-- Revenue Analytics Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <!-- Revenue Card -->
+            <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 shadow-lg text-white">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="p-3 bg-white/20 rounded-xl">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-sm font-medium {{ $revenueData['growth'] >= 0 ? 'text-green-200' : 'text-red-200' }}">
+                            {{ $revenueData['growth'] >= 0 ? '+' : '' }}{{ $revenueData['growth'] }}%
+                        </div>
+                        <div class="text-xs opacity-80">this month</div>
+                    </div>
+                </div>
+                <h3 class="text-3xl font-bold mb-1">NPR {{ number_format($revenueData['total'], 2) }}</h3>
+                <p class="text-blue-100 text-sm">Total Revenue</p>
+            </div>
+
+            <!-- Revenue Trend Chart -->
+            <div class="lg:col-span-2 bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Revenue Trend (Last 30 Days)</h2>
+                <div class="h-64">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sales & Products Analytics -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- Sales Trends -->
+            <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Sales Trends (Last 7 Days)</h2>
+                <div class="h-64">
+                    <canvas id="salesChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Top Products -->
+            <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Top Selling Products</h2>
+                <div class="space-y-4">
+                    @forelse($topProducts as $product)
+                        <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-slate-800 rounded-lg">
+                            <div class="flex items-center space-x-3 flex-1 min-w-0">
+                                <img src="{{ $product->image_url }}" alt="{{ $product->name }}" 
+                                     class="w-12 h-12 rounded-lg object-cover">
+                                <div class="flex-1 min-w-0">
+                                    <div class="text-sm font-medium text-gray-900 dark:text-white truncate">{{ $product->name }}</div>
+                                    <div class="text-xs text-gray-500 dark:text-gray-400">NPR {{ number_format($product->price, 2) }}</div>
+                                </div>
+                            </div>
+                            <div class="ml-4 flex-shrink-0">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                    {{ $product->total_sold ?? 0 }} sold
+                                </span>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+                            <p class="text-sm">No sales data available yet</p>
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+        </div>
+
         <!-- Analytics Section -->
         <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-8">
             <!-- Order Status -->
             <div class="xl:col-span-2 bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700">
-                <div class="flex items-center justify-between mb-6">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
                     <h2 class="text-xl font-bold text-gray-900 dark:text-white">Order Analytics</h2>
-                    <div class="flex space-x-2">
+                    <div class="flex flex-wrap gap-2">
                         <button class="px-3 py-1 text-sm bg-blue-50 text-blue-600 dark:text-blue-400 rounded-lg font-medium">Week</button>
-                        <button class="px-3 py-1 text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:text-gray-600 rounded-lg font-medium">Month</button>
-                        <button class="px-3 py-1 text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:text-gray-600 rounded-lg font-medium">Year</button>
+                        <button class="px-3 py-1 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 rounded-lg font-medium">Month</button>
+                        <button class="px-3 py-1 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 rounded-lg font-medium">Year</button>
                     </div>
                 </div>
                 
@@ -270,10 +339,129 @@
         </div>
     </div>
 
-    <style>
-        .hover-lift:hover {
-            transform: translateY(-2px);
-            transition: transform 0.2s ease-in-out;
-        }
-    </style>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script>
+        // Check if dark mode is enabled
+        const isDarkMode = document.documentElement.classList.contains('dark');
+        
+        // Chart colors
+        const colors = {
+            primary: isDarkMode ? 'rgb(96, 165, 250)' : 'rgb(59, 130, 246)',
+            primaryLight: isDarkMode ? 'rgba(96, 165, 250, 0.1)' : 'rgba(59, 130, 246, 0.1)',
+            grid: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+            text: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)',
+        };
+
+        // Revenue Chart
+        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+        const revenueChart = new Chart(revenueCtx, {
+            type: 'line',
+            data: {
+                labels: {!! json_encode($revenueData['labels']) !!},
+                datasets: [{
+                    label: 'Revenue (NPR)',
+                    data: {!! json_encode($revenueData['data']) !!},
+                    borderColor: colors.primary,
+                    backgroundColor: colors.primaryLight,
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 3,
+                    pointHoverRadius: 5,
+                    pointBackgroundColor: colors.primary,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: colors.grid
+                        },
+                        ticks: {
+                            color: colors.text,
+                            callback: function(value) {
+                                return 'NPR ' + value.toLocaleString();
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: colors.text
+                        }
+                    }
+                }
+            }
+        });
+
+        // Sales Trends Chart
+        const salesCtx = document.getElementById('salesChart').getContext('2d');
+        const salesChart = new Chart(salesCtx, {
+            type: 'bar',
+            data: {
+                labels: {!! json_encode($salesTrends['labels']) !!},
+                datasets: [{
+                    label: 'Orders',
+                    data: {!! json_encode($salesTrends['data']) !!},
+                    backgroundColor: colors.primary,
+                    borderColor: colors.primary,
+                    borderWidth: 1,
+                    borderRadius: 8,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: colors.grid
+                        },
+                        ticks: {
+                            color: colors.text,
+                            stepSize: 1
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: colors.text
+                        }
+                    }
+                }
+            }
+        });
+
+        // Update charts when theme changes
+        document.addEventListener('themeChanged', function() {
+            window.location.reload(); // Reload to get new theme colors
+        });
+    </script>
 </x-layouts.admin>

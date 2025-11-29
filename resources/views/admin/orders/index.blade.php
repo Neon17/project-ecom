@@ -51,28 +51,29 @@
         </div>
 
         @if ($orders->count() > 0)
-            <div class="overflow-x-auto rounded-lg border border-gray-100 dark:border-gray-700">
-                <table class="min-w-full divide-y divide-gray-200">
+            {{-- Desktop Table View --}}
+            <div class="hidden md:block overflow-x-auto rounded-lg border border-gray-100 dark:border-gray-700">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                     <thead class="bg-gray-50 dark:bg-slate-800">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 dark:text-gray-500 uppercase tracking-wider">Order ID</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 dark:text-gray-500 uppercase tracking-wider">User</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 dark:text-gray-500 uppercase tracking-wider">Date</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 dark:text-gray-500 uppercase tracking-wider">Total</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 dark:text-gray-500 uppercase tracking-wider">Payment</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 dark:text-gray-500 uppercase tracking-wider">Status</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 dark:text-gray-500 uppercase tracking-wider">Actions</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Order ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">User</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Date</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Total</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Payment</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white dark:bg-slate-900 divide-y divide-gray-200">
+                    <tbody class="bg-white dark:bg-slate-900 divide-y divide-gray-200 dark:divide-gray-700">
                         @foreach ($orders as $order)
-                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700 dark:bg-slate-800 transition-colors">
+                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">#{{ $order->id }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $order->user->name }}</div>
-                                    <div class="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">{{ $order->user->email }}</div>
+                                    <div class="text-sm text-gray-500 dark:text-gray-400">{{ $order->user->email }}</div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                     {{ $order->created_at->format('M d, Y') }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
@@ -101,7 +102,7 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                     <div class="flex items-center gap-3">
-                                        <a href="{{ route('admin.orders.show', $order->id) }}" class="text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:text-blue-400 transition-colors" title="View">
+                                        <a href="{{ route('admin.orders.show', $order->id) }}" class="text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" title="View">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                                         </a>
                                         <a href="{{ route('admin.orders.edit', $order->id) }}" class="text-gray-400 dark:text-gray-500 hover:text-yellow-600 transition-colors" title="Edit">
@@ -118,6 +119,63 @@
                     </tbody>
                 </table>
             </div>
+
+            {{-- Mobile Card View --}}
+            <div class="md:hidden space-y-4">
+                @foreach ($orders as $order)
+                    <div class="bg-white dark:bg-slate-900 rounded-lg border border-gray-100 dark:border-gray-700 p-4 shadow-sm">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <div class="text-sm font-semibold text-gray-900 dark:text-white">Order #{{ $order->id }}</div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">{{ $order->created_at->format('M d, Y') }}</div>
+                            </div>
+                            <span class="px-2 py-1 text-xs font-semibold rounded-full 
+                                {{ $order->status === 'completed' ? 'bg-green-100 text-green-800' : 
+                                   ($order->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 
+                                   ($order->status === 'cancelled' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800')) }}">
+                                {{ ucfirst($order->status) }}
+                            </span>
+                        </div>
+                        <div class="space-y-2 mb-3">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500 dark:text-gray-400">Customer:</span>
+                                <span class="font-medium text-gray-900 dark:text-white">{{ $order->user->name }}</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500 dark:text-gray-400">Total:</span>
+                                <span class="font-semibold text-gray-900 dark:text-white">NPR {{ number_format($order->total, 2) }}</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500 dark:text-gray-400">Payment:</span>
+                                @if($order->payment)
+                                    <span class="px-2 py-0.5 text-xs font-semibold rounded-full 
+                                        {{ $order->payment->status === \App\Enums\PaymentStatusEnum::Completed ? 'bg-green-100 text-green-800' : 
+                                           ($order->payment->status === \App\Enums\PaymentStatusEnum::Pending ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
+                                        {{ ucfirst($order->payment->status->value) }}
+                                    </span>
+                                @else
+                                    <span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-gray-100 dark:bg-slate-800 text-gray-800 dark:text-gray-200">
+                                        Unpaid
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="flex justify-end gap-3 pt-3 border-t border-gray-100 dark:border-gray-700">
+                            <a href="{{ route('admin.orders.show', $order->id) }}" class="p-2 text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" title="View">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                            </a>
+                            <a href="{{ route('admin.orders.edit', $order->id) }}" class="p-2 text-gray-400 dark:text-gray-500 hover:text-yellow-600 transition-colors" title="Edit">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                            </a>
+                            <button class="open-delete-modal p-2 text-gray-400 dark:text-gray-500 hover:text-red-600 transition-colors" title="Delete">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            </button>
+                            <x-ui.delete-modal action="{{ route('admin.orders.destroy', $order->id) }}" />
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
             <div class="mt-4">
                 {{ $orders->withQueryString()->links() }}
             </div>
