@@ -36,13 +36,13 @@
                 </div>
 
                 <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
-                    <div class="flex items-center">
+                    {{-- <div class="flex items-center">
                         <input id="remember_me" name="remember" type="checkbox"
                             class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-slate-700">
                         <label for="remember_me" class="ml-2 block text-sm text-gray-900 dark:text-gray-300">
                             Remember me
                         </label>
-                    </div>
+                    </div> --}}
 
                     <div class="text-sm">
                         <a href="{{ route('password.request') }}"

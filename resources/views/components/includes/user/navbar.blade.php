@@ -12,9 +12,17 @@
                     <span>Ecommerce</span>
                 </a>
 
-                <a href="{{ route('products.index') }}" class="hidden md:block text-blue-100 dark:text-slate-300 hover:text-white dark:hover:text-white font-medium">
-                    Products
-                </a>
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="{{ route('products.index') }}" class="text-blue-100 dark:text-slate-300 hover:text-white dark:hover:text-white font-medium">
+                        Products
+                    </a>
+                    <a href="{{ route('about') }}" class="text-blue-100 dark:text-slate-300 hover:text-white dark:hover:text-white font-medium">
+                        About
+                    </a>
+                    <a href="{{ route('contact') }}" class="text-blue-100 dark:text-slate-300 hover:text-white dark:hover:text-white font-medium">
+                        Contact
+                    </a>
+                </div>
             </div>
 
             <!-- Desktop Navigation -->
@@ -88,6 +96,12 @@
              class="md:hidden pb-4 space-y-2">
             <a href="{{ route('products.index') }}" class="block px-4 py-2 text-blue-100 dark:text-slate-300 hover:bg-blue-700 dark:hover:bg-slate-700 rounded font-medium">
                 Products
+            </a>
+            <a href="{{ route('about') }}" class="block px-4 py-2 text-blue-100 dark:text-slate-300 hover:bg-blue-700 dark:hover:bg-slate-700 rounded font-medium">
+                About
+            </a>
+            <a href="{{ route('contact') }}" class="block px-4 py-2 text-blue-100 dark:text-slate-300 hover:bg-blue-700 dark:hover:bg-slate-700 rounded font-medium">
+                Contact
             </a>
             @guest
                 <a href="{{ route('login') }}" class="block px-4 py-2 text-white hover:bg-blue-700 dark:hover:bg-slate-700 rounded font-medium">

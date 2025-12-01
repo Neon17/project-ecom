@@ -80,16 +80,18 @@ Route::middleware('auth')->group(function () {
         // Addresses
         Route::resource('addresses', UserAddressController::class)->except(['create', 'show', 'edit']);
         
-        // Profile
-        Route::get('/profile', [UserProfileController::class, 'edit'])->name('profile.edit');
-        Route::patch('/profile', [UserProfileController::class, 'update'])->name('profile.update');
-        
         // Cart
         Route::get('/cart', [UserCartController::class, 'index'])->name('cart.index');
         Route::post('/cart', [UserCartController::class, 'store'])->name('cart.store');
         Route::patch('/cart/{cart}', [UserCartController::class, 'update'])->name('cart.update');
         Route::delete('/cart/{cart}', [UserCartController::class, 'destroy'])->name('cart.destroy');
         Route::delete('/cart-items/{cartItem}', [UserCartController::class, 'destroyItem'])->name('cart-items.destroy');
+    });
+
+    // Profile (Accessible by auth users, even if not verified)
+    Route::middleware('auth')->prefix('user')->name('user.')->group(function () {
+        Route::get('/profile', [UserProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [UserProfileController::class, 'update'])->name('profile.update');
     });
 
     // Checkout & Payment (User facing but handled by CheckoutController) - require email verification

@@ -6,6 +6,7 @@ use App\Events\UserCreatedEvent;
 use App\Mail\ResetPasswordMail;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -71,6 +72,7 @@ class AuthController extends Controller
         Auth::login($user);
 
         event(new UserCreatedEvent($user));
+        event(new Registered($user));
 
         return redirect('/')->with('success', 'Registered Successfully');
     }
