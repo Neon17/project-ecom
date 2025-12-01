@@ -57,12 +57,12 @@
                                     @endif
                                     <div>
                                         <h3 class="font-semibold text-gray-900 dark:text-white">{{ $item->product->name }}</h3>
-                                        <p class="text-gray-600 dark:text-gray-300 dark:text-gray-600 text-sm">NPR
+                                        <p class="text-gray-600 dark:text-gray-300 text-sm">NPR
                                             {{ number_format($item->amount_per_item, 2) }}</p>
                                     </div>
                                 </div>
                                 <div class="text-right">
-                                    <p class="text-gray-700 dark:text-gray-300 dark:text-gray-600">Qty: {{ $item->quantity }}</p>
+                                    <p class="text-gray-700 dark:text-gray-300">Qty: {{ $item->quantity }}</p>
                                     <p class="font-semibold text-gray-900 dark:text-white text-lg">
                                         NPR {{ number_format($item->amount_per_item * $item->quantity, 2) }}
                                     </p>
@@ -79,19 +79,19 @@
                             });
                         @endphp
                         <div class="space-y-2 mb-4">
-                            <div class="flex justify-between items-center text-gray-600 dark:text-gray-300 dark:text-gray-600">
+                            <div class="flex justify-between items-center text-gray-600 dark:text-gray-300">
                                 <span>Subtotal:</span>
                                 <span>NPR {{ number_format($subtotal, 2) }}</span>
                             </div>
-                            <div class="flex justify-between items-center text-gray-600 dark:text-gray-300 dark:text-gray-600">
+                            <div class="flex justify-between items-center text-gray-600 dark:text-gray-300">
                                 <span>Tax:</span>
                                 <span>NPR {{ number_format($order->tax_amount, 2) }}</span>
                             </div>
-                            <div class="flex justify-between items-center text-gray-600 dark:text-gray-300 dark:text-gray-600">
+                            <div class="flex justify-between items-center text-gray-600 dark:text-gray-300">
                                 <span>Service Charge:</span>
                                 <span>NPR {{ number_format($order->service_charge, 2) }}</span>
                             </div>
-                            <div class="flex justify-between items-center text-gray-600 dark:text-gray-300 dark:text-gray-600">
+                            <div class="flex justify-between items-center text-gray-600 dark:text-gray-300">
                                 <span>Delivery Charge:</span>
                                 <span>NPR {{ number_format($order->delivery_charge, 2) }}</span>
                             </div>
@@ -148,8 +148,8 @@
                         @if ($order->address->street_address_2)
                             <p class="font-semibold text-gray-900 dark:text-white">{{ $order->address->street_address_2 }}</p>
                         @endif
-                        <p class="text-gray-700 dark:text-gray-300 dark:text-gray-600">{{ $order->address->city }}, {{ $order->address->state }}</p>
-                        <p class="text-gray-700 dark:text-gray-300 dark:text-gray-600">{{ $order->address->country }}</p>
+                        <p class="text-gray-700 dark:text-gray-300">{{ $order->address->city }}, {{ $order->address->state }}</p>
+                        <p class="text-gray-700 dark:text-gray-300">{{ $order->address->country }}</p>
                     </div>
                 </div>
             </div>

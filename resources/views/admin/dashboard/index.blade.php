@@ -5,11 +5,11 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Dashboard Overview</h1>
-                    <p class="text-gray-600 dark:text-gray-300 dark:text-gray-600 text-lg">Welcome back! Here's what's happening with your store today.</p>
+                    <p class="text-gray-600 dark:text-gray-400 text-lg">Welcome back! Here's what's happening with your store today.</p>
                 </div>
                 <div class="flex items-center space-x-4">
                     <div class="bg-white dark:bg-slate-900 rounded-2xl px-4 py-2 shadow-sm border border-gray-100 dark:border-gray-700">
-                        <div class="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">Today</div>
+                        <div class="text-sm text-gray-500 dark:text-gray-400">Today</div>
                         <div class="text-lg font-semibold text-gray-900 dark:text-white">{{ now()->format('M d, Y') }}</div>
                     </div>
                 </div>
@@ -47,7 +47,7 @@
                     </div>
                 </div>
                 <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">{{ $generalStats['total_orders'] }}</h3>
-                <p class="text-gray-600 dark:text-gray-300 dark:text-gray-600 text-sm">Total Orders</p>
+                <p class="text-gray-600 dark:text-gray-400 text-sm">Total Orders</p>
             </div>
 
             <!-- Total Products -->
@@ -64,7 +64,7 @@
                     </div>
                 </div>
                 <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">{{ $generalStats['total_products'] }}</h3>
-                <p class="text-gray-600 dark:text-gray-300 dark:text-gray-600 text-sm">Total Products</p>
+                <p class="text-gray-600 dark:text-gray-400 text-sm">Total Products</p>
             </div>
 
             <!-- Total Users -->
@@ -81,7 +81,7 @@
                     </div>
                 </div>
                 <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">{{ $generalStats['total_users'] }}</h3>
-                <p class="text-gray-600 dark:text-gray-300 dark:text-gray-600 text-sm">Total Users</p>
+                <p class="text-gray-600 dark:text-gray-400 text-sm">Total Users</p>
             </div>
 
             <!-- Total Categories -->
@@ -98,7 +98,7 @@
                     </div>
                 </div>
                 <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">{{ $generalStats['total_categories'] }}</h3>
-                <p class="text-gray-600 dark:text-gray-300 dark:text-gray-600 text-sm">Total Categories</p>
+                <p class="text-gray-600 dark:text-gray-400 text-sm">Total Categories</p>
             </div>
         </div>
 
@@ -262,7 +262,7 @@
                                         </div>
                                         <div>
                                             <div class="font-semibold text-gray-900 dark:text-white text-sm">Order #{{ $order->id }}</div>
-                                            <div class="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">{{ $order->user->name ?? 'Guest User' }}</div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400">{{ $order->user->name ?? 'Guest User' }}</div>
                                         </div>
                                     </div>
                                 </td>
@@ -312,7 +312,7 @@
                                         </div>
                                         <div>
                                             <div class="font-semibold text-gray-900 dark:text-white text-sm">Payment #{{ $payment->id }}</div>
-                                            <div class="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">{{ $payment->order->user->name ?? 'Guest User' }}</div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400">{{ $payment->order->user->name ?? 'Guest User' }}</div>
                                         </div>
                                     </div>
                                 </td>

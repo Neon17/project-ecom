@@ -35,7 +35,7 @@
                                 @endforeach
                             </select>
 
-                            <p class="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500 mt-3">Or enter a new address below</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-3">Or enter a new address below</p>
                         </div>
                     @endif
 

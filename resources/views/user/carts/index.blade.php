@@ -49,18 +49,18 @@
                                             <!-- Quantity and Price -->
                                             <div class="flex items-center gap-6">
                                                 <div>
-                                                    <span class="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">Quantity:</span>
+                                                    <span class="text-sm text-gray-500 dark:text-gray-400">Quantity:</span>
                                                     <span class="font-semibold text-gray-900 dark:text-white ml-2">{{ $cartItem->quantity }}</span>
                                                 </div>
                                                 <div>
-                                                    <span class="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">Price:</span>
+                                                    <span class="text-sm text-gray-500 dark:text-gray-400">Price:</span>
                                                     <span class="font-semibold text-gray-900 dark:text-white ml-2">NPR {{ number_format($product->price, 2) }}</span>
                                                 </div>
                                             </div>
 
                                             <!-- Item Total -->
                                             <div class="text-right">
-                                                <div class="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">Subtotal</div>
+                                                <div class="text-sm text-gray-500 dark:text-gray-400">Subtotal</div>
                                                 <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">NPR {{ number_format($itemTotal, 2) }}</div>
                                             </div>
                                         </div>

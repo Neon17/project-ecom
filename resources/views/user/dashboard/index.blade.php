@@ -55,7 +55,7 @@
         <div class="hidden md:block overflow-x-auto">
             <table class="w-full text-left">
                 <thead>
-                    <tr class="bg-white dark:bg-slate-900 text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider border-b border-gray-100 dark:border-gray-700">
+                    <tr class="bg-white dark:bg-slate-900 text-gray-500 dark:text-gray-300 text-xs uppercase tracking-wider border-b border-gray-100 dark:border-gray-700">
                         <th class="px-6 py-3 font-medium">Order ID</th>
                         <th class="px-6 py-3 font-medium">Date</th>
                         <th class="px-6 py-3 font-medium">Status</th>

@@ -10,7 +10,7 @@
                         <form action="{{ route('products.index') }}" method="GET">
                             <!-- Search -->
                             <div class="mb-6">
-                                <label for="search" class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-2">Search</label>
+                                <label for="search" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Search</label>
                                 <input type="text" name="search" id="search" value="{{ request('search') }}" 
                                     class="w-full rounded-lg border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500 text-sm p-2"
                                     placeholder="Search products...">
@@ -18,20 +18,20 @@
 
                             <!-- Categories -->
                             <div class="mb-6">
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-2">Category</label>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Category</label>
                                 <div class="space-y-2 max-h-48 overflow-y-auto">
                                     <div class="flex items-center">
                                         <input type="radio" name="category_id" value="" id="cat_all" 
                                             {{ !request('category_id') ? 'checked' : '' }}
                                             class="h-4 w-4 text-blue-600 dark:text-blue-400 focus:ring-blue-500 border-gray-300 dark:border-gray-600">
-                                        <label for="cat_all" class="ml-2 text-sm text-gray-600 dark:text-gray-300 dark:text-gray-600">All Categories</label>
+                                        <label for="cat_all" class="ml-2 text-sm text-gray-600 dark:text-gray-300">All Categories</label>
                                     </div>
                                     @foreach($categories as $category)
                                         <div class="flex items-center">
                                             <input type="radio" name="category_id" value="{{ $category->id }}" id="cat_{{ $category->id }}"
                                                 {{ request('category_id') == $category->id ? 'checked' : '' }}
                                                 class="h-4 w-4 text-blue-600 dark:text-blue-400 focus:ring-blue-500 border-gray-300 dark:border-gray-600">
-                                            <label for="cat_{{ $category->id }}" class="ml-2 text-sm text-gray-600 dark:text-gray-300 dark:text-gray-600">{{ $category->name }}</label>
+                                            <label for="cat_{{ $category->id }}" class="ml-2 text-sm text-gray-600 dark:text-gray-300">{{ $category->name }}</label>
                                         </div>
                                     @endforeach
                                 </div>
@@ -39,7 +39,7 @@
 
                             <!-- Price Range -->
                             <div class="mb-6">
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-2">Price Range (NPR)</label>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Price Range (NPR)</label>
                                 <div class="grid grid-cols-2 gap-2">
                                     <input type="number" name="min_price" value="{{ request('min_price') }}" placeholder="Min"
                                         class="w-full rounded-lg border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500 text-sm">
@@ -52,7 +52,7 @@
                                 <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
                                     Apply Filters
                                 </button>
-                                <a href="{{ route('products.index') }}" class="w-full text-center px-4 py-2 bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 dark:text-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 dark:bg-slate-800 transition-colors text-sm font-medium">
+                                <a href="{{ route('products.index') }}" class="w-full text-center px-4 py-2 bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 dark:bg-slate-800 transition-colors text-sm font-medium">
                                     Reset
                                 </a>
                             </div>
@@ -64,7 +64,7 @@
                 <div class="flex-1">
                     <div class="mb-8">
                         <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Our Products</h1>
-                        <p class="text-gray-500 dark:text-gray-400 dark:text-gray-500">Showing {{ $products->firstItem() ?? 0 }} - {{ $products->lastItem() ?? 0 }} of {{ $products->total() }} results</p>
+                        <p class="text-gray-500 dark:text-gray-400">Showing {{ $products->firstItem() ?? 0 }} - {{ $products->lastItem() ?? 0 }} of {{ $products->total() }} results</p>
                     </div>
 
                     @if($products->count() > 0)
@@ -97,7 +97,7 @@
                                             </a>
                                         </h3>
                                         
-                                        <p class="text-gray-500 dark:text-gray-400 dark:text-gray-500 text-sm mb-4 line-clamp-2 flex-1">
+                                        <p class="text-gray-500 dark:text-gray-400 text-sm mb-4 line-clamp-2 flex-1">
                                             {{ Str::limit($product->description, 100) }}
                                         </p>
                                         
@@ -110,7 +110,7 @@
                                                 @csrf
                                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                                                 <input type="hidden" name="quantity" value="1">
-                                                <button type="submit" class="p-2 rounded-full bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300 dark:text-gray-600 hover:bg-blue-600 hover:text-white transition-colors" title="Add to Cart" {{ $product->quantity <= 0 ? 'disabled' : '' }}>
+                                                <button type="submit" class="p-2 rounded-full bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300 hover:bg-blue-600 hover:text-white transition-colors" title="Add to Cart" {{ $product->quantity <= 0 ? 'disabled' : '' }}>
                                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
                                                     </svg>
@@ -131,7 +131,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                             <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">No products found</h3>
-                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">Try adjusting your search or filters.</p>
+                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Try adjusting your search or filters.</p>
                             <div class="mt-6">
                                 <a href="{{ route('products.index') }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                     Clear Filters

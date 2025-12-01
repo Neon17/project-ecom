@@ -5,7 +5,7 @@
         <div class="bg-white dark:bg-slate-900 rounded-lg shadow-md p-6 mb-8 flex justify-between items-center">
             <h1 class="text-3xl font-bold text-gray-900 dark:text-white">User Details #{{ $user->id }}</h1>
             <a href="{{ route('admin.users.index') }}"
-                class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-300 dark:text-gray-600 rounded-md hover:bg-gray-300 transition-colors duration-200 font-medium">
+                class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 transition-colors duration-200 font-medium">
                 Back to Users List
             </a>
         </div>
@@ -17,7 +17,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Full Name -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-2">Full Name</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Full Name</label>
                     <p class="w-full px-4 py-3 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-800 dark:text-gray-200 font-medium cursor-not-allowed">
                         {{ $user->name }}
                     </p>
@@ -25,7 +25,7 @@
 
                 <!-- Email Address -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-2">Email Address</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email Address</label>
                     <p class="w-full px-4 py-3 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-800 dark:text-gray-200 font-medium cursor-not-allowed">
                         {{ $user->email }}
                     </p>
@@ -33,7 +33,7 @@
 
                 <!-- User Role -->
                 <div class="md:col-span-2">
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-2">User Role</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">User Role</label>
                     <p class="w-full px-4 py-3 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-800 dark:text-gray-200 font-medium capitalize cursor-not-allowed">
                         {{ $user->role }}
                     </p>
@@ -55,12 +55,12 @@
                     <table class="min-w-full leading-normal">
                         <thead>
                             <tr class="bg-gray-100 dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700">
-                                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 dark:text-gray-600 uppercase tracking-wider">SN</th>
-                                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 dark:text-gray-600 uppercase tracking-wider">Country</th>
-                                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 dark:text-gray-600 uppercase tracking-wider">City</th>
-                                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 dark:text-gray-600 uppercase tracking-wider">State</th>
-                                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 dark:text-gray-600 uppercase tracking-wider">Street Address 1</th>
-                                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 dark:text-gray-600 uppercase tracking-wider">Street Address 2</th>
+                                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">SN</th>
+                                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Country</th>
+                                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">City</th>
+                                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">State</th>
+                                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Street Address 1</th>
+                                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Street Address 2</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white dark:bg-slate-900 divide-y divide-gray-200">

@@ -2,7 +2,7 @@
     <div class="max-w-2xl mx-auto">
         <div class="mb-8">
             <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200">My Profile</h1>
-            <p class="text-gray-600 dark:text-gray-300 dark:text-gray-600">Update your personal information.</p>
+            <p class="text-gray-600 dark:text-gray-300">Update your personal information.</p>
         </div>
 
         <div class="bg-white dark:bg-slate-900 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 p-6">
@@ -12,7 +12,7 @@
 
                 <div class="space-y-6">
                     <div>
-                        <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-1">Full Name</label>
+                        <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
                         <input type="text" id="name" name="name" value="{{ old('name', $user->name) }}" required
                             class="w-full rounded-lg border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500">
                         @error('name')
@@ -21,7 +21,7 @@
                     </div>
 
                     <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-1">Email Address</label>
+                        <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email Address</label>
                         <input type="email" id="email" name="email" value="{{ old('email', $user->email) }}" required
                             class="w-full rounded-lg border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500">
                         @error('email')
@@ -35,7 +35,7 @@
 
                         <div class="space-y-4">
                             <div>
-                                <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-1">New Password</label>
+                                <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">New Password</label>
                                 <input type="password" id="password" name="password"
                                     class="w-full rounded-lg border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500">
                                 @error('password')
@@ -44,7 +44,7 @@
                             </div>
 
                             <div>
-                                <label for="password_confirmation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-1">Confirm New Password</label>
+                                <label for="password_confirmation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Confirm New Password</label>
                                 <input type="password" id="password_confirmation" name="password_confirmation"
                                     class="w-full rounded-lg border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500">
                             </div>

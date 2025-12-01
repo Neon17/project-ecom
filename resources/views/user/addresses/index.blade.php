@@ -1,7 +1,7 @@
 <x-layouts.user>
     <div class="mb-8">
         <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200">My Addresses</h1>
-        <p class="text-gray-600 dark:text-gray-300 dark:text-gray-600">Manage your shipping addresses.</p>
+        <p class="text-gray-600 dark:text-gray-300">Manage your shipping addresses.</p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -56,7 +56,7 @@
         <div class="bg-white dark:bg-slate-900 rounded-lg shadow-xl w-full max-w-md mx-4">
             <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
                 <h3 class="font-bold text-lg text-gray-800 dark:text-gray-200">Add New Address</h3>
-                <button onclick="document.getElementById('add-address-modal').classList.add('hidden')" class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:text-gray-300 dark:text-gray-600">
+                <div class="text-gray-600 dark:text-gray-300 text-sm space-y-1">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
@@ -64,28 +64,28 @@
                 @csrf
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-1">Country</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Country</label>
                         <input type="text" name="country" required class="w-full rounded-lg border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-1">State/Province</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">State/Province</label>
                         <input type="text" name="state" required class="w-full rounded-lg border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-1">City</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">City</label>
                         <input type="text" name="city" required class="w-full rounded-lg border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-1">Street Address 1</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Street Address 1</label>
                         <input type="text" name="street_address_1" required class="w-full rounded-lg border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-1">Street Address 2 (Optional)</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Street Address 2 (Optional)</label>
                         <input type="text" name="street_address_2" class="w-full rounded-lg border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500">
                     </div>
                 </div>
                 <div class="mt-6 flex justify-end gap-3">
-                    <button type="button" onclick="document.getElementById('add-address-modal').classList.add('hidden')" class="px-4 py-2 text-gray-700 dark:text-gray-300 dark:text-gray-600 hover:bg-gray-100 dark:hover:bg-slate-700 dark:bg-slate-800 rounded-lg">Cancel</button>
+                    <button type="button" onclick="document.getElementById('add-address-modal').classList.add('hidden')" class="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 dark:bg-slate-800 rounded-lg">Cancel</button>
                     <button type="submit" class="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg">Save Address</button>
                 </div>
             </form>

@@ -18,16 +18,16 @@
                     <thead>
                         <tr class="bg-gray-100 dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700">
                             <th
-                                class="px-5 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 dark:text-gray-600 uppercase tracking-wider">
+                                class="px-5 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
                                 SN</th>
                             <th
-                                class="px-5 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 dark:text-gray-600 uppercase tracking-wider">
+                                class="px-5 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
                                 Name</th>
                             <th
-                                class="px-5 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 dark:text-gray-600 uppercase tracking-wider">
+                                class="px-5 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
                                 Slug</th>
                             <th
-                                class="px-5 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 dark:text-gray-600 uppercase tracking-wider">
+                                class="px-5 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
                                 Actions</th>
                         </tr>
                     </thead>
@@ -45,7 +45,7 @@
                                         </a>
                                         <button
                                             class="open-delete-modal text-red-600 hover:text-red-900 transition-colors duration-200">
-                                            View
+                                            Delete
                                         </button>
                                         <x-ui.delete-modal
                                             action="{{ route('admin.categories.destroy', $category->id) }}" />
@@ -57,7 +57,7 @@
                 </table>
             </div>
         @else
-            <p class="text-center text-xl text-gray-500 dark:text-gray-400 dark:text-gray-500 py-10 bg-gray-50 dark:bg-slate-800 rounded-lg">No categories found.</p>
+            <p class="text-center text-xl text-gray-500 dark:text-gray-400 py-10 bg-gray-50 dark:bg-slate-800 rounded-lg">No categories found.</p>
         @endif
     </div>
 

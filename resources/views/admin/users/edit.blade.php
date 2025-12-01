@@ -6,7 +6,7 @@
         <div class="bg-white dark:bg-slate-900 rounded-lg shadow-md p-6 mb-8 flex justify-between items-center">
             <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Edit User #{{ $user->id }}</h1>
             <a href="{{ route('admin.users.index') }}"
-                class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-300 dark:text-gray-600 rounded-md hover:bg-gray-300 transition-colors duration-200 font-medium">
+                class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 transition-colors duration-200 font-medium">
                 Back to Users List
             </a>
         </div>
@@ -27,7 +27,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Full Name -->
                 <div>
-                    <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-2">Full Name <span class="text-red-500">*</span></label>
+                    <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Full Name <span class="text-red-500">*</span></label>
                     <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}"
                         class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
                         placeholder="Enter full name" required>
@@ -38,7 +38,7 @@
 
                 <!-- Email Address -->
                 <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-2">Email Address <span class="text-red-500">*</span></label>
+                    <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email Address <span class="text-red-500">*</span></label>
                     <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}"
                         class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
                         placeholder="Enter email address" required>

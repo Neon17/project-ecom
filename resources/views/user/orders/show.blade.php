@@ -2,9 +2,9 @@
     <div class="mb-8 flex justify-between items-center">
         <div>
             <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200">Order #{{ $order->id }}</h1>
-            <p class="text-gray-600 dark:text-gray-300 dark:text-gray-600">Placed on {{ $order->created_at->format('M d, Y h:i A') }}</p>
+            <p class="text-gray-600 dark:text-gray-300">Placed on {{ $order->created_at->format('M d, Y h:i A') }}</p>
         </div>
-        <a href="{{ route('user.orders.index') }}" class="text-gray-600 dark:text-gray-300 dark:text-gray-600 hover:text-gray-900 dark:text-white flex items-center">
+        <a href="{{ route('user.orders.index') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white flex items-center">
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
             </svg>
@@ -36,19 +36,19 @@
                 </div>
                 <div class="bg-gray-50 dark:bg-slate-800 px-6 py-4 border-t border-gray-100 dark:border-gray-700">
                     <div class="flex justify-between items-center mb-2">
-                        <span class="text-gray-600 dark:text-gray-300 dark:text-gray-600">Subtotal</span>
+                        <span class="text-gray-600 dark:text-gray-300">Subtotal</span>
                         <span class="font-medium text-gray-900 dark:text-white">NPR {{ number_format($order->orderItems->sum(fn($i) => $i->amount_per_item * $i->quantity), 2) }}</span>
                     </div>
                     <div class="flex justify-between items-center mb-2">
-                        <span class="text-gray-600 dark:text-gray-300 dark:text-gray-600">Tax</span>
+                        <span class="text-gray-600 dark:text-gray-300">Tax</span>
                         <span class="font-medium text-gray-900 dark:text-white">NPR {{ number_format($order->tax_amount, 2) }}</span>
                     </div>
                     <div class="flex justify-between items-center mb-2">
-                        <span class="text-gray-600 dark:text-gray-300 dark:text-gray-600">Service Charge</span>
+                        <span class="text-gray-600 dark:text-gray-300">Service Charge</span>
                         <span class="font-medium text-gray-900 dark:text-white">NPR {{ number_format($order->service_charge, 2) }}</span>
                     </div>
                     <div class="flex justify-between items-center mb-2">
-                        <span class="text-gray-600 dark:text-gray-300 dark:text-gray-600">Delivery Charge</span>
+                        <span class="text-gray-600 dark:text-gray-300">Delivery Charge</span>
                         <span class="font-medium text-gray-900 dark:text-white">NPR {{ number_format($order->delivery_charge, 2) }}</span>
                     </div>
                     <div class="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-slate-700">
@@ -82,12 +82,12 @@
             <div class="bg-white dark:bg-slate-900 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 p-6">
                 <h2 class="text-lg font-bold text-gray-800 dark:text-gray-200 mb-4">Shipping Address</h2>
                 @if($order->address)
-                    <p class="text-gray-600 dark:text-gray-300 dark:text-gray-600">{{ $order->address->street_address_1 }}</p>
+                    <p class="text-gray-600 dark:text-gray-300">{{ $order->address->street_address_1 }}</p>
                     @if($order->address->street_address_2)
-                        <p class="text-gray-600 dark:text-gray-300 dark:text-gray-600">{{ $order->address->street_address_2 }}</p>
+                        <p class="text-gray-600 dark:text-gray-300">{{ $order->address->street_address_2 }}</p>
                     @endif
-                    <p class="text-gray-600 dark:text-gray-300 dark:text-gray-600">{{ $order->address->city }}, {{ $order->address->state }}</p>
-                    <p class="text-gray-600 dark:text-gray-300 dark:text-gray-600">{{ $order->address->country }}</p>
+                    <p class="text-gray-600 dark:text-gray-300">{{ $order->address->city }}, {{ $order->address->state }}</p>
+                    <p class="text-gray-600 dark:text-gray-300">{{ $order->address->country }}</p>
                 @else
                     <p class="text-gray-500 dark:text-gray-400 dark:text-gray-500 italic">No address information available.</p>
                 @endif
@@ -112,7 +112,7 @@
                     @if($order->payment->transaction_code)
                         <div>
                             <span class="text-gray-500 dark:text-gray-400 dark:text-gray-500 text-sm">Transaction ID:</span>
-                            <span class="font-mono text-sm text-gray-700 dark:text-gray-300 dark:text-gray-600 block break-all">{{ $order->payment->transaction_code }}</span>
+                            <span class="font-mono text-sm text-gray-700 dark:text-gray-300 block break-all">{{ $order->payment->transaction_code }}</span>
                         </div>
                     @endif
                 @else

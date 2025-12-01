@@ -1,19 +1,19 @@
 <x-layouts.user>
     <div class="mb-8">
         <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200">My Orders</h1>
-        <p class="text-gray-600 dark:text-gray-300 dark:text-gray-600">Track and manage your orders.</p>
+        <p class="text-gray-600 dark:text-gray-300">Track and manage your orders.</p>
     </div>
 
     <!-- Filters -->
     <div class="bg-white dark:bg-slate-900 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 p-4 mb-6">
         <form action="{{ route('user.orders.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-                <label for="search" class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-1">Search</label>
+                <label for="search" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Search</label>
                 <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="Order ID"
                     class="w-full rounded-lg border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500 text-sm">
             </div>
             <div>
-                <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-1">Status</label>
+                <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
                 <select name="status" id="status" class="w-full rounded-lg border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500 text-sm">
                     <option value="">All Statuses</option>
                     @foreach(\App\Enums\OrderStatusEnum::cases() as $status)
@@ -27,7 +27,7 @@
                 <button type="submit" class=" bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
                     Filter
                 </button>
-                <a href="{{ route('user.orders.index') }}" class="px-4 py-2 bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 dark:text-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 dark:bg-slate-800 transition-colors text-sm font-medium">
+                <a href="{{ route('user.orders.index') }}" class="px-4 py-2 bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 dark:bg-slate-800 transition-colors text-sm font-medium">
                     Reset
                 </a>
             </div>
@@ -38,7 +38,7 @@
         <div class="overflow-x-auto">
             <table class="w-full text-left">
                 <thead>
-                    <tr class="bg-gray-50 dark:bg-slate-800 text-gray-600 dark:text-gray-300 dark:text-gray-600 text-sm uppercase tracking-wider">
+                    <tr class="bg-gray-50 dark:bg-slate-800 text-gray-600 dark:text-gray-300 text-sm uppercase tracking-wider">
                         <th class="px-6 py-3">Order ID</th>
                         <th class="px-6 py-3">Date</th>
                         <th class="px-6 py-3">Status</th>
@@ -51,7 +51,7 @@
                     @forelse($orders as $order)
                         <tr class="hover:bg-gray-50 dark:hover:bg-slate-700 dark:bg-slate-800 transition-colors">
                             <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">#{{ $order->id }}</td>
-                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300 dark:text-gray-600">{{ $order->created_at->format('M d, Y') }}</td>
+                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">{{ $order->created_at->format('M d, Y') }}</td>
                             <td class="px-6 py-4">
                                 <span
                                     class="px-3 py-1 rounded-full text-xs font-semibold
