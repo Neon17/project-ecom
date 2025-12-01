@@ -1,7 +1,4 @@
-@extends('components.layouts.guest')
-
-
-@section('content')
+<x-layouts.guest>
     <div class="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-slate-900 py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-md w-full bg-white dark:bg-slate-800 rounded-xl shadow-2xl p-8 space-y-8 border border-gray-200 dark:border-slate-700">
             <div class="text-center">
@@ -69,4 +66,4 @@
             </form>
         </div>
     </div>
-@endsection
+</x-layouts.guest>

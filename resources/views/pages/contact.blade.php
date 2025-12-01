@@ -14,7 +14,7 @@
                 <!-- Contact Info -->
                 <div class="lg:col-span-1 space-y-8">
                     <!-- Address -->
-                    <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg">
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg border border-gray-100 dark:border-gray-700">
                         <div class="flex items-start">
                             <div class="flex-shrink-0">
                                 <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
@@ -32,7 +32,7 @@
                     </div>
 
                     <!-- Email -->
-                    <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg">
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg border border-gray-100 dark:border-gray-700">
                         <div class="flex items-start">
                             <div class="flex-shrink-0">
                                 <div class="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
@@ -50,7 +50,7 @@
                     </div>
 
                     <!-- Phone -->
-                    <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg">
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg border border-gray-100 dark:border-gray-700">
                         <div class="flex items-start">
                             <div class="flex-shrink-0">
                                 <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
@@ -70,7 +70,7 @@
 
                 <!-- Contact Form -->
                 <div class="lg:col-span-2">
-                    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-8 sm:p-12">
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-8 sm:p-12 border border-gray-100 dark:border-gray-700">
                         <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-8">Send us a message</h2>
                         
                         @if(session('success'))

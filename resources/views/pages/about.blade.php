@@ -18,7 +18,7 @@
         <!-- Mission & Vision -->
         <div class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                <div class="bg-gray-50 dark:bg-slate-800 rounded-2xl p-8 shadow-lg">
+                <div class="bg-gray-50 dark:bg-slate-800 rounded-2xl p-8 shadow-lg border border-gray-100 dark:border-gray-700">
                     <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mb-6">
                         <i class="fas fa-bullseye text-2xl text-blue-600 dark:text-blue-400"></i>
                     </div>
@@ -27,7 +27,7 @@
                         To revolutionize the e-commerce landscape by offering a curated selection of premium products while ensuring a seamless, secure, and enjoyable shopping journey for every customer.
                     </p>
                 </div>
-                <div class="bg-gray-50 dark:bg-slate-800 rounded-2xl p-8 shadow-lg">
+                <div class="bg-gray-50 dark:bg-slate-800 rounded-2xl p-8 shadow-lg border border-gray-100 dark:border-gray-700">
                     <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mb-6">
                         <i class="fas fa-eye text-2xl text-purple-600 dark:text-purple-400"></i>
                     </div>

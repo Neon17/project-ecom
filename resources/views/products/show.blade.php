@@ -1,11 +1,9 @@
-@extends('components.layouts.guest')
-
-@section('content')
+<x-layouts.guest>
     <div class="min-h-screen bg-gray-50 dark:bg-slate-800 py-8 px-4 sm:px-6 lg:px-8">
         <div class="max-w-6xl mx-auto">
             <!-- Breadcrumb -->
             <nav class="mb-6">
-                <div class="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-300 dark:text-gray-600">
+                <div class="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-300">
                     <a href="{{ route('products.index') }}" class="hover:text-blue-600 dark:text-blue-400">
                         Products
                     </a>
@@ -50,7 +48,7 @@
                         <!-- Availability & Price -->
                         <div class="space-y-4 mb-6">
                             <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-slate-800 rounded-lg">
-                                <span class="text-gray-700 dark:text-gray-300 dark:text-gray-600">Availability:</span>
+                                <span class="text-gray-700 dark:text-gray-300">Availability:</span>
                                 <span class="font-semibold {{ $product->quantity > 0 ? 'text-green-600' : 'text-red-600' }}">
                                     @if($product->quantity > 0)
                                         In Stock ({{ $product->quantity }} items)
@@ -60,8 +58,8 @@
                                 </span>
                             </div>
 
-                            <div class="flex items-center justify-between p-4 bg-blue-50 rounded-lg border border-blue-100">
-                                <span class="text-lg text-gray-700 dark:text-gray-300 dark:text-gray-600">Price:</span>
+                            <div class="flex items-center justify-between p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-100 dark:border-blue-800">
+                                <span class="text-lg text-gray-700 dark:text-gray-300">Price:</span>
                                 <span class="text-3xl font-bold text-blue-600 dark:text-blue-400">
                                     NPR {{ number_format($product->price, 2) }}
                                 </span>
@@ -70,24 +68,24 @@
 
                         <!-- Quantity Selector -->
                         <div class="mb-6">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-2">Quantity</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Quantity</label>
                             <div class="flex items-center space-x-4">
                                 <div class="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-slate-900">
                                     <button type="button"
-                                        class="w-10 h-10 bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 dark:bg-slate-800 text-gray-700 dark:text-gray-300 dark:text-gray-600 font-bold flex items-center justify-center"
+                                        class="w-10 h-10 bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 text-gray-700 dark:text-gray-300 font-bold flex items-center justify-center"
                                         onclick="decreaseQuantity()">
                                         -
                                     </button>
                                     <input type="number" name="quantity" id="quantity-input" value="1" min="1"
                                         max="{{ $product->quantity }}"
-                                        class="w-16 h-10 text-center border-none focus:outline-none focus:ring-0">
+                                        class="w-16 h-10 text-center border-none focus:outline-none focus:ring-0 bg-transparent text-gray-900 dark:text-white">
                                     <button type="button"
-                                        class="w-10 h-10 bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 dark:bg-slate-800 text-gray-700 dark:text-gray-300 dark:text-gray-600 font-bold flex items-center justify-center"
+                                        class="w-10 h-10 bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 text-gray-700 dark:text-gray-300 font-bold flex items-center justify-center"
                                         onclick="increaseQuantity()">
                                         +
                                     </button>
                                 </div>
-                                <span class="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">Max: {{ $product->quantity }}</span>
+                                <span class="text-sm text-gray-500 dark:text-gray-400">Max: {{ $product->quantity }}</span>
                             </div>
                         </div>
 
@@ -114,7 +112,7 @@
                             @endif
 
                             <a href="{{ route('products.index') }}"
-                                class="block w-full bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:bg-slate-700 text-gray-800 dark:text-gray-200 font-semibold py-3 px-6 rounded-lg transition-colors duration-300 text-center">
+                                class="block w-full bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-800 dark:text-gray-200 font-semibold py-3 px-6 rounded-lg transition-colors duration-300 text-center">
                                 <i class="fas fa-arrow-left mr-2"></i>
                                 Continue Shopping
                             </a>
@@ -197,4 +195,4 @@
             });
         });
     </script>
-@endsection
+</x-layouts.guest>

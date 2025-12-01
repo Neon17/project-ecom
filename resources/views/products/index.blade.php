@@ -1,6 +1,4 @@
-@extends('components.layouts.guest')
-
-@section('content')
+<x-layouts.guest>
     <div class="min-h-screen bg-white dark:bg-slate-900 py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-7xl mx-auto">
             <div class="flex flex-col lg:flex-row gap-8">
@@ -145,4 +143,4 @@
             </div>
         </div>
     </div>
-@endsection
+</x-layouts.guest>

@@ -1,6 +1,4 @@
-@extends('components.layouts.guest')
-
-@section('content')
+<x-layouts.guest>
     <!-- Hero Section -->
     <section class="relative bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white py-20">
         <div class="absolute inset-0 bg-black opacity-20"></div>
@@ -287,4 +285,4 @@
             </div>
         </div>
     </section>
-@endsection
+</x-layouts.guest>

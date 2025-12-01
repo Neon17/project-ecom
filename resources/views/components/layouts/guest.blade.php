@@ -5,7 +5,7 @@
     <x-ui.success-error-topup />
 
     <div class="w-full min-h-[calc(100vh-80px)]">
-        @yield('content')
+        {{ $slot }}
     </div>
 </div>
 

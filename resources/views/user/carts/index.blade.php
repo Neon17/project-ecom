@@ -4,7 +4,7 @@
             <!-- Page Header -->
             <div class="mb-8">
                 <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-2">Shopping Cart</h1>
-                <p class="text-gray-600 dark:text-gray-300 dark:text-gray-600">Review your items and proceed to checkout</p>
+                <p class="text-gray-600 dark:text-gray-300">Review your items and proceed to checkout</p>
             </div>
 
             @php
@@ -41,7 +41,7 @@
                                                         {{ $product->name }}
                                                     </a>
                                                 </h3>
-                                                <p class="text-gray-600 dark:text-gray-300 dark:text-gray-600 text-sm line-clamp-2">{{ Str::limit($product->description, 100) }}</p>
+                                                <p class="text-gray-600 dark:text-gray-300 text-sm line-clamp-2">{{ Str::limit($product->description, 100) }}</p>
                                             </div>
                                         </div>
 
@@ -105,19 +105,19 @@
                             </h2>
 
                             <div class="space-y-4 mb-6">
-                                <div class="flex justify-between text-gray-600 dark:text-gray-300 dark:text-gray-600">
+                                <div class="flex justify-between text-gray-600 dark:text-gray-300">
                                     <span>Total Items:</span>
                                     <span class="font-semibold">{{ $cartItems->count() }} item(s)</span>
                                 </div>
-                                <div class="flex justify-between text-gray-600 dark:text-gray-300 dark:text-gray-600">
+                                <div class="flex justify-between text-gray-600 dark:text-gray-300">
                                     <span>Total Quantity:</span>
                                     <span class="font-semibold">{{ $cartItems->sum('quantity') }}</span>
                                 </div>
-                                <div class="flex justify-between text-gray-600 dark:text-gray-300 dark:text-gray-600">
+                                <div class="flex justify-between text-gray-600 dark:text-gray-300">
                                     <span>Subtotal:</span>
                                     <span class="font-semibold">NPR {{ number_format($grandTotal, 2) }}</span>
                                 </div>
-                                <div class="flex justify-between text-gray-600 dark:text-gray-300 dark:text-gray-600">
+                                <div class="flex justify-between text-gray-600 dark:text-gray-300">
                                     <span>Shipping:</span>
                                     <span class="font-semibold text-green-600">Free</span>
                                 </div>
@@ -150,7 +150,7 @@
 
                             <!-- Trust Badges -->
                             <div class="mt-6 pt-6 border-t border-gray-200 dark:border-slate-700">
-                                <div class="space-y-3 text-sm text-gray-600 dark:text-gray-300 dark:text-gray-600">
+                                <div class="space-y-3 text-sm text-gray-600 dark:text-gray-300">
                                     <div class="flex items-center">
                                         <svg class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
@@ -181,7 +181,7 @@
                     <div class="max-w-md mx-auto">
                         <div class="text-8xl mb-6">🛒</div>
                         <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-3">Your cart is empty</h2>
-                        <p class="text-gray-600 dark:text-gray-300 dark:text-gray-600 mb-8 text-lg">Looks like you haven't added anything to your cart yet. Start exploring our amazing products!</p>
+                        <p class="text-gray-600 dark:text-gray-300 mb-8 text-lg">Looks like you haven't added anything to your cart yet. Start exploring our amazing products!</p>
                         <a href="{{ route('products.index') }}" 
                            class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl hover:shadow-lg transition-all duration-300 font-bold text-lg transform hover:scale-105">
                             <svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">

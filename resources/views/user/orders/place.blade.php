@@ -9,15 +9,15 @@
             <div class="lg:w-2/3">
                 <div class="bg-white dark:bg-slate-900 rounded-lg shadow-md p-6">
 
-                    <h2 class="text-xl font-semibold mb-6 text-gray-700 dark:text-gray-300 dark:text-gray-600 flex items-center">
+                    <h2 class="text-xl font-semibold mb-6 text-gray-700 dark:text-gray-300 flex items-center">
                         <i class="fas fa-map-marker-alt mr-2 text-blue-600 dark:text-blue-400"></i>
                         Shipping Address
                     </h2>
 
                     <!-- Saved Addresses Dropdown -->
                     @if ($addresses->count() > 0)
-                        <div class="mb-6 p-4 border border-blue-200 rounded-lg">
-                            <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-3">
+                        <div class="mb-6 p-4 border border-blue-200 dark:border-blue-800 rounded-lg">
+                            <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
                                 Select from saved addresses:
                             </h3>
 
@@ -51,7 +51,7 @@
                             <!-- Country -->
                             <div>
                                 <label for="country"
-                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-1">Country</label>
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Country</label>
                                 <input type="text" name="address[country]" id="country" required
                                     class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Nepal">
@@ -59,7 +59,7 @@
 
                             <!-- State -->
                             <div>
-                                <label for="state" class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-1">State /
+                                <label for="state" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">State /
                                     Province</label>
                                 <input type="text" name="address[state]" id="state" required
                                     class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-blue-500 focus:border-blue-500"
@@ -68,7 +68,7 @@
 
                             <!-- City -->
                             <div>
-                                <label for="city" class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-1">City</label>
+                                <label for="city" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">City</label>
                                 <input type="text" name="address[city]" id="city" required
                                     class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Kathmandu">
@@ -76,7 +76,7 @@
 
                             <!-- Street Address 1 -->
                             <div class="md:col-span-2">
-                                <label for="street_address_1" class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-1">
+                                <label for="street_address_1" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                     Street Address
                                 </label>
                                 <input type="text" name="address[street_address_1]" id="street_address_1" required
@@ -86,7 +86,7 @@
 
                             <!-- Street Address 2 -->
                             <div class="md:col-span-2">
-                                <label for="street_address_2" class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-1">
+                                <label for="street_address_2" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                     Street Address 2 (Optional)
                                 </label>
                                 <input type="text" name="address[street_address_2]" id="street_address_2"
@@ -114,7 +114,7 @@
             <div class="lg:w-1/3">
                 <div class="bg-white dark:bg-slate-900 rounded-lg shadow-md p-6 sticky top-4">
 
-                    <h2 class="text-xl font-semibold mb-6 text-gray-700 dark:text-gray-300 dark:text-gray-600 flex items-center">
+                    <h2 class="text-xl font-semibold mb-6 text-gray-700 dark:text-gray-300 flex items-center">
                         <i class="fas fa-shopping-cart mr-2 text-blue-600 dark:text-blue-400"></i>
                         Order Summary
                     </h2>
@@ -146,7 +146,7 @@
                     </div>
 
                     <div class="mt-6 border-t pt-6 space-y-2">
-                        <div class="flex justify-between text-gray-600 dark:text-gray-300 dark:text-gray-600">
+                        <div class="flex justify-between text-gray-600 dark:text-gray-300">
                             <span>Subtotal</span>
                             <span>NPR
                                 {{ number_format($cart->cartItems->sum(fn($i) => $i->product->price * $i->quantity), 2) }}</span>
@@ -183,7 +183,7 @@
                             @endif
                         </div>
 
-                        <div class="flex justify-between text-gray-600 dark:text-gray-300 dark:text-gray-600">
+                        <div class="flex justify-between text-gray-600 dark:text-gray-300">
                             <span>Tax (10%)</span>
                             @php
                                 $subtotal = $cart->cartItems->sum(fn($i) => $i->product->price * $i->quantity);
@@ -193,12 +193,12 @@
                             <span>NPR {{ number_format($tax, 2) }}</span>
                         </div>
 
-                        <div class="flex justify-between text-gray-600 dark:text-gray-300 dark:text-gray-600">
+                        <div class="flex justify-between text-gray-600 dark:text-gray-300">
                             <span>Shipping</span>
                             <span class="text-green-600">Free</span>
                         </div>
 
-                        <div class="flex justify-between text-xl font-bold text-gray-900 dark:text-white pt-4 border-t mt-4">
+                        <div class="flex justify-between text-xl font-bold text-gray-900 dark:text-white pt-4 border-t border-gray-200 dark:border-gray-700 mt-4">
                             <span>Total</span>
                             <span>NPR
                                 {{ number_format($taxableAmount + $tax, 2) }}</span>
