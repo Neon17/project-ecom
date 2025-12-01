@@ -119,7 +119,7 @@
                         <div class="text-xs opacity-80">this month</div>
                     </div>
                 </div>
-                <h3 class="text-3xl font-bold mb-1">NPR {{ number_format($revenueData['total'], 2) }}</h3>
+                <h3 class="text-3xl font-bold mb-1">NPR {{ $revenueData['total'] }}</h3>
                 <p class="text-blue-100 text-sm">Total Revenue</p>
             </div>
 

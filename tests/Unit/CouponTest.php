@@ -44,7 +44,7 @@ class CouponTest extends TestCase
 
     public function test_it_checks_minimum_purchase_requirement()
     {
-        $coupon = new Coupon(['min_purchase' => 1000]); // 1000 paisa (NPR 10)
+        $coupon = new Coupon(['min_purchase' => 1000, 'is_active' => true]); // 1000 paisa (NPR 10)
 
         $this->assertTrue($coupon->canBeUsed(1500));
         $this->assertTrue($coupon->canBeUsed(1000));

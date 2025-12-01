@@ -49,50 +49,6 @@
         </div>
     </section>
 
-    <!-- Categories Section -->
-    <section id="categories" class="py-16 bg-gray-50 dark:bg-slate-800">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">Shop by Category</h2>
-                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                    Browse our diverse collection of products organized by category
-                </p>
-            </div>
-
-            @if ($categories->count() > 0)
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
-                    @foreach ($categories as $category)
-                        <a href="{{ route('welcome', ['category' => $category->id]) }}#categories-products"
-                            class="group bg-white dark:bg-slate-700 rounded-xl p-6 shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 text-center {{ $selectedCategory && $selectedCategory->id == $category->id ? 'ring-4 ring-blue-500 bg-blue-50 dark:bg-slate-600' : '' }}">
-                            <div
-                                class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center group-hover:scale-110 transition duration-300">
-                                <i class="fas fa-box text-white text-2xl"></i>
-                            </div>
-                            <h3 class="font-bold text-gray-900 dark:text-white mb-2">{{ $category->name }}</h3>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">{{ $category->products_count }}
-                                {{ Str::plural('product', $category->products_count) }}</p>
-                        </a>
-                    @endforeach
-                </div>
-
-                @if ($selectedCategory)
-                    <div class="mt-6 text-center">
-                        <a href="{{ route('welcome') }}#categories-products"
-                            class="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-semibold">
-                            <i class="fas fa-times mr-2"></i>
-                            Clear filter (Showing: {{ $selectedCategory->name }})
-                        </a>
-                    </div>
-                @endif
-            @else
-                <div class="text-center py-12">
-                    <i class="fas fa-box-open text-6xl text-gray-300 dark:text-gray-600 mb-4"></i>
-                    <p class="text-gray-500 dark:text-gray-400 text-lg">No categories available yet.</p>
-                </div>
-            @endif
-        </div>
-    </section>
-
     <!-- Products Section -->
     <div id="categories-products" class="py-5 bg-white dark:bg-slate-900">
         <section class="py-16 bg-white dark:bg-slate-900">
@@ -154,7 +110,8 @@
                                     @if ($product->categories->count() > 0)
                                         <div class="flex flex-wrap gap-1 mb-4">
                                             @foreach ($product->categories->take(2) as $cat)
-                                                <span class="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-1 rounded">
+                                                <span
+                                                    class="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-1 rounded">
                                                     {{ $cat->name }}
                                                 </span>
                                             @endforeach
@@ -168,7 +125,8 @@
 
                                         @auth
                                             @if ($product->quantity > 0)
-                                                <form action="{{ route('user.cart.store') }}" method="POST" class="inline">
+                                                <form action="{{ route('user.cart.store') }}" method="POST"
+                                                    class="inline">
                                                     @csrf
                                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
                                                     <input type="hidden" name="quantity" value="1">
@@ -205,7 +163,8 @@
                             {{ $selectedCategory ? 'No products available in this category.' : 'No products available at the moment.' }}
                         </p>
                         @if ($selectedCategory)
-                            <a href="{{ route('welcome') }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-semibold">
+                            <a href="{{ route('welcome') }}"
+                                class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-semibold">
                                 Browse all products
                             </a>
                         @endif
@@ -214,6 +173,50 @@
             </div>
         </section>
     </div>
+
+    <!-- Categories Section -->
+    <section id="categories" class="py-16 bg-gray-50 dark:bg-slate-800">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">Shop by Category</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                    Browse our diverse collection of products organized by category
+                </p>
+            </div>
+
+            @if ($categories->count() > 0)
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
+                    @foreach ($categories as $category)
+                        <a href="{{ route('welcome', ['category' => $category->id]) }}#categories-products"
+                            class="group bg-white dark:bg-slate-700 rounded-xl p-6 shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 text-center {{ $selectedCategory && $selectedCategory->id == $category->id ? 'ring-4 ring-blue-500 bg-blue-50 dark:bg-slate-600' : '' }}">
+                            <div
+                                class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center group-hover:scale-110 transition duration-300">
+                                <i class="fas fa-box text-white text-2xl"></i>
+                            </div>
+                            <h3 class="font-bold text-gray-900 dark:text-white mb-2">{{ $category->name }}</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">{{ $category->products_count }}
+                                {{ Str::plural('product', $category->products_count) }}</p>
+                        </a>
+                    @endforeach
+                </div>
+
+                @if ($selectedCategory)
+                    <div class="mt-6 text-center">
+                        <a href="{{ route('welcome') }}#categories-products"
+                            class="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-semibold">
+                            <i class="fas fa-times mr-2"></i>
+                            Clear filter (Showing: {{ $selectedCategory->name }})
+                        </a>
+                    </div>
+                @endif
+            @else
+                <div class="text-center py-12">
+                    <i class="fas fa-box-open text-6xl text-gray-300 dark:text-gray-600 mb-4"></i>
+                    <p class="text-gray-500 dark:text-gray-400 text-lg">No categories available yet.</p>
+                </div>
+            @endif
+        </div>
+    </section>
 
     <!-- Why Choose Us -->
     <section class="py-16 bg-gradient-to-r from-blue-800 to-indigo-900 text-white">
@@ -259,29 +262,6 @@
                     <h3 class="text-xl font-bold mb-2">24/7 Support</h3>
                     <p class="text-blue-100">Always here to help</p>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Newsletter -->
-    <section class="py-16 bg-white dark:bg-slate-900">
-        <div class="container mx-auto px-4">
-            <div
-                class="max-w-3xl mx-auto text-center bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-700 rounded-2xl p-12 shadow-lg">
-                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Stay Updated!</h2>
-                <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
-                    Subscribe to get special offers, product updates, and exclusive deals.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4">
-                    <input type="email" placeholder="Enter your email"
-                        class="flex-grow px-6 py-4 border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg">
-                    <button
-                        class="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-bold px-8 py-4 rounded-lg transition duration-300 whitespace-nowrap shadow-lg">
-                        <i class="fas fa-envelope mr-2"></i>
-                        Subscribe
-                    </button>
-                </div>
-                <p class="text-gray-500 dark:text-gray-400 text-sm mt-4">We respect your privacy. Unsubscribe anytime.</p>
             </div>
         </div>
     </section>

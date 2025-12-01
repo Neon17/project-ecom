@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
+use App\Services\TypesenseService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -19,35 +20,79 @@ class ProductController extends Controller
             ->orWhere('price', 'like', '%'.$request->input('search').'%');
     }
 
-    public function index(Request $request)
+    public function index(Request $request, TypesenseService $typesense)
     {
         $query = Product::query()->with('categories');
 
         if ($request->has('search') && $request->search) {
-            $query->where(function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->search . '%')
-                  ->orWhere('description', 'like', '%' . $request->search . '%');
-            });
+            try {
+                $searchResult = $typesense->searchProducts($request->search, [
+                    'query_by' => 'name,description',
+                    'filter_by' => $this->buildTypesenseFilter($request),
+                ]);
+
+                $ids = array_column($searchResult['hits'] ?? [], 'document');
+                $ids = array_column($ids, 'id');
+
+                if (!empty($ids)) {
+                    $query->whereIn('id', $ids);
+                    
+                    // Maintain Typesense relevance order if possible, or just latest
+                    // For admin panel, latest might still be preferred, or we can order by field
+                    $idsString = implode(',', $ids);
+                    $query->orderByRaw("FIELD(id, $idsString)");
+                } else {
+                    $query->where('id', 0); // No results
+                }
+            } catch (\Exception $e) {
+                // Fallback to SQL search
+                $query->where(function ($q) use ($request) {
+                    $q->where('name', 'like', '%' . $request->search . '%')
+                      ->orWhere('description', 'like', '%' . $request->search . '%');
+                });
+            }
+        } else {
+            // Apply filters for non-search requests
+            if ($request->has('category_id') && $request->category_id) {
+                $query->whereHas('categories', function ($q) use ($request) {
+                    $q->where('categories.id', $request->category_id);
+                });
+            }
+
+            if ($request->has('min_price') && $request->min_price) {
+                $query->where('price', '>=', $request->min_price * 100);
+            }
+
+            if ($request->has('max_price') && $request->max_price) {
+                $query->where('price', '<=', $request->max_price * 100);
+            }
+            
+            $query->latest();
         }
 
-        if ($request->has('category_id') && $request->category_id) {
-            $query->whereHas('categories', function ($q) use ($request) {
-                $q->where('categories.id', $request->category_id);
-            });
-        }
-
-        if ($request->has('min_price') && $request->min_price) {
-            $query->where('price', '>=', $request->min_price * 100);
-        }
-
-        if ($request->has('max_price') && $request->max_price) {
-            $query->where('price', '<=', $request->max_price * 100);
-        }
-
-        $products = $query->latest()->paginate(10);
+        $products = $query->paginate(10);
         $categories = Category::all();
 
         return view('admin.products.index', compact('products', 'categories'));
+    }
+
+    private function buildTypesenseFilter(Request $request)
+    {
+        $filters = [];
+
+        if ($request->has('category_id') && $request->category_id) {
+            $filters[] = 'category_ids:=[' . $request->category_id . ']';
+        }
+
+        if ($request->has('min_price') && $request->min_price) {
+            $filters[] = 'price:>=' . ($request->min_price * 100);
+        }
+
+        if ($request->has('max_price') && $request->max_price) {
+            $filters[] = 'price:<=' . ($request->max_price * 100);
+        }
+
+        return implode(' && ', $filters);
     }
 
     public function create()

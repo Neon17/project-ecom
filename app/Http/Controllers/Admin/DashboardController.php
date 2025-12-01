@@ -124,7 +124,7 @@ class DashboardController extends Controller
                 $date = now()->subDays($i)->format('Y-m-d');
                 $labels[] = now()->subDays($i)->format('M d');
                 
-                $revenue = Order::whereDate('created_at', $date)
+                $revenue = Payment::whereDate('created_at', $date)
                     ->where('status', 'completed')
                     ->sum('total_amount');
                     
@@ -132,12 +132,14 @@ class DashboardController extends Controller
             }
             
             // Calculate total revenue and growth
-            $currentMonthRevenue = Order::whereMonth('created_at', now()->month)
-                ->where('status', 'completed')
+            $currentMonthRevenue = Payment::where('status', 'completed')
+                ->whereMonth('created_at', now()->month)
+                ->whereYear('created_at', now()->year)
                 ->sum('total_amount') / 100;
                 
-            $lastMonthRevenue = Order::whereMonth('created_at', now()->subMonth()->month)
-                ->where('status', 'completed')
+            $lastMonthRevenue = Payment::where('status', 'completed')
+                ->whereMonth('created_at', now()->subMonth()->month)
+                ->whereYear('created_at', now()->subMonth()->year)
                 ->sum('total_amount') / 100;
                 
             $growthPercentage = $lastMonthRevenue > 0 
