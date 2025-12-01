@@ -7,6 +7,6 @@
     <title>Reset Password Link</title>
 </head>
 <body>
-    {{url('/reset-password/'.$token)}}
+    <a href="{{ $url }}/reset-password/{{ $token }}/{{ $user->email }}">Reset Password</a>
 </body>
 </html>

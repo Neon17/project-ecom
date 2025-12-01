@@ -36,11 +36,14 @@ class ResetPasswordMail extends Mailable
      */
     public function content(): Content
     {
+        $url = config('app.url');
+        $url = $url.":8000";
         return new Content(
             view: 'mails.users.forgot-password',
         )->with([
             'user' => $this->user,
             'token' => $this->token,
+            'url' => $url,
         ]);
     }
 
