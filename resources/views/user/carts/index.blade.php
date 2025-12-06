@@ -1,5 +1,6 @@
 <x-layouts.user>
-    <div class="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+    <div class="min-h-screen py-8 px-4 sm:px-6 lg:px-8" 
+         x-data="guestCartPage({{ auth()->check() ? 'true' : 'false' }}, {{ $cart ? $cart->cartItems->toJson() : '[]' }})">
         <div class="max-w-7xl mx-auto">
             <!-- Page Header -->
             <div class="mb-8">
@@ -7,28 +8,17 @@
                 <p class="text-gray-600 dark:text-gray-300">Review your items and proceed to checkout</p>
             </div>
 
-            @php
-                $cartItems = $cart ? $cart->cartItems : collect();
-                $grandTotal = 0;
-            @endphp
-
-            @if ($cartItems->count() > 0)
+            <template x-if="items.length > 0">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <!-- Cart Items Section -->
                     <div class="lg:col-span-2 space-y-4">
-                        @foreach ($cartItems as $cartItem)
-                            @php
-                                $product = $cartItem->product;
-                                $itemTotal = $product->price * $cartItem->quantity;
-                                $grandTotal += $itemTotal;
-                            @endphp
-
+                        <template x-for="item in items" :key="item.id">
                             <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-700 p-6">
                                 <div class="flex flex-col sm:flex-row gap-6">
                                     <!-- Product Image -->
                                     <div class="w-full sm:w-32 h-32 flex-shrink-0">
-                                        <img src="{{ $product->image_url }}" 
-                                             alt="{{ $product->name }}"
+                                        <img :src="item.image || item.product.image_url" 
+                                             :alt="item.name || item.product.name"
                                              class="w-full h-full object-cover rounded-xl">
                                     </div>
 
@@ -37,11 +27,10 @@
                                         <div class="flex justify-between items-start mb-3">
                                             <div>
                                                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-1">
-                                                    <a href="{{ route('products.show', $product->id) }}" class="hover:text-blue-600 dark:text-blue-400 transition-colors">
-                                                        {{ $product->name }}
+                                                    <a :href="'/products/' + (item.product_id || item.id)" class="hover:text-blue-600 dark:text-blue-400 transition-colors" x-text="item.name || item.product.name">
                                                     </a>
                                                 </h3>
-                                                <p class="text-gray-600 dark:text-gray-300 text-sm line-clamp-2">{{ Str::limit($product->description, 100) }}</p>
+                                                <p class="text-gray-600 dark:text-gray-300 text-sm line-clamp-2" x-text="item.description || (item.product ? item.product.description : '')"></p>
                                             </div>
                                         </div>
 
@@ -50,24 +39,24 @@
                                             <div class="flex items-center gap-6">
                                                 <div>
                                                     <span class="text-sm text-gray-500 dark:text-gray-400">Quantity:</span>
-                                                    <span class="font-semibold text-gray-900 dark:text-white ml-2">{{ $cartItem->quantity }}</span>
+                                                    <span class="font-semibold text-gray-900 dark:text-white ml-2" x-text="item.quantity"></span>
                                                 </div>
                                                 <div>
                                                     <span class="text-sm text-gray-500 dark:text-gray-400">Price:</span>
-                                                    <span class="font-semibold text-gray-900 dark:text-white ml-2">NPR {{ number_format($product->price, 2) }}</span>
+                                                    <span class="font-semibold text-gray-900 dark:text-white ml-2">NPR <span x-text="formatPrice(item.price || item.product.price)"></span></span>
                                                 </div>
                                             </div>
 
                                             <!-- Item Total -->
                                             <div class="text-right">
                                                 <div class="text-sm text-gray-500 dark:text-gray-400">Subtotal</div>
-                                                <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">NPR {{ number_format($itemTotal, 2) }}</div>
+                                                <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">NPR <span x-text="formatPrice((item.price || item.product.price) * item.quantity)"></span></div>
                                             </div>
                                         </div>
 
                                         <!-- Actions -->
                                         <div class="flex gap-3 mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
-                                            <a href="{{ route('products.show', $product->id) }}" 
+                                            <a :href="'/products/' + (item.product_id || item.id)" 
                                                class="flex-1 sm:flex-none inline-flex items-center justify-center px-4 py-2 bg-blue-50 text-blue-600 dark:text-blue-400 text-sm rounded-lg hover:bg-blue-100 transition-colors font-medium">
                                                 <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -75,23 +64,36 @@
                                                 </svg>
                                                 View Product
                                             </a>
-                                            <form action="{{ route('user.cart-items.destroy', $cartItem->id) }}" method="POST" class="flex-1 sm:flex-none">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit"
-                                                    class="w-full inline-flex items-center justify-center px-4 py-2 bg-red-50 text-red-600 text-sm rounded-lg hover:bg-red-100 transition-colors font-medium"
-                                                    onclick="return confirm('Remove this item from your cart?')">
+                                            
+                                            <template x-if="isLoggedIn">
+                                                <form :action="'/user/cart-items/' + item.id" method="POST" class="flex-1 sm:flex-none">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit"
+                                                        class="w-full inline-flex items-center justify-center px-4 py-2 bg-red-50 text-red-600 text-sm rounded-lg hover:bg-red-100 transition-colors font-medium"
+                                                        onclick="return confirm('Remove this item from your cart?')">
+                                                        <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                        </svg>
+                                                        Remove
+                                                    </button>
+                                                </form>
+                                            </template>
+
+                                            <template x-if="!isLoggedIn">
+                                                <button @click="removeItem(item.id)"
+                                                    class="flex-1 sm:flex-none inline-flex items-center justify-center px-4 py-2 bg-red-50 text-red-600 text-sm rounded-lg hover:bg-red-100 transition-colors font-medium">
                                                     <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                     </svg>
                                                     Remove
                                                 </button>
-                                            </form>
+                                            </template>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
+                        </template>
                     </div>
 
                     <!-- Order Summary Sidebar -->
@@ -107,15 +109,15 @@
                             <div class="space-y-4 mb-6">
                                 <div class="flex justify-between text-gray-600 dark:text-gray-300">
                                     <span>Total Items:</span>
-                                    <span class="font-semibold">{{ $cartItems->count() }} item(s)</span>
+                                    <span class="font-semibold"><span x-text="items.length"></span> item(s)</span>
                                 </div>
                                 <div class="flex justify-between text-gray-600 dark:text-gray-300">
                                     <span>Total Quantity:</span>
-                                    <span class="font-semibold">{{ $cartItems->sum('quantity') }}</span>
+                                    <span class="font-semibold" x-text="totalQuantity"></span>
                                 </div>
                                 <div class="flex justify-between text-gray-600 dark:text-gray-300">
                                     <span>Subtotal:</span>
-                                    <span class="font-semibold">NPR {{ number_format($grandTotal, 2) }}</span>
+                                    <span class="font-semibold">NPR <span x-text="formatPrice(grandTotal)"></span></span>
                                 </div>
                                 <div class="flex justify-between text-gray-600 dark:text-gray-300">
                                     <span>Shipping:</span>
@@ -126,18 +128,27 @@
                             <div class="border-t border-gray-200 dark:border-slate-700 pt-4 mb-6">
                                 <div class="flex justify-between items-center">
                                     <span class="text-lg font-semibold text-gray-900 dark:text-white">Grand Total:</span>
-                                    <span class="text-3xl font-bold text-blue-600 dark:text-blue-400">NPR {{ number_format($grandTotal, 2) }}</span>
+                                    <span class="text-3xl font-bold text-blue-600 dark:text-blue-400">NPR <span x-text="formatPrice(grandTotal)"></span></span>
                                 </div>
                             </div>
 
                             <!-- Checkout Button -->
-                            <a href="{{ route('carts.view-checkout', $cart->id) }}" 
-                               class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl flex items-center justify-center text-lg">
-                                <svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                                </svg>
-                                Proceed to Checkout
-                            </a>
+                            <template x-if="isLoggedIn">
+                                <a href="{{ $cart ? route('carts.view-checkout', $cart->id) : '#' }}" 
+                                   class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl flex items-center justify-center text-lg">
+                                    <svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                                    </svg>
+                                    Proceed to Checkout
+                                </a>
+                            </template>
+                            
+                            <template x-if="!isLoggedIn">
+                                <a href="{{ route('login') }}" 
+                                   class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl flex items-center justify-center text-lg">
+                                    Login to Checkout
+                                </a>
+                            </template>
 
                             <!-- Continue Shopping -->
                             <a href="{{ route('products.index') }}" 
@@ -175,7 +186,9 @@
                         </div>
                     </div>
                 </div>
-            @else
+            </template>
+
+            <template x-if="items.length === 0">
                 <!-- Empty Cart State -->
                 <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-12 text-center">
                     <div class="max-w-md mx-auto">
@@ -191,7 +204,50 @@
                         </a>
                     </div>
                 </div>
-            @endif
+            </template>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('guestCartPage', (isLoggedIn, serverItems) => ({
+                isLoggedIn: isLoggedIn,
+                items: [],
+
+                init() {
+                    if (this.isLoggedIn) {
+                        this.items = serverItems;
+                    } else {
+                        setTimeout(() => {
+                            this.items = JSON.parse(localStorage.getItem('guest_cart') || '[]');
+                        }, 50);
+                    }
+                },
+
+                get totalQuantity() {
+                    return this.items.reduce((sum, item) => sum + parseInt(item.quantity), 0);
+                },
+
+                get grandTotal() {
+                    return this.items.reduce((sum, item) => {
+                        const price = item.price || (item.product ? item.product.price : 0);
+                        return sum + (price * item.quantity);
+                    }, 0);
+                },
+
+                formatPrice(price) {
+                    return new Intl.NumberFormat('en-NP', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }).format(price);
+                },
+
+                removeItem(id) {
+                    this.items = this.items.filter(item => item.id !== id);
+                    localStorage.setItem('guest_cart', JSON.stringify(this.items));
+                    window.dispatchEvent(new CustomEvent('cart-count-updated', { detail: this.totalQuantity }));
+                }
+            }));
+        });
+    </script>
 </x-layouts.user>

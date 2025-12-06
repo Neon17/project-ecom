@@ -22,15 +22,7 @@
                     <!-- Order Selection -->
                     <div>
                         <label for="order_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-1">Order *</label>
-                        <select name="order_id" id="order_id" required
-                                class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
-                            <option value="">Select an order</option>
-                            @foreach($orders as $order)
-                                <option value="{{ $order->id }}" {{ old('order_id') == $order->id ? 'selected' : '' }}>
-                                    Order #{{ $order->id }} - {{ $order->user->name }}
-                                </option>
-                            @endforeach
-                        </select>
+                        <x-admin.order-search :orders="$orders" name="order_id" />
                         @error('order_id')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror

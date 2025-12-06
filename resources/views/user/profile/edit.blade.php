@@ -30,11 +30,31 @@
                     </div>
                 </div>
             @endif
-            <form action="{{ route('user.profile.update') }}" method="POST">
+            <form action="{{ route('user.profile.update') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PATCH')
 
                 <div class="space-y-6">
+                    <!-- Profile Photo -->
+                    <div class="flex items-center space-x-6">
+                        <div class="shrink-0">
+                            <img class="h-16 w-16 object-cover rounded-full" src="{{ $user->profile_photo_url }}" alt="{{ $user->name }}">
+                        </div>
+                        <label class="block">
+                            <span class="sr-only">Choose profile photo</span>
+                            <input type="file" name="profile_photo" class="block w-full text-sm text-slate-500
+                                file:mr-4 file:py-2 file:px-4
+                                file:rounded-full file:border-0
+                                file:text-sm file:font-semibold
+                                file:bg-blue-50 file:text-blue-700
+                                hover:file:bg-blue-100
+                            "/>
+                        </label>
+                        @error('profile_photo')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                     <div>
                         <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
                         <input type="text" id="name" name="name" value="{{ old('name', $user->name) }}" required
@@ -49,6 +69,15 @@
                         <input type="email" id="email" name="email" value="{{ old('email', $user->email) }}" required
                             class="w-full rounded-lg border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500">
                         @error('email')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone Number</label>
+                        <input type="text" id="phone" name="phone" value="{{ old('phone', $user->phone) }}"
+                            class="w-full rounded-lg border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500">
+                        @error('phone')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>

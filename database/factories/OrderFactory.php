@@ -22,7 +22,11 @@ class OrderFactory extends Factory
         return [
             'status' => fake()->randomElement(array_column(OrderStatusEnum::cases(), 'value')),
             'user_id' => User::factory(),
-            'address_id' => Address::factory(),
+            'shipping_country' => fake()->country(),
+            'shipping_state' => fake()->state(),
+            'shipping_city' => fake()->city(),
+            'shipping_street_address_1' => fake()->streetAddress(),
+            'shipping_street_address_2' => fake()->optional()->secondaryAddress(),
         ];
     }
 }

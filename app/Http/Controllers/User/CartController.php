@@ -15,7 +15,10 @@ class CartController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $cart = $user->cart()->with(['cartItems.product', 'user'])->first();
+        $cart = null;
+        if ($user) {
+            $cart = $user->cart()->with(['cartItems.product', 'user'])->first();
+        }
         return view('user.carts.index', compact('cart'));
     }
 

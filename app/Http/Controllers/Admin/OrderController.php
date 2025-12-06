@@ -18,7 +18,7 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Order::query()->with(['user', 'address', 'payment']);
+        $query = Order::query()->with(['user', 'payment']);
 
         if ($request->has('search') && $request->search) {
             $query->where(function ($q) use ($request) {
@@ -49,7 +49,7 @@ class OrderController extends Controller
 
     public function create()
     {
-        $users = User::query()->get();
+        $users = User::with('addresses')->get();
         $products = Product::query()->get();
         return view('admin.orders.create', compact('users', 'products'));
     }
@@ -78,19 +78,14 @@ class OrderController extends Controller
         // all products will be stored in OrderItems table
         // user_id, status and address will be stored in Orders table
 
-        $address = Address::create([
-            'user_id' => $validated['user_id'],
-            'country' => $validated['address']['country'],
-            'state' => $validated['address']['state'],
-            'city' => $validated['address']['city'],
-            'street_address_1' => $validated['address']['street_address_1'],
-            'street_address_2' => $validated['address']['street_address_2'],
-        ]);
-
         $order = Order::create([
             'user_id' => $validated['user_id'],
             'status' => $validated['status'],
-            'address_id' => $address->id,
+            'shipping_country' => $validated['address']['country'],
+            'shipping_state' => $validated['address']['state'],
+            'shipping_city' => $validated['address']['city'],
+            'shipping_street_address_1' => $validated['address']['street_address_1'],
+            'shipping_street_address_2' => $validated['address']['street_address_2'],
         ]);
 
         foreach ($validated['products'] as $product) {
@@ -115,7 +110,7 @@ class OrderController extends Controller
      */
     public function show(User $user, Order $order)
     {
-        $order->load(['user', 'address', 'orderItems.product']);
+        $order->load(['user', 'orderItems.product']);
         return view('admin.orders.show', compact('order'));
     }
 
@@ -124,14 +119,14 @@ class OrderController extends Controller
      */
     public function edit(User $user, Order $order)
     {
-        $order->load(['user', 'address', 'orderItems.product']);
+        $order->load(['user', 'orderItems.product']);
         return view('admin.orders.edit', compact('order'));
     }
 
     public function update(Request $request, string $orderId)
     {
         $order = Order::findOrFail($orderId);
-        $order->load(['user', 'address', 'orderItems.product']);
+        $order->load(['user', 'orderItems.product']);
         $userId = $order->user_id;
 
         $validated = $request->validate([
@@ -149,10 +144,13 @@ class OrderController extends Controller
         ]);
 
         $order->update([
-            'status' => $validated['status']
+            'status' => $validated['status'],
+            'shipping_country' => $validated['address']['country'],
+            'shipping_state' => $validated['address']['state'],
+            'shipping_city' => $validated['address']['city'],
+            'shipping_street_address_1' => $validated['address']['street_address_1'],
+            'shipping_street_address_2' => $validated['address']['street_address_2'],
         ]);
-
-        $order->address->update($validated['address']);
 
         foreach ($validated['items'] as $itemData) {
             $amountInCents = (int)($itemData['amount_per_item'] * 100);

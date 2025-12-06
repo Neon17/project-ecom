@@ -115,7 +115,6 @@ class CheckoutController extends Controller
 
             $order = Order::create([
                 'user_id' => $request->user()->id,
-                'address_id' => $address->id,
                 'status' => OrderStatusEnum::Pending->value,
                 'tax_amount' => $taxAmount,
                 'service_charge' => $serviceCharge,
@@ -124,6 +123,8 @@ class CheckoutController extends Controller
                 'coupon_id' => $couponId,
                 'discount_amount' => $discountAmount, // Mutator handles conversion to paisa
             ]);
+
+            $order->snapshotAddress($address);
             
             // Clear session
             session()->forget('coupon_code');
@@ -152,7 +153,7 @@ class CheckoutController extends Controller
 
     public function showPaymentPage(Request $request, Order $order)
     {
-        $order->load(['user', 'address', 'orderItems.product', 'payment']);
+        $order->load(['user', 'orderItems.product', 'payment']);
         return view('user.orders.pay', compact('order'));
     }
 
@@ -192,7 +193,7 @@ class CheckoutController extends Controller
 
     public function payOrderViaEsewa(Request $request, Order $order)
     {
-        $order->load(['payment', 'orderItems', 'user', 'address']);
+        $order->load(['payment', 'orderItems', 'user']);
 
         if (!$order->payment) {
             $order->payment()->create([
@@ -201,7 +202,7 @@ class CheckoutController extends Controller
             ]);
         }
 
-        $order->fresh(['payment', 'orderItems', 'user', 'address']);
+        $order->fresh(['payment', 'orderItems', 'user']);
         $payment = $order->payment;
 
         $payment->update([
@@ -275,7 +276,7 @@ class CheckoutController extends Controller
             return redirect()->back()->with('error', 'Khalti Secret Key is missing in .env');
         }
 
-        $order->fresh(['payment', 'orderItems', 'user', 'address']);
+        $order->fresh(['payment', 'orderItems', 'user']);
 
         if (!$order->payment) {
             $order->payment()->create([
@@ -284,7 +285,7 @@ class CheckoutController extends Controller
             ]);
         }
 
-        $order->fresh(['payment', 'orderItems', 'user', 'address']);
+        $order->fresh(['payment', 'orderItems', 'user']);
         $payment = $order->payment;
 
         $payment->update([

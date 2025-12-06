@@ -104,11 +104,19 @@
                                     </button>
                                 </form>
                             @else
-                                <a href="{{ route('login') }}"
+                                <button type="button" x-data
+                                    @click="$dispatch('add-to-cart-guest', {
+                                        id: {{ $product->id }},
+                                        name: '{{ addslashes($product->name) }}',
+                                        price: {{ $product->price }},
+                                        image: '{{ $product->image_url }}',
+                                        quantity: parseInt(document.getElementById('quantity-input').value),
+                                        max_quantity: {{ $product->quantity }}
+                                    })"
                                     class="block w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 text-center">
                                     <i class="fas fa-shopping-cart mr-2"></i>
                                     Add to Cart
-                                </a>
+                                </button>
                             @endif
 
                             <a href="{{ route('products.index') }}"

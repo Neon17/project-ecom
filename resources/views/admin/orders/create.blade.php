@@ -24,13 +24,7 @@
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
                     <div>
                         <label for="user_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-2">Customer *</label>
-                        <select name="user_id" id="user_id" required
-                                class="w-full border border-gray-200 dark:border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
-                            <option value="">Select customer</option>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }}</option>
-                            @endforeach
-                        </select>
+                        <x-admin.user-search :users="$users" name="user_id" />
                         @error('user_id')
                             <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
                         @enderror

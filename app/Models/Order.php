@@ -16,7 +16,11 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
-        'address_id',
+        'shipping_country',
+        'shipping_state',
+        'shipping_city',
+        'shipping_street_address_1',
+        'shipping_street_address_2',
         'status',
         'tax_amount',
         'service_charge',
@@ -77,9 +81,15 @@ class Order extends Model
         );
     }
 
-    public function address(): BelongsTo
+    public function getAddressAttribute()
     {
-        return $this->belongsTo(Address::class);
+        return (object) [
+            'country' => $this->shipping_country,
+            'state' => $this->shipping_state,
+            'city' => $this->shipping_city,
+            'street_address_1' => $this->shipping_street_address_1,
+            'street_address_2' => $this->shipping_street_address_2,
+        ];
     }
 
     public function user(): BelongsTo
@@ -108,5 +118,16 @@ class Order extends Model
             get: fn (?int $value) => $value ? $value / 100 : 0,
             set: fn (float $value) => $value * 100,
         );
+    }
+
+    public function snapshotAddress(Address $address): void
+    {
+        $this->update([
+            'shipping_country' => $address->country,
+            'shipping_state' => $address->state,
+            'shipping_city' => $address->city,
+            'shipping_street_address_1' => $address->street_address_1,
+            'shipping_street_address_2' => $address->street_address_2,
+        ]);
     }
 }

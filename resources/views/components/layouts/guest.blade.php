@@ -3,6 +3,7 @@
 
 <div class="flex w-full">
     <x-ui.success-error-topup />
+    <x-guest-cart-manager :user="auth()->user()" />
 
     <div class="w-full min-h-[calc(100vh-80px)]">
         {{ $slot }}

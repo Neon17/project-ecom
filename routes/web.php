@@ -38,6 +38,8 @@ Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::post('/contact', [PageController::class, 'contactSubmit'])->name('contact.submit');
 
+Route::get('/user/cart', [UserCartController::class, 'index'])->name('user.cart.index');
+
 // Guest Routes
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -81,11 +83,12 @@ Route::middleware('auth')->group(function () {
         Route::resource('addresses', UserAddressController::class)->except(['create', 'show', 'edit']);
         
         // Cart
-        Route::get('/cart', [UserCartController::class, 'index'])->name('cart.index');
+        // Route::get('/cart', [UserCartController::class, 'index'])->name('cart.index'); // Moved to public
         Route::post('/cart', [UserCartController::class, 'store'])->name('cart.store');
         Route::patch('/cart/{cart}', [UserCartController::class, 'update'])->name('cart.update');
         Route::delete('/cart/{cart}', [UserCartController::class, 'destroy'])->name('cart.destroy');
         Route::delete('/cart-items/{cartItem}', [UserCartController::class, 'destroyItem'])->name('cart-items.destroy');
+        Route::post('/cart/merge', [App\Http\Controllers\CartMergeController::class, 'merge'])->name('cart.merge');
     });
 
     // Profile (Accessible by auth users, even if not verified)
