@@ -122,6 +122,7 @@ Route::middleware(['auth', 'admin', 'verified'])->prefix('admin')->name('admin.'
     Route::resource('products', AdminProductController::class);
     Route::resource('categories', AdminCategoryController::class);
     Route::resource('orders', AdminOrderController::class);
+    Route::post('/orders/{order}/confirm', [AdminOrderController::class, 'confirm'])->name('orders.confirm');
     Route::resource('payments', AdminPaymentController::class);
     Route::resource('coupons', AdminCouponController::class);
     

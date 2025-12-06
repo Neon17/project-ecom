@@ -12,10 +12,22 @@
             </a>
             <div class="flex justify-between items-center">
                 <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Order #{{ $order->id }}</h1>
-                <a href="{{ route('admin.orders.edit', ['order' => $order]) }}"
-                    class="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 text-sm font-medium transition-colors">
-                    Edit Order
-                </a>
+                <div class="flex space-x-3">
+                    @if($order->status === 'pending')
+                        <form action="{{ route('admin.orders.confirm', $order) }}" method="POST" class="inline">
+                            @csrf
+                            <button type="submit" 
+                                class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium transition-colors"
+                                onclick="return confirm('Are you sure you want to confirm this order?')">
+                                Confirm Order
+                            </button>
+                        </form>
+                    @endif
+                    <a href="{{ route('admin.orders.edit', ['order' => $order]) }}"
+                        class="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 text-sm font-medium transition-colors">
+                        Edit Order
+                    </a>
+                </div>
             </div>
         </div>
 

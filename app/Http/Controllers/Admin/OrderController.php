@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\OrderStatusEnum;
 use App\Http\Controllers\Controller;
+use App\Mail\OrderConfirmedMail;
 use App\Models\Address;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -178,5 +180,18 @@ class OrderController extends Controller
         }
         $order->delete();
         return redirect()->back()->with('success', 'Order deleted successfully');
+    }
+    public function confirm(Order $order)
+    {
+        if ($order->status !== OrderStatusEnum::Pending->value) {
+            return redirect()->back()->with('error', 'Only pending orders can be confirmed.');
+        }
+
+        $order->update(['status' => OrderStatusEnum::Processing->value]);
+
+        // Send confirmation email
+        Mail::to($order->user->email)->send(new OrderConfirmedMail($order));
+
+        return redirect()->back()->with('success', 'Order confirmed and email sent successfully.');
     }
 }
