@@ -37,7 +37,7 @@
                         </a>
                     @endif
 
-                    <livewire:cart-logo />
+                    <livewire:cart-widget mode="logo" />
 
                     <form action="{{ url('/logout') }}" method="POST" class="m-0">
                         @csrf

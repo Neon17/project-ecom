@@ -67,31 +67,11 @@
                         </div>
 
                         <!-- Quantity Selector -->
-                        <div class="mb-6">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Quantity</label>
-                            <div class="flex items-center space-x-4">
-                                <div class="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-slate-900">
-                                    <button type="button"
-                                        class="w-10 h-10 bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 text-gray-700 dark:text-gray-300 font-bold flex items-center justify-center"
-                                        onclick="decreaseQuantity()">
-                                        -
-                                    </button>
-                                    <input type="number" name="quantity" id="quantity-input" value="1" min="1"
-                                        max="{{ $product->quantity }}"
-                                        class="w-16 h-10 text-center border-none focus:outline-none focus:ring-0 bg-transparent text-gray-900 dark:text-white">
-                                    <button type="button"
-                                        class="w-10 h-10 bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 text-gray-700 dark:text-gray-300 font-bold flex items-center justify-center"
-                                        onclick="increaseQuantity()">
-                                        +
-                                    </button>
-                                </div>
-                                <span class="text-sm text-gray-500 dark:text-gray-400">Max: {{ $product->quantity }}</span>
-                            </div>
-                        </div>
+
 
                         <!-- Action Buttons -->
                         <div class="space-y-3">
-                            <livewire:add-to-cart :product="$product" />
+                            <livewire:cart-widget mode="button" :product="$product" />
 
                             <a href="{{ route('products.index') }}"
                                 class="block w-full bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-800 dark:text-gray-200 font-semibold py-3 px-6 rounded-lg transition-colors duration-300 text-center">

@@ -18,5 +18,7 @@
             document.documentElement.classList.add('dark');
         }
     </script>
+
+    @livewireStyles
 </head>
 <body class="min-h-screen bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100">
