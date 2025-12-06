@@ -91,7 +91,25 @@
 
                         <!-- Action Buttons -->
                         <div class="space-y-3">
-                            <livewire:add-to-cart :product="$product" />
+                            @if (auth()->check())
+                                <form action="{{ route('user.cart.store') }}"
+                                    method="POST" class="w-full">
+                                    @csrf
+                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                    <input type="hidden" name="quantity" id="quantity-hidden" value="1">
+                                    <button type="submit" {{ $product->quantity === 0 ? 'disabled' : '' }}
+                                        class="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                                        <i class="fas fa-shopping-cart mr-2"></i>
+                                        Add to Cart
+                                    </button>
+                                </form>
+                            @else
+                                <a href="{{ route('login') }}"
+                                    class="block w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 text-center">
+                                    <i class="fas fa-shopping-cart mr-2"></i>
+                                    Add to Cart
+                                </a>
+                            @endif
 
                             <a href="{{ route('products.index') }}"
                                 class="block w-full bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-800 dark:text-gray-200 font-semibold py-3 px-6 rounded-lg transition-colors duration-300 text-center">
@@ -130,5 +148,51 @@
         </div>
     </div>
 
-    
+    <script>
+        function increaseQuantity() {
+            const quantityInput = document.getElementById('quantity-input');
+            const maxQuantity = parseInt(quantityInput.getAttribute('max'));
+            let currentValue = parseInt(quantityInput.value);
+
+            if (currentValue < maxQuantity) {
+                quantityInput.value = currentValue + 1;
+                updateHiddenQuantities();
+            }
+        }
+
+        function decreaseQuantity() {
+            const quantityInput = document.getElementById('quantity-input');
+            let currentValue = parseInt(quantityInput.value);
+
+            if (currentValue > 1) {
+                quantityInput.value = currentValue - 1;
+                updateHiddenQuantities();
+            }
+        }
+
+        function updateHiddenQuantities() {
+            const quantityInput = document.getElementById('quantity-input');
+            const hiddenInput = document.getElementById('quantity-hidden');
+            
+            hiddenInput.value = quantityInput.value;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateHiddenQuantities();
+
+            document.getElementById('quantity-input').addEventListener('change', function() {
+                const maxQuantity = parseInt(this.getAttribute('max'));
+                const minQuantity = parseInt(this.getAttribute('min'));
+                let value = parseInt(this.value);
+
+                if (isNaN(value) || value < minQuantity) {
+                    this.value = minQuantity;
+                } else if (value > maxQuantity) {
+                    this.value = maxQuantity;
+                }
+
+                updateHiddenQuantities();
+            });
+        });
+    </script>
 </x-layouts.guest>
