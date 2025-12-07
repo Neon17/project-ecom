@@ -37,6 +37,13 @@ class CheckoutController extends Controller
             return redirect()->route('user.cart.index')->with('error', 'Your cart is empty.');
         }
 
+        // Validate stock
+        foreach ($cart->cartItems as $item) {
+            if ($item->quantity > $item->product->quantity) {
+                 return redirect()->route('user.cart.index')->with('error', "Sorry, only {$item->product->quantity} units of {$item->product->name} are available.");
+            }
+        }
+
         $discountAmount = 0;
         if (session()->has('coupon_code')) {
             $coupon = Coupon::where('code', session('coupon_code'))->first();
@@ -65,7 +72,14 @@ class CheckoutController extends Controller
             'address.street_address_2' => 'nullable|string',
         ]);
 
-        $cart = $cart->with(['cartItems', 'user'])->first();
+        $cart = $cart->with(['cartItems.product', 'user'])->first();
+
+        // Validate stock again
+        foreach ($cart->cartItems as $item) {
+            if ($item->quantity > $item->product->quantity) {
+                 return redirect()->route('user.cart.index')->with('error', "Sorry, only {$item->product->quantity} units of {$item->product->name} are available.");
+            }
+        }
 
         if ($validated['address_id']) {
             $address = $request->user()->addresses()->find($validated['address_id']);

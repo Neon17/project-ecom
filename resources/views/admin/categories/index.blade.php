@@ -39,7 +39,7 @@
                                 <td class="px-5 py-5 text-sm text-gray-800 dark:text-gray-200">{{ $category->slug }}</td>
                                 <td class="px-5 py-5 text-sm text-gray-800 dark:text-gray-200">
                                     <div class="flex items-center space-x-3">
-                                        <a href="{{ route('admin.categories.edit', $category->id) }}"
+                                        <a href="{{ route('admin.categories.edit', $category) }}"
                                             class="text-blue-600 dark:text-blue-400 hover:text-blue-900 transition-colors duration-200">
                                             Edit
                                         </a>
@@ -48,7 +48,7 @@
                                             Delete
                                         </button>
                                         <x-ui.delete-modal
-                                            action="{{ route('admin.categories.destroy', $category->id) }}" />
+                                            action="{{ route('admin.categories.destroy', $category) }}" />
                                     </div>
                                 </td>
                             </tr>

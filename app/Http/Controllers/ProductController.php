@@ -13,6 +13,7 @@ class ProductController extends Controller
     {
         return $query
             ->where('name', 'like', '%' . $request->input('search') . '%')
+            ->orWhere('slug', 'like', '%' . $request->input('search') . '%')
             ->orWhere('description', 'like', '%' . $request->input('search') . '%')
             ->orWhere('price', 'like', '%' . $request->input('search') . '%');
     }
@@ -49,7 +50,15 @@ class ProductController extends Controller
             }
         } else {
             // Apply filters for non-search requests
-            if ($request->has('category_id') && $request->category_id) {
+            if ($request->has('category') && $request->category) {
+                $category = Category::where('slug', $request->category)->first();
+                if ($category) {
+                    $query->whereHas('categories', function ($q) use ($category) {
+                        $q->where('categories.id', $category->id);
+                    });
+                }
+            } elseif ($request->has('category_id') && $request->category_id) {
+                // Fallback for legacy ID support if needed
                 $query->whereHas('categories', function ($q) use ($request) {
                     $q->where('categories.id', $request->category_id);
                 });
@@ -74,7 +83,12 @@ class ProductController extends Controller
     {
         $filters = [];
 
-        if ($request->has('category_id') && $request->category_id) {
+        if ($request->has('category') && $request->category) {
+            $category = Category::where('slug', $request->category)->first();
+            if ($category) {
+                $filters[] = 'category_ids:=[' . $category->id . ']';
+            }
+        } elseif ($request->has('category_id') && $request->category_id) {
             $filters[] = 'category_ids:=[' . $request->category_id . ']';
         }
 

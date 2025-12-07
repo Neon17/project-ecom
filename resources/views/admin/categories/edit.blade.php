@@ -15,7 +15,7 @@
         </div>
 
         @if ($category)
-            <form action="{{route('admin.categories.update', $category->id)}}" method="post" class="bg-white dark:bg-slate-900 rounded-lg shadow-md border border-gray-200 dark:border-slate-700 p-8 space-y-6">
+            <form action="{{route('admin.categories.update', $category)}}" method="post" class="bg-white dark:bg-slate-900 rounded-lg shadow-md border border-gray-200 dark:border-slate-700 p-8 space-y-6">
                 @csrf
                 @method('PUT')
 

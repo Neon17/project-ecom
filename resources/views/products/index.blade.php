@@ -21,15 +21,15 @@
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Category</label>
                                 <div class="space-y-2 max-h-48 overflow-y-auto">
                                     <div class="flex items-center">
-                                        <input type="radio" name="category_id" value="" id="cat_all" 
-                                            {{ !request('category_id') ? 'checked' : '' }}
+                                        <input type="radio" name="category" value="" id="cat_all" 
+                                            {{ !request('category') ? 'checked' : '' }}
                                             class="h-4 w-4 text-blue-600 dark:text-blue-400 focus:ring-blue-500 border-gray-300 dark:border-gray-600">
                                         <label for="cat_all" class="ml-2 text-sm text-gray-600 dark:text-gray-300">All Categories</label>
                                     </div>
                                     @foreach($categories as $category)
                                         <div class="flex items-center">
-                                            <input type="radio" name="category_id" value="{{ $category->id }}" id="cat_{{ $category->id }}"
-                                                {{ request('category_id') == $category->id ? 'checked' : '' }}
+                                            <input type="radio" name="category" value="{{ $category->slug }}" id="cat_{{ $category->id }}"
+                                                {{ request('category') == $category->slug ? 'checked' : '' }}
                                                 class="h-4 w-4 text-blue-600 dark:text-blue-400 focus:ring-blue-500 border-gray-300 dark:border-gray-600">
                                             <label for="cat_{{ $category->id }}" class="ml-2 text-sm text-gray-600 dark:text-gray-300">{{ $category->name }}</label>
                                         </div>
@@ -71,7 +71,7 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                             @foreach ($products as $product)
                                 <div class="group bg-white dark:bg-slate-900 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col h-full">
-                                    <a href="{{ route('products.show', $product->id) }}" class="block relative aspect-w-4 aspect-h-3 bg-gray-100 dark:bg-slate-800 overflow-hidden">
+                                    <a href="{{ route('products.show', $product->slug) }}" class="block relative aspect-w-4 aspect-h-3 bg-gray-100 dark:bg-slate-800 overflow-hidden">
                                         <img src="{{ $product->image_url ?? 'https://via.placeholder.com/400x300' }}" 
                                              alt="{{ $product->name }}" 
                                              class="object-cover w-full h-60 group-hover:scale-105 transition-transform duration-500">
@@ -92,7 +92,7 @@
                                         </div>
                                         
                                         <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:text-blue-400 transition-colors">
-                                            <a href="{{ route('products.show', $product->id) }}">
+                                            <a href="{{ route('products.show', $product->slug) }}">
                                                 {{ $product->name }}
                                             </a>
                                         </h3>

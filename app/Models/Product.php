@@ -55,4 +55,9 @@ class Product extends Model
             set: fn (float $value) => $value * 100,
         );
     }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }

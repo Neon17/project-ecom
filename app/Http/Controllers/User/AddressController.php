@@ -35,9 +35,7 @@ class AddressController extends Controller
 
     public function update(Request $request, Address $address)
     {
-        if ($address->user_id !== auth()->id()) {
-            abort(403);
-        }
+        $this->authorize('update', $address);
 
         $validated = $request->validate([
             'country' => 'required|string|max:255',
@@ -54,9 +52,7 @@ class AddressController extends Controller
 
     public function destroy(Address $address)
     {
-        if ($address->user_id !== auth()->id()) {
-            abort(403);
-        }
+        $this->authorize('delete', $address);
 
         $address->delete();
 

@@ -74,7 +74,7 @@
                             <div
                                 class="bg-white dark:bg-slate-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden group border border-gray-100 dark:border-gray-700">
                                 <div class="relative overflow-hidden">
-                                    <a href="{{ route('products.show', $product->id) }}">
+                                    <a href="{{ route('products.show', $product->slug) }}">
                                         <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
                                             class="w-full h-56 object-cover group-hover:scale-110 transition duration-500">
                                     </a>
@@ -96,7 +96,7 @@
                                 </div>
 
                                 <div class="p-5">
-                                    <a href="{{ route('products.show', $product->id) }}">
+                                    <a href="{{ route('products.show', $product->slug) }}">
                                         <h3
                                             class="font-bold text-gray-900 dark:text-white text-lg mb-2 line-clamp-2 hover:text-blue-600 dark:hover:text-blue-400 transition">
                                             {{ $product->name }}
@@ -187,7 +187,7 @@
             @if ($categories->count() > 0)
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
                     @foreach ($categories as $category)
-                        <a href="{{ route('welcome', ['category' => $category->id]) }}#categories-products"
+                        <a href="{{ route('welcome', ['category' => $category->slug]) }}#categories-products"
                             class="group bg-white dark:bg-slate-700 rounded-xl p-6 shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 text-center {{ $selectedCategory && $selectedCategory->id == $category->id ? 'ring-4 ring-blue-500 bg-blue-50 dark:bg-slate-600' : '' }}">
                             <div
                                 class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center group-hover:scale-110 transition duration-300">

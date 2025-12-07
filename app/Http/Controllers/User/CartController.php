@@ -88,12 +88,21 @@ class CartController extends Controller
         // to check permission
     }
 
-    public function update(Request $request, User $user, Cart $cart)
+    public function update(Request $request, Cart $cart)
     {
+        // Authorize
+        $this->authorize('update', $cart);
+
         $validated = $request->validate([
-            'product_id' => 'required',
-            'quantity' => 'required',
+            'product_id' => 'required|exists:products,id',
+            'quantity' => 'required|integer|min:1',
         ]);
+
+        $product = Product::findOrFail($validated['product_id']);
+
+        if ($validated['quantity'] > $product->quantity) {
+             return redirect()->back()->with('error', "Sorry, only {$product->quantity} units of {$product->name} are available.");
+        }
 
         $cartItem = $cart->cartItems()->where('product_id', $validated['product_id'])->first();
 
@@ -102,17 +111,21 @@ class CartController extends Controller
                 'quantity' => $validated['quantity'],
             ]);
         } else {
+            // Should usually be store(), but if logic allows adding via update:
             $cart->cartItems()->create([
                 'product_id' => $validated['product_id'],
                 'quantity' => $validated['quantity'],
-                'user_id' => $user->id
+                'user_id' => $cart->user_id // Use cart's user_id
             ]);
         }
         return redirect()->back()->with('success', 'Product quantity updated successfully');
     }
 
-    public function destroy(User $user, Cart $cart)
+    public function destroy(Cart $cart)
     {
+        // Authorize
+        $this->authorize('delete', $cart);
+
         foreach ($cart->cartItems() as $cartItem) {
             $cartItem->delete();
         }

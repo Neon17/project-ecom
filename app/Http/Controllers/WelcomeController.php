@@ -19,7 +19,7 @@ class WelcomeController extends Controller
             });
         
         // Get selected category if any
-        $selectedCategoryId = $request->query('category');
+        $selectedCategorySlug = $request->query('category');
         $selectedCategory = null;
         
         // Fetch products
@@ -27,11 +27,13 @@ class WelcomeController extends Controller
             ->where('quantity', '>', 0)
             ->latest();
         
-        if ($selectedCategoryId) {
-            $selectedCategory = Category::find($selectedCategoryId);
-            $productsQuery->whereHas('categories', function($query) use ($selectedCategoryId) {
-                $query->where('categories.id', $selectedCategoryId);
-            });
+        if ($selectedCategorySlug) {
+            $selectedCategory = Category::where('slug', $selectedCategorySlug)->first();
+            if ($selectedCategory) {
+                $productsQuery->whereHas('categories', function($query) use ($selectedCategory) {
+                    $query->where('categories.id', $selectedCategory->id);
+                });
+            }
         }
         
         $products = $productsQuery->take(12)->get();

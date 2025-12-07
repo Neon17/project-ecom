@@ -16,6 +16,7 @@ class ProductController extends Controller
     {
         return $query
             ->where('name', 'like', '%'.$request->input('search').'%')
+            ->orWhere('slug', 'like', '%'.$request->input('search').'%')
             ->orWhere('description', 'like', '%'.$request->input('search').'%')
             ->orWhere('price', 'like', '%'.$request->input('search').'%');
     }
@@ -97,6 +98,7 @@ class ProductController extends Controller
 
     public function create()
     {
+        $this->authorize('create', Product::class);
         $categories = Category::query()->get();
 
         return view('admin.products.create', compact('categories'));
@@ -104,6 +106,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
+        $this->authorize('create', Product::class);
         $validated = $request->validate([
             'name' => 'required|unique:products,name',
             'description' => 'required',
@@ -140,25 +143,27 @@ class ProductController extends Controller
         return redirect()->route('admin.products.index')->with('success', 'Product created successfully.');
     }
 
-    public function show(string $id)
+    public function show(Product $product)
     {
-        $product = Product::with('categories')->findOrFail($id);
+        $product->load('categories');
         $categories = Category::query()->get();
 
         return view('admin.products.show', compact('product', 'categories'));
     }
 
-    public function edit(string $id)
+    public function edit(Product $product)
     {
-        $product = Product::with('categories')->findOrFail($id);
+        $product->load('categories');
+        $this->authorize('update', $product);
         $categories = Category::query()->get();
 
         return view('admin.products.edit', compact('product', 'categories'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, Product $product)
     {
-        $product = Product::with('categories')->findOrFail($id);
+        $product->load('categories');
+        $this->authorize('update', $product);
 
         $validated = $request->validate([
             'name' => 'required',
@@ -202,9 +207,10 @@ class ProductController extends Controller
         return redirect()->route('admin.products.index')->with('success', 'Product updated successfully.');
     }
 
-    public function destroy(string $id)
+    public function destroy(Product $product)
     {
-        $product = Product::with('categories')->findOrFail($id);
+        $product->load('categories');
+        $this->authorize('delete', $product);
         
         // Delete image if exists
         if ($product->image && Storage::disk('public')->exists($product->image)) {

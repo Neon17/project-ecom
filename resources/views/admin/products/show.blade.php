@@ -102,7 +102,7 @@
                             class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-slate-700 dark:bg-slate-800 transition-colors">
                             Close
                         </a>
-                        <a href="{{ route('admin.products.edit', $product->id) }}"
+                        <a href="{{ route('admin.products.edit', $product) }}"
                             class="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
                             Edit Product
                         </a>
