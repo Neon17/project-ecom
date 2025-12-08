@@ -19,8 +19,11 @@ class Payment extends Model
         'order_id',
         'payment_method',
         'transaction_code',
+        'invoice_number',
         'status',
         'total_amount',
+        'paid_at',
+        'failed_at',
     ];
 
     protected function totalAmount(): Attribute
@@ -34,6 +37,8 @@ class Payment extends Model
     protected $casts = [
         'payment_method' => PaymentMethodEnum::class,
         'status' => PaymentStatusEnum::class,
+        'paid_at' => 'datetime',
+        'failed_at' => 'datetime',
     ];
 
 
@@ -53,4 +58,26 @@ class Payment extends Model
             'user_id'     
         );
     }
+
+    /**
+     * Check if payment has a downloadable invoice
+     */
+    public function hasInvoice(): bool
+    {
+        return $this->status === PaymentStatusEnum::Completed;
+    }
+
+    /**
+     * Generate invoice number for this payment
+     */
+    public function generateInvoiceNumber(): string
+    {
+        $prefix = 'INV';
+        $year = now()->format('Y');
+        $month = now()->format('m');
+        $sequence = str_pad($this->id, 6, '0', STR_PAD_LEFT);
+        
+        return "{$prefix}-{$year}{$month}-{$sequence}";
+    }
 }
+

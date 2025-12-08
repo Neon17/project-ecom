@@ -10,14 +10,14 @@
             <div>
                 <label for="search" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Search</label>
                 <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="Order ID"
-                    class="w-full rounded-lg border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500 text-sm">
+                    class="w-full p-2 rounded-lg border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500 text-sm">
             </div>
             <div>
                 <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
                 <select name="status" id="status" class="w-full rounded-lg border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500 text-sm">
-                    <option value="">All Statuses</option>
+                    <option class="bg-gray-700" value="">All Statuses</option>
                     @foreach(\App\Enums\OrderStatusEnum::cases() as $status)
-                        <option value="{{ $status->value }}" {{ request('status') == $status->value ? 'selected' : '' }}>
+                        <option class="bg-gray-700" value="{{ $status->value }}" {{ request('status') == $status->value ? 'selected' : '' }}>
                             {{ ucfirst($status->value) }}
                         </option>
                     @endforeach

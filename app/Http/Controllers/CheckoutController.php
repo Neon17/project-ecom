@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PaymentReceivedMail;
 
 use function Laravel\Prompts\error;
 
@@ -351,14 +353,22 @@ class CheckoutController extends Controller
     {
         $responseData = $this->decodePaymentResponse($request);
 
+        // Generate invoice number
+        $invoiceNumber = $payment->generateInvoiceNumber();
+
         $payment->update([
             'status' => PaymentStatusEnum::Completed,
             'transaction_code' => $this->extractTransactionCode($responseData),
             'payment_response' => json_encode($responseData),
+            'invoice_number' => $invoiceNumber,
             'paid_at' => now(),
         ]);
 
-        return redirect()->route('user.orders.index')->with('success', 'Payment successful!');
+        // Send payment received email with invoice attachment
+        $payment->load(['order.user', 'order.orderItems.product']);
+        Mail::to($payment->order->user->email)->send(new PaymentReceivedMail($payment));
+
+        return redirect()->route('user.orders.index')->with('success', 'Payment successful! Invoice has been sent to your email.');
     }
 
     public function failureUrl(Request $request, Payment $payment)

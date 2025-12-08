@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\User\AddressController as UserAddressController;
@@ -80,6 +81,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/orders', [UserOrderController::class, 'index'])->name('orders.index');
         Route::get('/orders/{order}', [UserOrderController::class, 'show'])->name('orders.show');
         
+        // Payments
+        Route::get('/payments', [\App\Http\Controllers\User\PaymentController::class, 'index'])->name('payments.index');
+        
         // Addresses
         Route::resource('addresses', UserAddressController::class)->except(['create', 'show', 'edit']);
         
@@ -109,6 +113,10 @@ Route::middleware('auth')->group(function () {
         Route::get('payment/khalti/callback', [CheckoutController::class, 'khaltiCallback'])->name('payment.khalti.callback');
         Route::get('payment/{payment}/success', [CheckoutController::class, 'successUrl'])->name('payment.success');
         Route::get('payment/{payment}/failure', [CheckoutController::class, 'failureUrl'])->name('payment.failure');
+        
+        // Invoice routes
+        Route::get('/invoices/{payment}/preview', [InvoiceController::class, 'preview'])->name('invoices.preview');
+        Route::get('/invoices/{payment}/download', [InvoiceController::class, 'download'])->name('invoices.download');
     });
 });
 
@@ -127,9 +135,15 @@ Route::middleware(['auth', 'admin', 'verified'])->prefix('admin')->name('admin.'
     Route::resource('payments', AdminPaymentController::class);
     Route::resource('coupons', AdminCouponController::class);
     
+    // Invoices (Admin view - read only)
+    Route::get('/invoices', [\App\Http\Controllers\Admin\InvoiceController::class, 'index'])->name('invoices.index');
+    Route::get('/invoices/{payment}', [\App\Http\Controllers\Admin\InvoiceController::class, 'show'])->name('invoices.show');
+    Route::get('/invoices/{payment}/download', [\App\Http\Controllers\Admin\InvoiceController::class, 'download'])->name('invoices.download');
+    
     // Addresses (Admin view)
     Route::get('/addresses/all', [AdminAddressController::class, 'allIndex'])->name('addresses.all');
     
     // Carts (Admin view)
     Route::get('/carts', [AdminCartController::class, 'index'])->name('carts.index');
 });
+

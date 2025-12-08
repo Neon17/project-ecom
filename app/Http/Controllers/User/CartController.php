@@ -79,18 +79,22 @@ class CartController extends Controller
 
     public function show(User $user, Cart $cart)
     {
+        // Authorize: user can only view their own cart
+        $this->authorize('view', $cart);
+        
         $cart = $user->cart()->where('id', $cart->id)->with(['cartItems', 'user'])->first();
         return view('user.carts.show', compact('cart'));
     }
 
     public function edit(User $user, Cart $cart)
     {
-        // to check permission
+        // Authorize: user can only edit their own cart
+        $this->authorize('update', $cart);
     }
 
     public function update(Request $request, Cart $cart)
     {
-        // Authorize
+        // Authorize: user can only update their own cart
         $this->authorize('update', $cart);
 
         $validated = $request->validate([
@@ -123,7 +127,7 @@ class CartController extends Controller
 
     public function destroy(Cart $cart)
     {
-        // Authorize
+        // Authorize: user can only delete their own cart
         $this->authorize('delete', $cart);
 
         foreach ($cart->cartItems() as $cartItem) {
@@ -137,6 +141,11 @@ class CartController extends Controller
 
     public function destroyItem(CartItem $cartItem)
     {
+        // Authorize: user can only delete items from their own cart
+        if ($cartItem->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized access to cart item.');
+        }
+        
         if ($cartItem->cart->cartItems->count() == 1) {
             $cartItem->cart->delete();
         }

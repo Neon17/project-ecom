@@ -11,12 +11,17 @@ class ProfileController extends Controller
 {
     public function edit()
     {
+        // User can only edit their own profile (handled by auth middleware)
         return view('user.profile.edit', ['user' => auth()->user()]);
     }
 
     public function update(Request $request)
     {
+        // User can only update their own profile (handled by auth middleware)
         $user = auth()->user();
+
+        // Authorize using UserPolicy
+        $this->authorize('update', $user);
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],

@@ -36,9 +36,9 @@ class UserCreatedNotification extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line("Welcome to our app, $this->user->name")
-            ->action('You can do a lot of things in our app', url('/'))
-            ->line('Thank you for using our application!');
+            ->line("Welcome to our app, {$this->user->name}!")
+            ->action('Start Shopping', url('/'))
+            ->line('Thank you for joining us!');
     }
 
     /**

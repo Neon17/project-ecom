@@ -26,10 +26,9 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        // Ensure the order belongs to the user
-        if ($order->user_id !== auth()->id()) {
-            abort(403);
-        }
+        // Authorize: user can only view their own orders
+        $this->authorize('view', $order);
+        
         $order->load(['orderItems.product', 'payment']);
         return view('user.orders.show', compact('order'));
     }

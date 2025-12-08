@@ -24,8 +24,9 @@
                             <div class="ml-6">
                                 <h3 class="text-lg font-medium text-gray-900 dark:text-white">Our Office</h3>
                                 <p class="mt-2 text-gray-600 dark:text-gray-300">
-                                    123 Commerce St.<br>
-                                    Kathmandu, Nepal
+                                    Lakeside Road, Baidam<br>
+                                    Pokhara-6, Kaski<br>
+                                    Gandaki Province, Nepal
                                 </p>
                             </div>
                         </div>
@@ -42,8 +43,8 @@
                             <div class="ml-6">
                                 <h3 class="text-lg font-medium text-gray-900 dark:text-white">Email Us</h3>
                                 <p class="mt-2 text-gray-600 dark:text-gray-300">
-                                    support@ecommerce.com<br>
-                                    info@ecommerce.com
+                                    workshop@ecommerce.np<br>
+                                    support@ecommerce.np
                                 </p>
                             </div>
                         </div>
@@ -60,16 +61,35 @@
                             <div class="ml-6">
                                 <h3 class="text-lg font-medium text-gray-900 dark:text-white">Call Us</h3>
                                 <p class="mt-2 text-gray-600 dark:text-gray-300">
-                                    +977 1-4000000<br>
-                                    +977 9800000000
+                                    +977 61-123456<br>
+                                    +977 9800123456
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Office Hours -->
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg border border-gray-100 dark:border-gray-700">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <div class="w-12 h-12 bg-yellow-100 dark:bg-yellow-900 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-clock text-xl text-yellow-600 dark:text-yellow-400"></i>
+                                </div>
+                            </div>
+                            <div class="ml-6">
+                                <h3 class="text-lg font-medium text-gray-900 dark:text-white">Office Hours</h3>
+                                <p class="mt-2 text-gray-600 dark:text-gray-300">
+                                    Sun - Fri: 10:00 AM - 6:00 PM<br>
+                                    Saturday: Closed
                                 </p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Contact Form -->
-                <div class="lg:col-span-2">
+                <!-- Contact Form & Map -->
+                <div class="lg:col-span-2 space-y-8">
+                    <!-- Contact Form -->
                     <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-8 sm:p-12 border border-gray-100 dark:border-gray-700">
                         <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-8">Send us a message</h2>
                         
@@ -130,6 +150,27 @@
                                 </button>
                             </div>
                         </form>
+                    </div>
+
+                    <!-- Map -->
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700">
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                                <i class="fas fa-map mr-2 text-blue-600 dark:text-blue-400"></i>Find Us in Pokhara
+                            </h3>
+                        </div>
+                        <div class="h-64 w-full">
+                            <iframe 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3515.7401867234073!2d83.95529131505924!3d28.209587482606376!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3995937bbf0376ff%3A0xf6cf823b25802164!2sLakeside%20Rd%2C%20Pokhara%2033700!5e0!3m2!1sen!2snp!4v1678521234567!5m2!1sen!2snp" 
+                                width="100%" 
+                                height="100%" 
+                                style="border:0;" 
+                                allowfullscreen="" 
+                                loading="lazy" 
+                                referrerpolicy="no-referrer-when-downgrade"
+                                class="grayscale dark:invert dark:contrast-75">
+                            </iframe>
+                        </div>
                     </div>
                 </div>
             </div>

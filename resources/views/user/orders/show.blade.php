@@ -119,6 +119,32 @@
                     <p class="text-gray-500 dark:text-gray-400 dark:text-gray-500 italic">No payment information available.</p>
                 @endif
             </div>
+
+            <!-- Invoice Section -->
+            @if($order->payment && $order->payment->hasInvoice())
+                <div class="bg-white dark:bg-slate-900 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+                    <h2 class="text-lg font-bold text-gray-800 dark:text-gray-200 mb-4">
+                        <i class="fas fa-file-invoice mr-2 text-blue-600 dark:text-blue-400"></i>Invoice
+                    </h2>
+                    <div class="mb-3">
+                        <span class="text-gray-500 dark:text-gray-400 text-sm">Invoice Number:</span>
+                        <span class="font-mono font-medium text-gray-900 dark:text-white block">
+                            {{ $order->payment->invoice_number ?? 'INV-' . str_pad($order->payment->id, 6, '0', STR_PAD_LEFT) }}
+                        </span>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <a href="{{ route('invoices.preview', $order->payment->id) }}" 
+                           target="_blank"
+                           class="flex-1 bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 text-gray-800 dark:text-gray-200 text-center font-semibold py-2 px-4 rounded-lg transition-colors flex items-center justify-center">
+                            <i class="fas fa-eye mr-2"></i>Preview
+                        </a>
+                        <a href="{{ route('invoices.download', $order->payment->id) }}" 
+                           class="flex-1 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white text-center font-semibold py-2 px-4 rounded-lg transition-colors flex items-center justify-center">
+                            <i class="fas fa-download mr-2"></i>Download PDF
+                        </a>
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
 </x-layouts.user>
