@@ -73,12 +73,14 @@ class Order extends Model
         );
     }
 
-    protected function totalAmount(): Attribute
+    public function getTotalAmountAttribute($value)
     {
-        return Attribute::make(
-            get: fn (?int $value) => $value ? $value / 100 : null,
-            set: fn (float $value) => $value * 100,
-        );
+        return $value !== null ? $value / 100 : null;
+    }
+
+    public function setTotalAmountAttribute($value)
+    {
+        $this->attributes['total_amount'] = $value * 100;
     }
 
     public function getAddressAttribute()

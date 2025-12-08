@@ -364,6 +364,11 @@ class CheckoutController extends Controller
             'paid_at' => now(),
         ]);
 
+        // Update order status to processing
+        $payment->order->update([
+            'status' => OrderStatusEnum::Processing,
+        ]);
+
         // Send payment received email with invoice attachment
         $payment->load(['order.user', 'order.orderItems.product']);
         Mail::to($payment->order->user->email)->send(new PaymentReceivedMail($payment));

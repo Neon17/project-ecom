@@ -8,35 +8,103 @@ use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class DashboardController extends Controller
 {
-    public function adminDashboard()
+    public function adminDashboard(Request $request)
     {
         try {
+            // Get filter period from request (default: 30 days)
+            $period = $request->get('period', '30days');
+            $dateRange = $this->getDateRange($period);
+
+            // dd([
+            //     'generalStats' => $this->generalStats($dateRange),
+            //     'orderStats' => $this->orderStats($dateRange),
+            //     'paymentStats' => $this->paymentStats($dateRange),
+            //     'recentOrders' => $this->recentOrders(),
+            //     'recentPayments' => $this->recentPayments(),
+            //     'revenueData' => $this->revenueData($dateRange, $period),
+            //     'topProducts' => $this->topProducts($dateRange),
+            //     'salesTrends' => $this->salesTrends($dateRange, $period),
+            //     'currentPeriod' => $period,
+            //     'periodLabel' => $this->getPeriodLabel($period),
+            // ]);
+            
             return view('admin.dashboard.index', [
-                'generalStats' => $this->generalStats(),
-                'orderStats' => $this->orderStats(),
-                'paymentStats' => $this->paymentStats(),
+                'generalStats' => $this->generalStats($dateRange),
+                'orderStats' => $this->orderStats($dateRange),
+                'paymentStats' => $this->paymentStats($dateRange),
                 'recentOrders' => $this->recentOrders(),
                 'recentPayments' => $this->recentPayments(),
-                'revenueData' => $this->revenueData(),
-                'topProducts' => $this->topProducts(),
-                'salesTrends' => $this->salesTrends(),
+                'revenueData' => $this->revenueData($dateRange, $period),
+                'topProducts' => $this->topProducts($dateRange),
+                'salesTrends' => $this->salesTrends($dateRange, $period),
+                'currentPeriod' => $period,
+                'periodLabel' => $this->getPeriodLabel($period),
             ]);
         } catch (\Exception $e) {
             Log::error('Dashboard error: ' . $e->getMessage());
-            return back()->with('error', 'Unable to load dashboard data');
+            return back()->with('error', 'Unable to load dashboard data: ' . $e->getMessage());
         }
     }
 
-    public function generalStats()
+    /**
+     * Get date range based on selected period
+     */
+    private function getDateRange(string $period): array
+    {
+        $endDate = now()->endOfDay();
+        
+        switch ($period) {
+            case '7days':
+                $startDate = now()->subDays(6)->startOfDay();
+                break;
+            case 'month':
+                $startDate = now()->startOfMonth()->startOfDay();
+                break;
+            case 'lastmonth':
+                $startDate = now()->subMonth()->startOfMonth()->startOfDay();
+                $endDate = now()->subMonth()->endOfMonth()->endOfDay();
+                break;
+            case 'year':
+                $startDate = now()->startOfYear()->startOfDay();
+                break;
+            case '30days':
+            default:
+                $startDate = now()->subDays(29)->startOfDay();
+                break;
+        }
+        
+        return ['start' => $startDate, 'end' => $endDate];
+    }
+
+    /**
+     * Get human-readable period label
+     */
+    private function getPeriodLabel(string $period): string
+    {
+        return match($period) {
+            '7days' => 'Last 7 Days',
+            'month' => 'This Month',
+            'lastmonth' => 'Last Month',
+            'year' => 'This Year',
+            default => 'Last 30 Days',
+        };
+    }
+
+    public function generalStats(array $dateRange)
     {
         try {
-            // Single query to get all counts using UNION or subqueries
+            // Get counts within the date range
+            $ordersInPeriod = Order::whereBetween('created_at', [$dateRange['start'], $dateRange['end']])->count();
+            $usersInPeriod = User::whereBetween('created_at', [$dateRange['start'], $dateRange['end']])->count();
+            
+            // Get all-time totals too
             $counts = DB::select("
                 SELECT 
                     (SELECT COUNT(*) FROM orders) as total_orders,
@@ -50,6 +118,8 @@ class DashboardController extends Controller
                 'total_products' => $counts->total_products,
                 'total_users' => $counts->total_users,
                 'total_categories' => $counts->total_categories,
+                'orders_in_period' => $ordersInPeriod,
+                'users_in_period' => $usersInPeriod,
             ];
         } catch (\Exception $e) {
             Log::error('General stats error: ' . $e->getMessage());
@@ -58,15 +128,17 @@ class DashboardController extends Controller
                 'total_products' => 0,
                 'total_users' => 0,
                 'total_categories' => 0,
+                'orders_in_period' => 0,
+                'users_in_period' => 0,
             ];
         }
     }
 
-    public function orderStats()
+    public function orderStats(array $dateRange)
     {
         try {
-            // Single query with GROUP BY instead of 4 separate queries
             $stats = Order::selectRaw('status, COUNT(*) as count')
+                ->whereBetween('created_at', [$dateRange['start'], $dateRange['end']])
                 ->groupBy('status')
                 ->pluck('count', 'status')
                 ->toArray();
@@ -88,11 +160,11 @@ class DashboardController extends Controller
         }
     }
 
-    public function paymentStats()
+    public function paymentStats(array $dateRange)
     {
         try {
-            // Single query with GROUP BY instead of 3 separate queries
             $stats = Payment::selectRaw('status, COUNT(*) as count')
+                ->whereBetween('created_at', [$dateRange['start'], $dateRange['end']])
                 ->groupBy('status')
                 ->pluck('count', 'status')
                 ->toArray();
@@ -125,61 +197,83 @@ class DashboardController extends Controller
     public function recentPayments()
     {
         try {
-            return Payment::with('user:id,name,email')->latest()->take(5)->get();
+            return Payment::with(['order.user:id,name,email'])->latest()->take(5)->get();
         } catch (\Exception $e) {
             Log::error('Recent payments error: ' . $e->getMessage());
             return collect();
         }
     }
 
-    public function revenueData()
+    public function revenueData(array $dateRange, string $period)
     {
         try {
-            $days = 30;
-            $startDate = now()->subDays($days - 1)->startOfDay();
-            $endDate = now()->endOfDay();
+            $startDate = $dateRange['start'];
+            $endDate = $dateRange['end'];
             
-            // Single query for all 30 days of revenue data
-            $dailyRevenue = Payment::selectRaw('DATE(created_at) as date, SUM(total_amount) as revenue')
-                ->where('status', 'completed')
+            // Calculate number of days or use different grouping for year
+            $daysDiff = $startDate->diffInDays($endDate) + 1;
+            
+            // Get daily revenue from completed and processing orders
+            // Use strftime for SQLite compatibility (and MySQL supports DATE_FORMAT but we'll use PHP grouping for simplicity/compatibility)
+            // Actually, let's fetch raw data and group in PHP to be safe across drivers
+            $orders = Order::select('created_at', 'total_amount')
+                ->whereIn('status', ['completed', 'processing'])
                 ->whereBetween('created_at', [$startDate, $endDate])
-                ->groupBy('date')
-                ->pluck('revenue', 'date')
-                ->toArray();
+                ->get();
             
             // Build labels and data arrays
             $labels = [];
             $revenueData = [];
-            for ($i = $days - 1; $i >= 0; $i--) {
-                $date = now()->subDays($i);
-                $dateKey = $date->format('Y-m-d');
-                $labels[] = $date->format('M d');
-                $revenueData[] = isset($dailyRevenue[$dateKey]) ? $dailyRevenue[$dateKey] / 100 : 0;
+            
+            if ($period === 'year') {
+                // Monthly grouping for year view
+                $monthlyRevenue = $orders->groupBy(function($date) {
+                    return Carbon::parse($date->created_at)->format('n'); // 1-12
+                })->map(function ($row) {
+                    return $row->sum('total_amount');
+                });
+                    
+                for ($m = 1; $m <= 12; $m++) {
+                    $labels[] = Carbon::create()->month($m)->format('M');
+                    $revenueData[] = isset($monthlyRevenue[$m]) ? $monthlyRevenue[$m] : 0;
+                }
+            } else {
+                // Daily grouping for other views
+                $dailyRevenue = $orders->groupBy(function($date) {
+                    return Carbon::parse($date->created_at)->format('Y-m-d');
+                })->map(function ($row) {
+                    return $row->sum('total_amount');
+                });
+
+                for ($i = $daysDiff - 1; $i >= 0; $i--) {
+                    $date = $endDate->copy()->subDays($i);
+                    $dateKey = $date->format('Y-m-d');
+                    $labels[] = $date->format('M d');
+                    $revenueData[] = isset($dailyRevenue[$dateKey]) ? $dailyRevenue[$dateKey] : 0;
+                }
             }
             
-            // Get current and last month revenue in a single query
-            $monthlyRevenue = Payment::selectRaw("
-                SUM(CASE WHEN MONTH(created_at) = ? AND YEAR(created_at) = ? THEN total_amount ELSE 0 END) as current_month,
-                SUM(CASE WHEN MONTH(created_at) = ? AND YEAR(created_at) = ? THEN total_amount ELSE 0 END) as last_month
-            ", [
-                now()->month, now()->year,
-                now()->subMonth()->month, now()->subMonth()->year
-            ])
-            ->where('status', 'completed')
-            ->whereRaw('created_at >= DATE_SUB(NOW(), INTERVAL 2 MONTH)')
-            ->first();
+            // Get total revenue in period
+            $totalRevenue = $orders->sum('total_amount');
             
-            $currentMonthRevenue = ($monthlyRevenue->current_month ?? 0) / 100;
-            $lastMonthRevenue = ($monthlyRevenue->last_month ?? 0) / 100;
+            // Calculate growth compared to previous period
+            $periodLength = $startDate->diffInDays($endDate) + 1;
+            $previousStart = $startDate->copy()->subDays($periodLength);
+            $previousEnd = $startDate->copy()->subDay();
+            
+            $previousRevenue = Order::whereIn('status', ['completed', 'processing'])
+                ->whereBetween('created_at', [$previousStart, $previousEnd])
+                ->get()
+                ->sum('total_amount');
                 
-            $growthPercentage = $lastMonthRevenue > 0 
-                ? (($currentMonthRevenue - $lastMonthRevenue) / $lastMonthRevenue) * 100 
-                : 0;
+            $growthPercentage = $previousRevenue > 0 
+                ? (($totalRevenue - $previousRevenue) / $previousRevenue) * 100 
+                : ($totalRevenue > 0 ? 100 : 0);
             
             return [
                 'labels' => $labels,
                 'data' => $revenueData,
-                'total' => $currentMonthRevenue,
+                'total' => $totalRevenue,
                 'growth' => round($growthPercentage, 1),
             ];
         } catch (\Exception $e) {
@@ -193,13 +287,16 @@ class DashboardController extends Controller
         }
     }
 
-    public function topProducts()
+    public function topProducts(array $dateRange)
     {
         try {
-            // Optimized query - get top 5 products by order quantity
             return Product::select('products.*')
                 ->selectRaw('COALESCE(SUM(order_items.quantity), 0) as total_sold')
                 ->leftJoin('order_items', 'products.id', '=', 'order_items.product_id')
+                ->leftJoin('orders', function($join) use ($dateRange) {
+                    $join->on('order_items.order_id', '=', 'orders.id')
+                         ->whereBetween('orders.created_at', [$dateRange['start'], $dateRange['end']]);
+                })
                 ->groupBy('products.id')
                 ->orderByDesc('total_sold')
                 ->take(5)
@@ -210,28 +307,49 @@ class DashboardController extends Controller
         }
     }
 
-    public function salesTrends()
+    public function salesTrends(array $dateRange, string $period)
     {
         try {
-            $days = 7;
-            $startDate = now()->subDays($days - 1)->startOfDay();
-            $endDate = now()->endOfDay();
+            $startDate = $dateRange['start'];
+            $endDate = $dateRange['end'];
             
-            // Single query for all 7 days of order counts
-            $dailyOrders = Order::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            // Fetch orders for the period
+            $orders = Order::select('created_at')
                 ->whereBetween('created_at', [$startDate, $endDate])
-                ->groupBy('date')
-                ->pluck('count', 'date')
-                ->toArray();
+                ->get();
             
-            // Build labels and data arrays
-            $labels = [];
-            $orderCounts = [];
-            for ($i = $days - 1; $i >= 0; $i--) {
-                $date = now()->subDays($i);
-                $dateKey = $date->format('Y-m-d');
-                $labels[] = $date->format('D');
-                $orderCounts[] = $dailyOrders[$dateKey] ?? 0;
+            if ($period === 'year') {
+                // Monthly grouping for year
+                $monthlyOrders = $orders->groupBy(function($date) {
+                    return Carbon::parse($date->created_at)->format('n'); // 1-12
+                })->map(function ($row) {
+                    return $row->count();
+                });
+                
+                $labels = [];
+                $orderCounts = [];
+                for ($m = 1; $m <= 12; $m++) {
+                    $labels[] = Carbon::create()->month($m)->format('M');
+                    $orderCounts[] = $monthlyOrders[$m] ?? 0;
+                }
+            } else {
+                // Daily grouping
+                $daysDiff = $startDate->diffInDays($endDate) + 1;
+                
+                $dailyOrders = $orders->groupBy(function($date) {
+                    return Carbon::parse($date->created_at)->format('Y-m-d');
+                })->map(function ($row) {
+                    return $row->count();
+                });
+                
+                $labels = [];
+                $orderCounts = [];
+                for ($i = $daysDiff - 1; $i >= 0; $i--) {
+                    $date = $endDate->copy()->subDays($i);
+                    $dateKey = $date->format('Y-m-d');
+                    $labels[] = $date->format('D'); // Day name (Mon, Tue)
+                    $orderCounts[] = $dailyOrders[$dateKey] ?? 0;
+                }
             }
             
             return [
@@ -247,4 +365,3 @@ class DashboardController extends Controller
         }
     }
 }
-

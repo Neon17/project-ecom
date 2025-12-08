@@ -26,12 +26,14 @@ class Payment extends Model
         'failed_at',
     ];
 
-    protected function totalAmount(): Attribute
+    public function getTotalAmountAttribute($value)
     {
-        return Attribute::make(
-            get: fn (int $value) => $value / 100,
-            set: fn (float $value) => $value * 100,
-        );
+        return $value !== null ? $value / 100 : null;
+    }
+
+    public function setTotalAmountAttribute($value)
+    {
+        $this->attributes['total_amount'] = $value * 100;
     }
 
     protected $casts = [

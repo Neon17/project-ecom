@@ -2,12 +2,23 @@
     <div class="min-h-screen">
 
         <div class="mb-8">
-            <div class="flex items-center justify-between">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
                     <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Dashboard Overview</h1>
-                    <p class="text-gray-600 dark:text-gray-400 text-lg">Welcome back! Here's what's happening with your store today.</p>
+                    <p class="text-gray-600 dark:text-gray-400 text-lg">{{ $periodLabel ?? 'Last 30 Days' }} • Updated {{ now()->format('M d, Y h:i A') }}</p>
                 </div>
-                <div class="flex items-center space-x-4">
+                <div class="flex items-center gap-3">
+                    <!-- Period Filter -->
+                    <form action="{{ route('admin.dashboard.index') }}" method="GET" class="flex items-center gap-2">
+                        <select name="period" onchange="this.form.submit()" 
+                            class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="7days" {{ ($currentPeriod ?? '') == '7days' ? 'selected' : '' }}>Last 7 Days</option>
+                            <option value="30days" {{ ($currentPeriod ?? '30days') == '30days' ? 'selected' : '' }}>Last 30 Days</option>
+                            <option value="month" {{ ($currentPeriod ?? '') == 'month' ? 'selected' : '' }}>This Month</option>
+                            <option value="lastmonth" {{ ($currentPeriod ?? '') == 'lastmonth' ? 'selected' : '' }}>Last Month</option>
+                            <option value="year" {{ ($currentPeriod ?? '') == 'year' ? 'selected' : '' }}>This Year</option>
+                        </select>
+                    </form>
                     <div class="bg-white dark:bg-slate-900 rounded-2xl px-4 py-2 shadow-sm border border-gray-100 dark:border-gray-700">
                         <div class="text-sm text-gray-500 dark:text-gray-400">Today</div>
                         <div class="text-lg font-semibold text-gray-900 dark:text-white">{{ now()->format('M d, Y') }}</div>
@@ -116,7 +127,7 @@
                         <div class="text-sm font-medium {{ $revenueData['growth'] >= 0 ? 'text-green-200' : 'text-red-200' }}">
                             {{ $revenueData['growth'] >= 0 ? '+' : '' }}{{ $revenueData['growth'] }}%
                         </div>
-                        <div class="text-xs opacity-80">this month</div>
+                        <div class="text-xs opacity-80">vs previous period</div>
                     </div>
                 </div>
                 <h3 class="text-3xl font-bold mb-1">NPR {{ $revenueData['total'] }}</h3>
@@ -125,7 +136,7 @@
 
             <!-- Revenue Trend Chart -->
             <div class="lg:col-span-2 bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700">
-                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Revenue Trend (Last 30 Days)</h2>
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Revenue Trend ({{ $periodLabel ?? 'Last 30 Days' }})</h2>
                 <div class="h-64">
                     <canvas id="revenueChart"></canvas>
                 </div>
@@ -136,7 +147,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
             <!-- Sales Trends -->
             <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700">
-                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Sales Trends (Last 7 Days)</h2>
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Order Trends</h2>
                 <div class="h-64">
                     <canvas id="salesChart"></canvas>
                 </div>
