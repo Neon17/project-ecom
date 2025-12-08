@@ -50,7 +50,17 @@ class ProductController extends Controller
             }
         } else {
             // Apply filters for non-search requests
-            if ($request->has('category') && $request->category) {
+            // Handle multiple categories
+            if ($request->has('categories') && is_array($request->categories) && count($request->categories) > 0) {
+                $categorySlugs = $request->categories;
+                $categoryIds = Category::whereIn('slug', $categorySlugs)->pluck('id');
+                if ($categoryIds->isNotEmpty()) {
+                    $query->whereHas('categories', function ($q) use ($categoryIds) {
+                        $q->whereIn('categories.id', $categoryIds);
+                    });
+                }
+            } elseif ($request->has('category') && $request->category) {
+                // Fallback for single category (legacy support)
                 $category = Category::where('slug', $request->category)->first();
                 if ($category) {
                     $query->whereHas('categories', function ($q) use ($category) {
@@ -83,7 +93,15 @@ class ProductController extends Controller
     {
         $filters = [];
 
-        if ($request->has('category') && $request->category) {
+        // Handle multiple categories
+        if ($request->has('categories') && is_array($request->categories) && count($request->categories) > 0) {
+            $categorySlugs = $request->categories;
+            $categoryIds = Category::whereIn('slug', $categorySlugs)->pluck('id')->toArray();
+            if (!empty($categoryIds)) {
+                // Typesense filter for multiple category IDs (OR logic)
+                $filters[] = 'category_ids:=[' . implode(',', $categoryIds) . ']';
+            }
+        } elseif ($request->has('category') && $request->category) {
             $category = Category::where('slug', $request->category)->first();
             if ($category) {
                 $filters[] = 'category_ids:=[' . $category->id . ']';

@@ -56,7 +56,7 @@
                 <div class="flex flex-col lg:flex-row justify-between items-center mb-12">
                     <div class="mb-6 lg:mb-0">
                         <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-3">
-                            {{ $selectedCategory ? $selectedCategory->name . ' Products' : 'Featured Products' }}
+                            {{ $selectedCategory ? $selectedCategory->name . ' Products' : 'Recent Products' }}
                         </h2>
                         <p class="text-xl text-gray-600 dark:text-gray-300">
                             {{ $products->count() }} {{ Str::plural('product', $products->count()) }} available
@@ -123,8 +123,8 @@
                                             NPR {{ number_format($product->price / 100, 2) }}
                                         </div>
 
-                                        @auth
-                                            @if ($product->quantity > 0)
+                                        @if ($product->quantity > 0)
+                                            @auth
                                                 <form action="{{ route('user.cart.store') }}" method="POST"
                                                     class="inline">
                                                     @csrf
@@ -137,19 +137,27 @@
                                                     </button>
                                                 </form>
                                             @else
-                                                <button disabled
-                                                    class="bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 px-4 py-2 rounded-lg cursor-not-allowed text-sm font-semibold">
-                                                    <i class="fas fa-ban mr-1"></i>
-                                                    Unavailable
+                                                <button type="button" x-data 
+                                                    @click="$dispatch('add-to-cart-guest', {
+                                                        id: {{ $product->id }},
+                                                        name: '{{ addslashes($product->name) }}',
+                                                        price: {{ $product->price / 100 }},
+                                                        image_url: '{{ $product->image_url }}',
+                                                        quantity: 1,
+                                                        max_quantity: {{ $product->quantity }}
+                                                    })"
+                                                    class="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition duration-300 flex items-center text-sm font-semibold shadow-md">
+                                                    <i class="fas fa-cart-plus mr-1"></i>
+                                                    Add
                                                 </button>
-                                            @endif
+                                            @endauth
                                         @else
-                                            <a href="{{ route('login') }}"
-                                                class="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition duration-300 text-sm font-semibold shadow-md">
-                                                <i class="fas fa-sign-in-alt mr-1"></i>
-                                                Login
-                                            </a>
-                                        @endauth
+                                            <button disabled
+                                                class="bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 px-4 py-2 rounded-lg cursor-not-allowed text-sm font-semibold">
+                                                <i class="fas fa-ban mr-1"></i>
+                                                Unavailable
+                                            </button>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -187,8 +195,8 @@
             @if ($categories->count() > 0)
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
                     @foreach ($categories as $category)
-                        <a href="{{ route('welcome', ['category' => $category->slug]) }}#categories-products"
-                            class="group bg-white dark:bg-slate-700 rounded-xl p-6 shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 text-center {{ $selectedCategory && $selectedCategory->id == $category->id ? 'ring-4 ring-blue-500 bg-blue-50 dark:bg-slate-600' : '' }}">
+                        <a href="{{ route('products.index', ['categories' => [$category->slug]]) }}"
+                            class="group bg-white dark:bg-slate-700 rounded-xl p-6 shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 text-center">
                             <div
                                 class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center group-hover:scale-110 transition duration-300">
                                 <i class="fas fa-box text-white text-2xl"></i>

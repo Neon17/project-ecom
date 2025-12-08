@@ -18,33 +18,41 @@
 
                             <!-- Categories -->
                             <div class="mb-6">
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Category</label>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Categories</label>
                                 <div class="space-y-2 max-h-48 overflow-y-auto">
-                                    <div class="flex items-center">
-                                        <input type="radio" name="category" value="" id="cat_all" 
-                                            {{ !request('category') ? 'checked' : '' }}
-                                            class="h-4 w-4 text-blue-600 dark:text-blue-400 focus:ring-blue-500 border-gray-300 dark:border-gray-600">
-                                        <label for="cat_all" class="ml-2 text-sm text-gray-600 dark:text-gray-300">All Categories</label>
-                                    </div>
                                     @foreach($categories as $category)
                                         <div class="flex items-center">
-                                            <input type="radio" name="category" value="{{ $category->slug }}" id="cat_{{ $category->id }}"
-                                                {{ request('category') == $category->slug ? 'checked' : '' }}
-                                                class="h-4 w-4 text-blue-600 dark:text-blue-400 focus:ring-blue-500 border-gray-300 dark:border-gray-600">
+                                            <input type="checkbox" name="categories[]" value="{{ $category->slug }}" id="cat_{{ $category->id }}"
+                                                {{ is_array(request('categories')) && in_array($category->slug, request('categories')) ? 'checked' : '' }}
+                                                class="h-4 w-4 text-blue-600 dark:text-blue-400 focus:ring-blue-500 border-gray-300 dark:border-gray-600 rounded">
                                             <label for="cat_{{ $category->id }}" class="ml-2 text-sm text-gray-600 dark:text-gray-300">{{ $category->name }}</label>
                                         </div>
                                     @endforeach
                                 </div>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">Select multiple categories to filter</p>
                             </div>
 
                             <!-- Price Range -->
                             <div class="mb-6">
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Price Range (NPR)</label>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <input type="number" name="min_price" value="{{ request('min_price') }}" placeholder="Min"
-                                        class="w-full rounded-lg border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500 text-sm">
-                                    <input type="number" name="max_price" value="{{ request('max_price') }}" placeholder="Max"
-                                        class="w-full rounded-lg border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500 text-sm">
+                                <div class="flex items-center gap-2">
+                                    <div class="flex-1">
+                                        <label for="min_price" class="sr-only">Minimum Price</label>
+                                        <div class="relative">
+                                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs">From</span>
+                                            <input type="number" name="min_price" id="min_price" value="{{ request('min_price') }}" placeholder="0"
+                                                class="w-full pl-12 pr-2 py-2 rounded-lg border-gray-300 dark:border-gray-600 dark:bg-slate-800 dark:text-white focus:border-blue-500 focus:ring-blue-500 text-sm">
+                                        </div>
+                                    </div>
+                                    <span class="text-gray-400">—</span>
+                                    <div class="flex-1">
+                                        <label for="max_price" class="sr-only">Maximum Price</label>
+                                        <div class="relative">
+                                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs">To</span>
+                                            <input type="number" name="max_price" id="max_price" value="{{ request('max_price') }}" placeholder="∞"
+                                                class="w-full pl-10 pr-2 py-2 rounded-lg border-gray-300 dark:border-gray-600 dark:bg-slate-800 dark:text-white focus:border-blue-500 focus:ring-blue-500 text-sm">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 

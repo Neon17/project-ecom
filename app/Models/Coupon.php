@@ -72,6 +72,14 @@ class Coupon extends Model
             return false;
         }
 
+        // For fixed amount coupons, ensure cart total is greater than discount value
+        if ($this->type === 'fixed') {
+            $discountInPaisa = (int) ($this->value * 100);
+            if ($cartTotal <= $discountInPaisa) {
+                return false;
+            }
+        }
+
         return true;
     }
 

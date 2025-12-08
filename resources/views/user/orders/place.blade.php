@@ -46,6 +46,14 @@
                         <!-- Hidden value to know if user selected saved address -->
                         <input type="hidden" name="address_id" id="address_id" value="">
 
+                        <!-- Phone Number -->
+                        <div class="mb-6">
+                            <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone Number (Optional)</label>
+                            <input type="tel" name="phone" id="phone"
+                                class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="9800000000">
+                        </div>
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                             <!-- Country -->

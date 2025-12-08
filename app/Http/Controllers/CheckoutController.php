@@ -65,6 +65,7 @@ class CheckoutController extends Controller
     public function checkout(Request $request, Cart $cart)
     {
         $validated = $request->validate([
+            'phone' => 'nullable|string|max:20',
             'address_id' => 'nullable|exists:addresses,id',
             'address' => 'required_unless:address_id,exists|array',
             'address.country' => 'required|string',
@@ -131,6 +132,7 @@ class CheckoutController extends Controller
 
             $order = Order::create([
                 'user_id' => $request->user()->id,
+                'phone' => $request->phone,
                 'status' => OrderStatusEnum::Pending->value,
                 'tax_amount' => $taxAmount,
                 'service_charge' => $serviceCharge,

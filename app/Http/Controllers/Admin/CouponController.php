@@ -17,7 +17,7 @@ class CouponController extends Controller
             $query->where('code', 'like', '%' . $request->search . '%');
         }
         
-        $coupons = $query->latest()->paginate(15);
+        $coupons = $query->with('orders')->latest()->paginate(15);
         return view('admin.coupons.index', compact('coupons'));
     }
 
@@ -31,8 +31,26 @@ class CouponController extends Controller
         $validated = $request->validate([
             'code' => 'required|string|unique:coupons,code|max:50',
             'type' => 'required|in:percentage,fixed',
-            'value' => 'required|numeric|min:0',
-            'min_purchase' => 'nullable|numeric|min:0',
+            'value' => [
+                'required',
+                'numeric',
+                'min:0',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($request->type === 'percentage' && $value > 100) {
+                        $fail('The percentage discount cannot exceed 100%.');
+                    }
+                },
+            ],
+            'min_purchase' => [
+                'nullable',
+                'numeric',
+                'min:0',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($request->type === 'fixed' && $request->value && $value <= $request->value) {
+                        $fail('Minimum purchase amount must be greater than the fixed discount value.');
+                    }
+                },
+            ],
             'max_uses' => 'nullable|integer|min:1',
             'expires_at' => 'nullable|date|after:today',
             'is_active' => 'boolean',
@@ -70,8 +88,26 @@ class CouponController extends Controller
         $validated = $request->validate([
             'code' => 'required|string|max:50|unique:coupons,code,' . $coupon->id,
             'type' => 'required|in:percentage,fixed',
-            'value' => 'required|numeric|min:0',
-            'min_purchase' => 'nullable|numeric|min:0',
+            'value' => [
+                'required',
+                'numeric',
+                'min:0',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($request->type === 'percentage' && $value > 100) {
+                        $fail('The percentage discount cannot exceed 100%.');
+                    }
+                },
+            ],
+            'min_purchase' => [
+                'nullable',
+                'numeric',
+                'min:0',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($request->type === 'fixed' && $request->value && $value <= $request->value) {
+                        $fail('Minimum purchase amount must be greater than the fixed discount value.');
+                    }
+                },
+            ],
             'max_uses' => 'nullable|integer|min:1',
             'expires_at' => 'nullable|date',
             'is_active' => 'boolean',
