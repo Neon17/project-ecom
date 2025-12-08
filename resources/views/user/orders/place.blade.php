@@ -24,10 +24,10 @@
                             <select id="saved_address_select"
                                 class="w-full px-4 py-2 border border-blue-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                                 onchange="selectSavedAddress(this.value)">
-                                <option value="">-- Choose saved address --</option>
+                                <option value="" class="dark:bg-gray-800">-- Choose saved address --</option>
 
                                 @foreach ($addresses as $address)
-                                    <option value="{{ $address->id }}">
+                                    <option value="{{ $address->id }}" class="dark:bg-gray-800">
                                         {{ $address->street_address_1 }}
                                         {{ $address->street_address_2 ? ', ' . $address->street_address_2 : '' }}
                                         - {{ $address->city }}, {{ $address->state }}, {{ $address->country }}

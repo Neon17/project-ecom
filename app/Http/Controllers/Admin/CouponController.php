@@ -9,9 +9,15 @@ use Carbon\Carbon;
 
 class CouponController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $coupons = Coupon::latest()->paginate(15);
+        $query = Coupon::query();
+        
+        if ($request->has('search') && $request->search) {
+            $query->where('code', 'like', '%' . $request->search . '%');
+        }
+        
+        $coupons = $query->latest()->paginate(15);
         return view('admin.coupons.index', compact('coupons'));
     }
 

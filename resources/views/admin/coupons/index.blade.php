@@ -12,6 +12,25 @@
         </div>
     </div>
 
+    <!-- Search Form -->
+    <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-4 mb-6 border border-gray-100 dark:border-gray-700">
+        <form action="{{ route('admin.coupons.index') }}" method="GET" class="flex flex-col md:flex-row gap-4">
+            <div class="flex-1">
+                <label for="search" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Search</label>
+                <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="Search by coupon code..."
+                    class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-white focus:border-blue-500 focus:ring-blue-500 text-sm p-2">
+            </div>
+            <div class="flex items-end gap-2">
+                <button type="submit" class="bg-gray-800 dark:bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors text-sm font-medium">
+                    Search
+                </button>
+                <a href="{{ route('admin.coupons.index') }}" class="px-4 py-2 bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors text-sm font-medium">
+                    Reset
+                </a>
+            </div>
+        </form>
+    </div>
+
     <div class="bg-white dark:bg-slate-900 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 overflow-hidden">
         @if ($coupons->count() > 0)
             <!-- Desktop Table -->
@@ -120,7 +139,7 @@
             </div>
 
             <div class="px-6 py-4 border-t border-gray-200 dark:border-slate-700">
-                {{ $coupons->links() }}
+                {{ $coupons->withQueryString()->links() }}
             </div>
         @else
             <div class="p-12 text-center">

@@ -12,6 +12,25 @@
             </a>
         </div>
 
+        <!-- Search Form -->
+        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-4 mb-6 border border-gray-100 dark:border-gray-700">
+            <form action="{{ route('admin.categories.index') }}" method="GET" class="flex flex-col md:flex-row gap-4">
+                <div class="flex-1">
+                    <label for="search" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Search</label>
+                    <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="Search by name or slug..."
+                        class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-white focus:border-blue-500 focus:ring-blue-500 text-sm p-2">
+                </div>
+                <div class="flex items-end gap-2">
+                    <button type="submit" class="bg-gray-800 dark:bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors text-sm font-medium">
+                        Search
+                    </button>
+                    <a href="{{ route('admin.categories.index') }}" class="px-4 py-2 bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors text-sm font-medium">
+                        Reset
+                    </a>
+                </div>
+            </form>
+        </div>
+
         @if ($categories->count() > 0)
             <div class="overflow-x-auto">
                 <table class="min-w-full leading-normal">

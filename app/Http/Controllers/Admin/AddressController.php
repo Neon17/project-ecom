@@ -15,9 +15,24 @@ class AddressController extends Controller
     // user can use previously saved his/her address
 
 
-    public function allIndex()
+    public function allIndex(Request $request)
     {
-        $addresses = Address::with('user')->paginate(10);
+        $query = Address::with('user');
+        
+        if ($request->has('search') && $request->search) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('city', 'like', '%' . $search . '%')
+                  ->orWhere('country', 'like', '%' . $search . '%')
+                  ->orWhere('state', 'like', '%' . $search . '%')
+                  ->orWhereHas('user', function($uq) use ($search) {
+                      $uq->where('name', 'like', '%' . $search . '%')
+                         ->orWhere('email', 'like', '%' . $search . '%');
+                  });
+            });
+        }
+        
+        $addresses = $query->paginate(10);
         return view('admin.addresses.index', compact('addresses'));
     }
 

@@ -10,8 +10,17 @@ class CartController extends Controller
 {
     public function index(Request $request)
     {
-        $carts = Cart::with(['cartItems', 'user'])->get();
-
+        $query = Cart::with(['cartItems', 'user', 'cartItems.product']);
+        
+        if ($request->has('search') && $request->search) {
+            $search = $request->search;
+            $query->whereHas('user', function($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('email', 'like', '%' . $search . '%');
+            });
+        }
+        
+        $carts = $query->paginate(10);
         return view('admin.carts.index', compact('carts'));
     }
 }

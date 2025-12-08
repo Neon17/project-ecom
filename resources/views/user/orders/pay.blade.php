@@ -50,7 +50,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                     <!-- Cash on Delivery -->
                     <label class="cursor-pointer relative">
-                        <input type="radio" name="payment_method" value="cash" class="peer sr-only" required>
+                        <input type="radio" name="payment_method" value="cash" class="peer sr-only" required checked>
                         <div class="p-4 border-2 border-gray-200 dark:border-slate-700 rounded-xl hover:border-blue-400 peer-checked:border-blue-600 peer-checked:bg-blue-50 transition-all duration-300 h-full flex flex-col items-center justify-center text-center">
                             <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-3 text-green-600">
                                 <i class="fas fa-money-bill-wave text-2xl"></i>

@@ -38,12 +38,35 @@ class PaymentController extends Controller
         return view('admin.payments.index', compact('payments'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $orders = Order::with('user')
-            ->whereDoesntHave('payment')
-            ->where('status', '!=', OrderStatusEnum::Cancelled->value)
-            ->get();
+        $query = Order::with(['user', 'payment']);
+        
+        // Filter by payment status
+        if ($request->has('filter') && $request->filter === 'no_payment') {
+            $query->whereDoesntHave('payment');
+        } elseif ($request->has('filter') && $request->filter === 'has_payment') {
+            $query->whereHas('payment');
+        }
+        
+        // Exclude cancelled orders by default
+        if (!$request->has('include_cancelled')) {
+            $query->where('status', '!=', OrderStatusEnum::Cancelled->value);
+        }
+        
+        // Search functionality
+        if ($request->has('search') && $request->search) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('id', 'like', '%' . $search . '%')
+                  ->orWhereHas('user', function($uq) use ($search) {
+                      $uq->where('name', 'like', '%' . $search . '%')
+                         ->orWhere('email', 'like', '%' . $search . '%');
+                  });
+            });
+        }
+        
+        $orders = $query->latest()->get();
             
         $paymentMethods = enum_labels(PaymentMethodEnum::class);
         $paymentStatuses = enum_labels(PaymentStatusEnum::class);

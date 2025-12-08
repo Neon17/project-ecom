@@ -12,6 +12,33 @@
             <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Create New Payment</h1>
         </div>
 
+        <!-- Filter Form -->
+        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-4 mb-6 border border-gray-100 dark:border-gray-700">
+            <form action="{{ route('admin.payments.create') }}" method="GET" class="flex flex-col md:flex-row gap-4">
+                <div class="flex-1">
+                    <label for="search" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Search Orders</label>
+                    <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="Search by order ID, user name or email..."
+                        class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-white focus:border-blue-500 focus:ring-blue-500 text-sm p-2">
+                </div>
+                <div>
+                    <label for="filter" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Payment Status</label>
+                    <select name="filter" id="filter" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-white focus:border-blue-500 focus:ring-blue-500 text-sm p-2">
+                        <option value="">All Orders</option>
+                        <option value="no_payment" {{ request('filter') === 'no_payment' ? 'selected' : '' }}>Without Payment</option>
+                        <option value="has_payment" {{ request('filter') === 'has_payment' ? 'selected' : '' }}>With Payment</option>
+                    </select>
+                </div>
+                <div class="flex items-end gap-2">
+                    <button type="submit" class="bg-gray-800 dark:bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors text-sm font-medium">
+                        Filter
+                    </button>
+                    <a href="{{ route('admin.payments.create') }}" class="px-4 py-2 bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors text-sm font-medium">
+                        Reset
+                    </a>
+                </div>
+            </form>
+        </div>
+
         <form action="{{ route('admin.payments.store') }}" method="POST" class="space-y-6">
             @csrf
 
@@ -21,7 +48,7 @@
                 <div class="space-y-4">
                     <!-- Order Selection -->
                     <div>
-                        <label for="order_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-1">Order *</label>
+                        <label for="order_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Order *</label>
                         <x-admin.order-search :orders="$orders" name="order_id" />
                         @error('order_id')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -33,9 +60,9 @@
                         <label for="payment_method" class="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-600 mb-1">Payment Method *</label>
                         <select name="payment_method" id="payment_method" required
                                 class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
-                            <option value="">Select payment method</option>
+                            <option class="text-gray-700 dark:text-gray-300 dark:bg-gray-700" value="">Select payment method</option>
                             @foreach($paymentMethods as $value => $label)
-                                <option value="{{ $value }}" {{ old('payment_method') == $value ? 'selected' : '' }}>
+                                <option class="text-gray-700 dark:text-gray-300 dark:bg-gray-700" value="{{ $value }}" {{ old('payment_method') == $value ? 'selected' : '' }}>
                                     {{ $label }}
                                 </option>
                             @endforeach

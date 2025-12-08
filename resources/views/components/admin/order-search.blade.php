@@ -10,7 +10,10 @@
         'user_email' => $o->user->email,
         'user_phone' => $o->user->phone,
         'user_photo_url' => $o->user->profile_photo_url,
-        'address_string' => $o->address->city . ', ' . $o->address->country
+        'address_string' => $o->address->city . ', ' . $o->address->country,
+        'has_payment' => $o->payment !== null,
+        'payment_status' => $o->payment?->status ?? null,
+        'total' => $o->total,
     ])->toJson() }},
     get filteredOrders() {
         if (this.search === '') {
@@ -92,15 +95,22 @@
                          class="cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-gray-100 dark:hover:bg-slate-700 transition duration-150 ease-in-out">
                         <div class="flex items-center">
                             <img x-bind:src="order.user_photo_url" alt="" class="h-8 w-8 rounded-full object-cover">
-                            <div class="ml-3">
+                            <div class="ml-3 flex-1">
                                 <span class="block font-medium truncate text-gray-900 dark:text-white">
                                     Order #<span x-text="order.id"></span> - <span x-text="order.user_name"></span>
+                                    <template x-if="order.has_payment">
+                                        <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">Has Payment</span>
+                                    </template>
+                                    <template x-if="!order.has_payment">
+                                        <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">No Payment</span>
+                                    </template>
                                 </span>
                                 <span class="block text-xs text-gray-500 dark:text-gray-400">
                                     <span x-text="order.user_email"></span>
                                     <template x-if="order.user_phone">
                                         <span> • <span x-text="order.user_phone"></span></span>
                                     </template>
+                                    <span> • NPR <span x-text="(order.total).toLocaleString()"></span></span>
                                 </span>
                                 <span class="block text-xs text-gray-400 dark:text-gray-500" x-text="order.address_string"></span>
                             </div>

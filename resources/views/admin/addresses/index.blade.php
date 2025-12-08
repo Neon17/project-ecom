@@ -6,13 +6,25 @@
                 <h1 class="text-3xl font-bold text-gray-900 dark:text-white dark:text-white">Address Management</h1>
                 <p class="text-gray-600 dark:text-gray-300 dark:text-gray-600 dark:text-gray-300 dark:text-gray-600 dark:text-gray-300 dark:text-gray-600 mt-2">Manage and view all customer addresses</p>
             </div>
-            <div class="flex space-x-3">
-                <button
-                    class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition duration-200 flex items-center">
-                    <i class="fas fa-plus mr-2"></i>
-                    Add Address
-                </button>
-            </div>
+        </div>
+
+        <!-- Search Form -->
+        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-4 mb-6 border border-gray-100 dark:border-gray-700">
+            <form action="{{ route('admin.addresses.all') }}" method="GET" class="flex flex-col md:flex-row gap-4">
+                <div class="flex-1">
+                    <label for="search" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Search</label>
+                    <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="Search by user, city, country, state..."
+                        class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-white focus:border-blue-500 focus:ring-blue-500 text-sm p-2">
+                </div>
+                <div class="flex items-end gap-2">
+                    <button type="submit" class="bg-gray-800 dark:bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors text-sm font-medium">
+                        Search
+                    </button>
+                    <a href="{{ route('admin.addresses.all') }}" class="px-4 py-2 bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors text-sm font-medium">
+                        Reset
+                    </a>
+                </div>
+            </form>
         </div>
 
         @if (!$addresses->isEmpty())
@@ -109,7 +121,7 @@
 
             <!-- Pagination -->
             <div class="mt-6">
-                {{ $addresses->links() }}
+                {{ $addresses->withQueryString()->links() }}
             </div>
         @else
             <!-- Empty State -->
