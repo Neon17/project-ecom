@@ -99,10 +99,10 @@
                                 </td>
                                 <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
                                     <div class="flex space-x-2">
-                                        <button class="text-blue-600 dark:text-blue-400 dark:text-blue-400 hover:text-blue-900 transition duration-150"
+                                        <a href="{{ route('admin.addresses.show', $address->id) }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 transition duration-150"
                                             title="View Details">
                                             <i class="fas fa-eye"></i>
-                                        </button>
+                                        </a>
                                         <button class="text-green-600 hover:text-green-900 transition duration-150"
                                             title="Edit">
                                             <i class="fas fa-edit"></i>

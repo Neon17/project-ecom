@@ -36,6 +36,15 @@ class AddressController extends Controller
         return view('admin.addresses.index', compact('addresses'));
     }
 
+    /**
+     * Show a single address (admin view)
+     */
+    public function showAddress(Address $address)
+    {
+        $address->load(['user.addresses']);
+        return view('admin.addresses.show', compact('address'));
+    }
+
     public function index(User $user)
     {
         $addresses = $user->addresses()->get();

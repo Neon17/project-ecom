@@ -142,8 +142,15 @@ Route::middleware(['auth', 'admin', 'verified'])->prefix('admin')->name('admin.'
     
     // Addresses (Admin view)
     Route::get('/addresses/all', [AdminAddressController::class, 'allIndex'])->name('addresses.all');
+    Route::get('/addresses/{address}', [AdminAddressController::class, 'showAddress'])->name('addresses.show');
     
     // Carts (Admin view)
     Route::get('/carts', [AdminCartController::class, 'index'])->name('carts.index');
+    
+    // Contact Messages
+    Route::get('/contact-messages', [\App\Http\Controllers\Admin\ContactMessageController::class, 'index'])->name('contact-messages.index');
+    Route::get('/contact-messages/{contactMessage}', [\App\Http\Controllers\Admin\ContactMessageController::class, 'show'])->name('contact-messages.show');
+    Route::put('/contact-messages/{contactMessage}', [\App\Http\Controllers\Admin\ContactMessageController::class, 'update'])->name('contact-messages.update');
+    Route::delete('/contact-messages/{contactMessage}', [\App\Http\Controllers\Admin\ContactMessageController::class, 'destroy'])->name('contact-messages.destroy');
 });
 

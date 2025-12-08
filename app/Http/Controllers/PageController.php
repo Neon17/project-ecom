@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ContactMessage;
 use Illuminate\Http\Request;
 
 class PageController extends Controller
@@ -25,8 +26,8 @@ class PageController extends Controller
             'message' => 'required|string',
         ]);
 
-        // In a real app, we would send an email or save to DB.
-        // For now, just redirect back with success.
+        // Save to database
+        ContactMessage::create($validated);
 
         return back()->with('success', 'Thank you for contacting us! We will get back to you soon.');
     }
