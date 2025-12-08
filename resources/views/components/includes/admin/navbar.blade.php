@@ -12,9 +12,17 @@
                     <span>Ecommerce</span>
                 </a>
 
-                <a href="{{ route('products.index') }}" class="hidden md:block text-blue-100 dark:text-slate-300 hover:text-white dark:hover:text-white font-medium">
-                    Products
-                </a>
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="{{ route('products.index') }}" class="text-blue-100 dark:text-slate-300 hover:text-white dark:hover:text-white font-medium pb-1 {{ request()->routeIs('products*') ? 'text-white border-b-2 border-white' : '' }}">
+                        Products
+                    </a>
+                    <a href="{{ route('about') }}" class="text-blue-100 dark:text-slate-300 hover:text-white dark:hover:text-white font-medium pb-1 {{ request()->routeIs('about') ? 'text-white border-b-2 border-white' : '' }}">
+                        About
+                    </a>
+                    <a href="{{ route('contact') }}" class="text-blue-100 dark:text-slate-300 hover:text-white dark:hover:text-white font-medium pb-1 {{ request()->routeIs('contact*') ? 'text-white border-b-2 border-white' : '' }}">
+                        Contact
+                    </a>
+                </div>
             </div>
 
             <!-- Desktop Navigation -->
@@ -27,16 +35,6 @@
                         Sign Up
                     </a>
                 @else
-                    @if (auth()->user()->role->value == 'admin')
-                        <a href="{{ route('admin.dashboard.index') }}" class="text-white hover:text-blue-100 dark:hover:text-slate-200">
-                            Dashboard
-                        </a>
-                    @else
-                        <a href="{{ route('user.dashboard.index') }}" class="text-white hover:text-blue-100 dark:hover:text-slate-200">
-                            Dashboard
-                        </a>
-                    @endif
-
                     <a href="{{ route('user.cart.index') }}" class="relative text-white hover:text-blue-100 dark:hover:text-slate-200">
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -44,16 +42,8 @@
                         </svg>
                     </a>
 
-                    <form action="{{ url('/logout') }}" method="POST" class="m-0">
-                        @csrf
-                        <button type="submit" class="text-white hover:text-red-300 dark:hover:text-red-400">
-                            Logout
-                        </button>
-                    </form>
+                    <x-ui.user-dropdown :user="auth()->user()" />
                 @endguest
-                
-                <!-- Theme Toggle -->
-                <x-ui.theme-toggle />
             </div>
 
             <!-- Mobile Menu Button -->
@@ -74,7 +64,7 @@
         <div x-show="mobileMenuOpen" 
              x-transition
              class="md:hidden pb-4 space-y-2">
-            <a href="{{ route('products.index') }}" class="block px-4 py-2 text-blue-100 dark:text-slate-300 hover:bg-blue-700 dark:hover:bg-slate-700 rounded font-medium">
+            <a href="{{ route('products.index') }}" class="block px-4 py-2 text-blue-100 dark:text-slate-300 hover:bg-blue-700 dark:hover:bg-slate-700 rounded font-medium {{ request()->routeIs('products*') ? 'bg-blue-700 dark:bg-slate-700 text-white font-bold' : '' }}">
                 Products
             </a>
             @guest

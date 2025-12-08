@@ -16,12 +16,11 @@
                                 class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-700 p-6">
                                 <div class="flex flex-col sm:flex-row gap-6">
                                     <!-- Product Image -->
-                                    <div class="w-full sm:w-32 h-full flex-shrink-0">
+                                    <div class="w-full sm:w-32 h-32 flex-shrink-0 bg-gray-100 dark:bg-slate-800 rounded-lg overflow-hidden">
                                         <img 
-                                            {{-- :src="item.image_url || (item.product ? '/'+item.product.image_url : --}}
-                                            :src = 'https://via.placeholder.com/400x200'
-                                            :alt="item.name || item.product.name"
-                                            class="object-cover w-full h-60 group-hover:scale-105 transition-transform duration-500">
+                                            :src="item.image_url || (item.product && item.product.image_url) || 'https://via.placeholder.com/400x300?text=No+Image'"
+                                            :alt="item.name || (item.product ? item.product.name : 'Product')"
+                                            class="w-full h-full object-cover">
                                     </div>
 
                                     <!-- Product Details -->

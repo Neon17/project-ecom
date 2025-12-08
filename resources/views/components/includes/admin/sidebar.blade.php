@@ -58,6 +58,22 @@
             <i class="fas fa-map-marked-alt w-5 mr-3"></i>
             <span class="font-medium">Addresses</span>
         </a>
+
+        <a href="{{ route('admin.invoices.index') }}" 
+           class="flex items-center px-4 md:px-5 py-3 text-blue-100 dark:text-slate-300 hover:bg-blue-900/50 dark:hover:bg-slate-700 hover:text-white transition-all duration-200 {{ request()->routeIs('admin.invoices*') ? 'bg-blue-900 dark:bg-slate-700 text-white border-l-4 border-white shadow-lg' : '' }}">
+            <i class="fas fa-file-invoice w-5 mr-3"></i>
+            <span class="font-medium">Invoices</span>
+        </a>
+
+        <a href="{{ route('admin.contact-messages.index') }}" 
+           class="flex items-center px-4 md:px-5 py-3 text-blue-100 dark:text-slate-300 hover:bg-blue-900/50 dark:hover:bg-slate-700 hover:text-white transition-all duration-200 {{ request()->routeIs('admin.contact-messages*') ? 'bg-blue-900 dark:bg-slate-700 text-white border-l-4 border-white shadow-lg' : '' }}">
+            <i class="fas fa-envelope w-5 mr-3"></i>
+            <span class="font-medium">Messages</span>
+            @php $unreadCount = \App\Models\ContactMessage::where('status', 'unread')->count(); @endphp
+            @if($unreadCount > 0)
+                <span class="ml-auto bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">{{ $unreadCount }}</span>
+            @endif
+        </a>
     </nav>
 
     <!-- Footer -->

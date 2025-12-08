@@ -44,6 +44,12 @@
             <i class="fas fa-user w-5 mr-3"></i>
             <span class="font-medium">Profile</span>
         </a>
+
+        <a href="{{ route('user.payments.index') }}" 
+           class="flex items-center px-4 md:px-6 py-3 text-blue-100 dark:text-slate-300 hover:bg-blue-900/50 dark:hover:bg-slate-700 hover:text-white transition-all duration-200 {{ request()->routeIs('user.payments*') ? 'bg-blue-900 dark:bg-slate-700 text-white border-r-4 border-white shadow-lg' : '' }}">
+            <i class="fas fa-credit-card w-5 mr-3"></i>
+            <span class="font-medium">Payments</span>
+        </a>
         @endauth
     </nav>
 

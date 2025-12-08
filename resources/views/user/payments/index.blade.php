@@ -10,9 +10,9 @@
             <div class="flex-1">
                 <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
                 <select name="status" id="status" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-white focus:border-blue-500 focus:ring-blue-500 text-sm">
-                    <option value="">All Statuses</option>
+                    <option class="p-2" value="">All Statuses</option>
                     @foreach(\App\Enums\PaymentStatusEnum::cases() as $status)
-                        <option value="{{ $status->value }}" {{ request('status') == $status->value ? 'selected' : '' }}>
+                        <option class="p-2" value="{{ $status->value }}" {{ request('status') == $status->value ? 'selected' : '' }}>
                             {{ ucfirst($status->value) }}
                         </option>
                     @endforeach
