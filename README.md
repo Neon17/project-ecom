@@ -1,11 +1,37 @@
-This project is a comprehensive e-commerce platform built with Laravel. It features user authentication, product management, cart functionality, order processing, and an administrative dashboard.
+# E-Commerce Platform
 
-## Design Enhancements
+A full-featured e-commerce platform built with **Laravel 12**, featuring role-based access for admins and customers, payment processing, and fast product search.
 
-We are committed to creating a beautiful and user-friendly experience across the entire platform. Our key design goals include:
+## Features
 
-- **Home Page & Welcome Page:** Enhancing visual appeal and user engagement.
-- **Admin Dashboard:** Ensuring a super smooth, responsive, and intuitive administrative experience.
-- **Overall Aesthetics:** Implementing a consistent and modern design language throughout the application.
+- **Auth** — Register, login, email verification, forgot/reset password
+- **Products** — Category filtering, Typesense-powered search, product detail pages
+- **Cart** — Guest cart with automatic merge on login
+- **Checkout & Orders** — Full order lifecycle with order history for users
+- **Coupons** — Discount coupon system at checkout
+- **Payments** — Payment integration with PDF invoice generation (DomPDF)
+- **Admin Dashboard** — Manage products, categories, orders, users, coupons, and payments
+- **Contact** — Contact form with message storage
 
-Future updates will focus on implementing these design improvements to provide a polished and delightful user interface.
+## Tech Stack
+
+| Layer | Tech |
+|---|---|
+| Backend | Laravel 12, PHP 8.2 |
+| Frontend | Blade, Tailwind CSS, Vite |
+| Search | Typesense |
+| PDF | barryvdh/laravel-dompdf |
+| Database | MySQL |
+
+## Setup
+
+```bash
+git clone https://github.com/Neon17/project-ecom
+cd project-ecom
+composer install && npm install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate --seed
+npm run build
+php artisan serve
+```
